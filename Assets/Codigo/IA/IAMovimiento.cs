@@ -18,7 +18,7 @@ public class IAMovimiento : MonoBehaviour
         _waypoints = GetComponent<IAWaypoints>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         jugadorPosicion = jugador.transform.position;
         IAPosicion = transform.position;

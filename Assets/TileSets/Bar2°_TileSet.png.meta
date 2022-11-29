@@ -759,7 +759,7 @@ TextureImporter:
       213: 2690749233747431912
     second: "Bar2\xB0_TileSet_251"
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -779,6 +779,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -788,8 +790,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -810,10 +812,14 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -853,6 +859,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 4
@@ -6168,6 +6186,259 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      "Bar2\xB0_TileSet_57": 1969506409686891019
+      "Bar2\xB0_TileSet_67": -7796579007330471622
+      "Bar2\xB0_TileSet_170": -5984078356471808545
+      "Bar2\xB0_TileSet_201": -1245060660440983962
+      "Bar2\xB0_TileSet_160": -273165966258186543
+      "Bar2\xB0_TileSet_63": -9145915271625640674
+      "Bar2\xB0_TileSet_149": -1266489696545595247
+      "Bar2\xB0_TileSet_173": -7324327986837888703
+      "Bar2\xB0_TileSet_93": -4073339871937626942
+      "Bar2\xB0_TileSet_128": 3584480198066438962
+      "Bar2\xB0_TileSet_91": 7278256803716035807
+      "Bar2\xB0_TileSet_241": -5497441489168944804
+      "Bar2\xB0_TileSet_176": 7628912978153229955
+      "Bar2\xB0_TileSet_69": 2098794712020017260
+      "Bar2\xB0_TileSet_83": -4884207042253619291
+      "Bar2\xB0_TileSet_88": 1858708366559249060
+      "Bar2\xB0_TileSet_0": -4353597651731494978
+      "Bar2\xB0_TileSet_205": 1472623422181158789
+      "Bar2\xB0_TileSet_232": -6577627023476783951
+      "Bar2\xB0_TileSet_196": -9089377240675547362
+      "Bar2\xB0_TileSet_129": 607828778092305228
+      "Bar2\xB0_TileSet_243": 7714772907897723868
+      "Bar2\xB0_TileSet_56": -1421900743512326210
+      "Bar2\xB0_TileSet_87": -8094867796973738991
+      "Bar2\xB0_TileSet_247": -6768988724469283021
+      "Bar2\xB0_TileSet_233": 6164409127070554595
+      "Bar2\xB0_TileSet_202": -3461100046541780527
+      "Bar2\xB0_TileSet_219": -5247897689385574720
+      "Bar2\xB0_TileSet_59": -3613770377934108058
+      "Bar2\xB0_TileSet_192": 2959444695065318963
+      "Bar2\xB0_TileSet_23": 4777120298039775665
+      "Bar2\xB0_TileSet_244": -3326974101791350798
+      "Bar2\xB0_TileSet_142": 4943874208906318372
+      "Bar2\xB0_TileSet_7": -996452594358011145
+      "Bar2\xB0_TileSet_139": -4904528359005209148
+      "Bar2\xB0_TileSet_89": -328271618287496570
+      "Bar2\xB0_TileSet_105": -3476034952029956159
+      "Bar2\xB0_TileSet_172": 2869206959633186286
+      "Bar2\xB0_TileSet_169": -2498040275334193753
+      "Bar2\xB0_TileSet_104": -6971814342239782939
+      "Bar2\xB0_TileSet_31": 3999553457096023679
+      "Bar2\xB0_TileSet_17": 2117971421953838059
+      "Bar2\xB0_TileSet_187": -365328024210951579
+      "Bar2\xB0_TileSet_218": 6896061124964882713
+      "Bar2\xB0_TileSet_12": -6007528982997646555
+      "Bar2\xB0_TileSet_4": -4186945290045006247
+      "Bar2\xB0_TileSet_45": -1990956624409127158
+      "Bar2\xB0_TileSet_237": 4042064119967575254
+      "Bar2\xB0_TileSet_38": -7285526672896702849
+      "Bar2\xB0_TileSet_133": -2800364244200000965
+      "Bar2\xB0_TileSet_175": 6679897473023945165
+      "Bar2\xB0_TileSet_76": -3993246206979585910
+      "Bar2\xB0_TileSet_251": 2690749233747431912
+      "Bar2\xB0_TileSet_5": -7292259615602247659
+      "Bar2\xB0_TileSet_153": 7682213404617863183
+      "Bar2\xB0_TileSet_188": 5806761271640590707
+      "Bar2\xB0_TileSet_110": -4209425214755981261
+      "Bar2\xB0_TileSet_84": -143499686997650010
+      "Bar2\xB0_TileSet_234": 7454677073603451383
+      "Bar2\xB0_TileSet_72": 5396355370533053236
+      "Bar2\xB0_TileSet_2": -4659638605793299879
+      "Bar2\xB0_TileSet_86": -3825765931697751672
+      "Bar2\xB0_TileSet_222": 6690481997560036779
+      "Bar2\xB0_TileSet_1": 615229722096641963
+      "Bar2\xB0_TileSet_208": 1808589292375902562
+      "Bar2\xB0_TileSet_193": -3652006053882485521
+      "Bar2\xB0_TileSet_242": -4254244467021407105
+      "Bar2\xB0_TileSet_60": -1259539128810177478
+      "Bar2\xB0_TileSet_74": -4517556833155766993
+      "Bar2\xB0_TileSet_66": 1003244496818771999
+      "Bar2\xB0_TileSet_73": 4561232168928065645
+      "Bar2\xB0_TileSet_94": -7290040990597193269
+      "Bar2\xB0_TileSet_25": -8556952232507671580
+      "Bar2\xB0_TileSet_210": 253111634445489020
+      "Bar2\xB0_TileSet_231": 3201746293118025176
+      "Bar2\xB0_TileSet_167": -8489794181739435034
+      "Bar2\xB0_TileSet_97": -7968366735437603658
+      "Bar2\xB0_TileSet_145": -3099429439401613713
+      "Bar2\xB0_TileSet_9": -6587051675010904145
+      "Bar2\xB0_TileSet_117": 7983854896294460247
+      "Bar2\xB0_TileSet_165": -3581767388683743263
+      "Bar2\xB0_TileSet_111": -5470704578534519155
+      "Bar2\xB0_TileSet_190": -5369261220260843147
+      "Bar2\xB0_TileSet_235": -636138766502449983
+      "Bar2\xB0_TileSet_211": 2489892890278282489
+      "Bar2\xB0_TileSet_49": -7741310000715064909
+      "Bar2\xB0_TileSet_85": 1586579403967882947
+      "Bar2\xB0_TileSet_114": 724780621874945443
+      "Bar2\xB0_TileSet_156": -4885554179253687560
+      "Bar2\xB0_TileSet_168": 3952904953632191363
+      "Bar2\xB0_TileSet_180": 6459195575358521539
+      "Bar2\xB0_TileSet_248": 5966158366790212720
+      "Bar2\xB0_TileSet_112": -901766153246633932
+      "Bar2\xB0_TileSet_143": 4829408217679573997
+      "Bar2\xB0_TileSet_221": 2672585977773122166
+      "Bar2\xB0_TileSet_95": 1053296649893912832
+      "Bar2\xB0_TileSet_249": 8545172646692833894
+      "Bar2\xB0_TileSet_48": 8636793336014156348
+      "Bar2\xB0_TileSet_53": -8258161615570415910
+      "Bar2\xB0_TileSet_36": -427685298399939716
+      "Bar2\xB0_TileSet_236": -5560474067243498019
+      "Bar2\xB0_TileSet_199": -6123054532578191826
+      "Bar2\xB0_TileSet_20": -1748728766270924873
+      "Bar2\xB0_TileSet_137": 8888089313919257017
+      "Bar2\xB0_TileSet_207": 4627732427502717170
+      "Bar2\xB0_TileSet_82": -4296652931305658729
+      "Bar2\xB0_TileSet_52": -7945390300472310351
+      "Bar2\xB0_TileSet_159": -4936754694879578686
+      "Bar2\xB0_TileSet_102": 7910953175409520410
+      "Bar2\xB0_TileSet_154": 7148279124677049183
+      "Bar2\xB0_TileSet_26": 124215889801721666
+      "Bar2\xB0_TileSet_162": 3806929346803634517
+      "Bar2\xB0_TileSet_10": 6174582630416270959
+      "Bar2\xB0_TileSet_18": 4759877076436121254
+      "Bar2\xB0_TileSet_43": 2764268234584856308
+      "Bar2\xB0_TileSet_106": 2019975039208012834
+      "Bar2\xB0_TileSet_118": -3492262024383536114
+      "Bar2\xB0_TileSet_155": 1343189187567260646
+      "Bar2\xB0_TileSet_33": 7944037253970456573
+      "Bar2\xB0_TileSet_70": -756935681862296456
+      "Bar2\xB0_TileSet_148": -8640282380082909921
+      "Bar2\xB0_TileSet_228": 3207038545445945040
+      "Bar2\xB0_TileSet_177": -6513740284371870863
+      "Bar2\xB0_TileSet_225": 969517573217905925
+      "Bar2\xB0_TileSet_178": -8482694855065997339
+      "Bar2\xB0_TileSet_141": -4767250989801865709
+      "Bar2\xB0_TileSet_58": 4135729459772852322
+      "Bar2\xB0_TileSet_6": 3252349540690505713
+      "Bar2\xB0_TileSet_42": -7751556013036705804
+      "Bar2\xB0_TileSet_21": -6773581324524573385
+      "Bar2\xB0_TileSet_90": -3351799134651844524
+      "Bar2\xB0_TileSet_134": 7129043766183103882
+      "Bar2\xB0_TileSet_121": 3647752728119420839
+      "Bar2\xB0_TileSet_77": 7359961142923846050
+      "Bar2\xB0_TileSet_214": -2057004644428075084
+      "Bar2\xB0_TileSet_3": -5089550854810477439
+      "Bar2\xB0_TileSet_35": -1560684947882497929
+      "Bar2\xB0_TileSet_239": 7354447190569148072
+      "Bar2\xB0_TileSet_204": -3749794436072800355
+      "Bar2\xB0_TileSet_81": 555595698033423984
+      "Bar2\xB0_TileSet_39": -3797168242504376472
+      "Bar2\xB0_TileSet_213": 3879965857688432143
+      "Bar2\xB0_TileSet_130": 8795482888286774343
+      "Bar2\xB0_TileSet_27": 7730399797607844103
+      "Bar2\xB0_TileSet_22": 881425063675153867
+      "Bar2\xB0_TileSet_174": 9000704821661478598
+      "Bar2\xB0_TileSet_101": 66714803914579940
+      "Bar2\xB0_TileSet_245": 4125107684142185198
+      "Bar2\xB0_TileSet_197": 9173456492390167204
+      "Bar2\xB0_TileSet_40": 7242090781397316737
+      "Bar2\xB0_TileSet_238": -3781657961970802199
+      "Bar2\xB0_TileSet_131": -9163228295918529989
+      "Bar2\xB0_TileSet_115": 5360809953830701630
+      "Bar2\xB0_TileSet_140": -3013843274388106957
+      "Bar2\xB0_TileSet_15": 7625881746729392858
+      "Bar2\xB0_TileSet_54": 3742137166529404843
+      "Bar2\xB0_TileSet_113": 5432048905982321776
+      "Bar2\xB0_TileSet_126": 3847058844899588237
+      "Bar2\xB0_TileSet_195": 1198328909763151317
+      "Bar2\xB0_TileSet_209": 633531317347647465
+      "Bar2\xB0_TileSet_179": -1522419123071966816
+      "Bar2\xB0_TileSet_224": -4951633224056474061
+      "Bar2\xB0_TileSet_146": -2609931632997192859
+      "Bar2\xB0_TileSet_198": 3883834321407414967
+      "Bar2\xB0_TileSet_50": 4126653404424080988
+      "Bar2\xB0_TileSet_16": -2776487230511676295
+      "Bar2\xB0_TileSet_189": -2126839102504585580
+      "Bar2\xB0_TileSet_28": 4803333380174726430
+      "Bar2\xB0_TileSet_147": -6061720339354241615
+      "Bar2\xB0_TileSet_182": 4505492015071977365
+      "Bar2\xB0_TileSet_46": -4446018655825963534
+      "Bar2\xB0_TileSet_107": 7382869369555309464
+      "Bar2\xB0_TileSet_30": 1201851598849800384
+      "Bar2\xB0_TileSet_75": -2322819278836096846
+      "Bar2\xB0_TileSet_78": 8364390695746550524
+      "Bar2\xB0_TileSet_29": -8778654234177862646
+      "Bar2\xB0_TileSet_8": -2551118076443205843
+      "Bar2\xB0_TileSet_230": 5410381650354176239
+      "Bar2\xB0_TileSet_226": 7668512016651753410
+      "Bar2\xB0_TileSet_183": 9144167862376176969
+      "Bar2\xB0_TileSet_220": -7198179702932240324
+      "Bar2\xB0_TileSet_132": -5042964645172622228
+      "Bar2\xB0_TileSet_32": 6720566135825563129
+      "Bar2\xB0_TileSet_216": -8000693413431441269
+      "Bar2\xB0_TileSet_163": 6184594241665831876
+      "Bar2\xB0_TileSet_80": 21919597445280158
+      "Bar2\xB0_TileSet_99": 3369434279528339165
+      "Bar2\xB0_TileSet_124": -3855886170335060775
+      "Bar2\xB0_TileSet_100": -8929979743797379091
+      "Bar2\xB0_TileSet_223": -6381061139988889187
+      "Bar2\xB0_TileSet_103": 7321954647013031152
+      "Bar2\xB0_TileSet_51": -1544025958711724955
+      "Bar2\xB0_TileSet_61": -2892138894270281158
+      "Bar2\xB0_TileSet_92": 7707766288226525608
+      "Bar2\xB0_TileSet_171": -2199955492416902428
+      "Bar2\xB0_TileSet_203": -7183664313497539439
+      "Bar2\xB0_TileSet_71": -546163404179952732
+      "Bar2\xB0_TileSet_166": -2320278411765890250
+      "Bar2\xB0_TileSet_65": 8947108636728839723
+      "Bar2\xB0_TileSet_108": -7837548662272981521
+      "Bar2\xB0_TileSet_98": 4449855103819807836
+      "Bar2\xB0_TileSet_119": -4293041154857382498
+      "Bar2\xB0_TileSet_122": 2375675287926233229
+      "Bar2\xB0_TileSet_181": -4086393913282084649
+      "Bar2\xB0_TileSet_125": -6363788309427808652
+      "Bar2\xB0_TileSet_217": -3515260930944664120
+      "Bar2\xB0_TileSet_164": -1094105430329538199
+      "Bar2\xB0_TileSet_19": 2598233864980490637
+      "Bar2\xB0_TileSet_212": 1772919169827677742
+      "Bar2\xB0_TileSet_151": 3539608314114978634
+      "Bar2\xB0_TileSet_136": -1238875076698306637
+      "Bar2\xB0_TileSet_62": 7285812076349075464
+      "Bar2\xB0_TileSet_14": -4905721693679429810
+      "Bar2\xB0_TileSet_144": -4871714784165969527
+      "Bar2\xB0_TileSet_158": 184798744103580750
+      "Bar2\xB0_TileSet_44": 514748645442637024
+      "Bar2\xB0_TileSet_47": 6185303112694946416
+      "Bar2\xB0_TileSet_41": 4859570805727819086
+      "Bar2\xB0_TileSet_135": 7439353441182466979
+      "Bar2\xB0_TileSet_116": -6484455765549737471
+      "Bar2\xB0_TileSet_186": -6648931722997300820
+      "Bar2\xB0_TileSet_55": 506078832096309719
+      "Bar2\xB0_TileSet_229": 6447669632060863323
+      "Bar2\xB0_TileSet_37": -1637445283872026128
+      "Bar2\xB0_TileSet_109": -410948544521155468
+      "Bar2\xB0_TileSet_191": -7319240359482433463
+      "Bar2\xB0_TileSet_185": -2979175077131884068
+      "Bar2\xB0_TileSet_184": -615353686458061708
+      "Bar2\xB0_TileSet_157": 4345143584132070411
+      "Bar2\xB0_TileSet_123": 6662381565818661079
+      "Bar2\xB0_TileSet_138": 8521819394162208006
+      "Bar2\xB0_TileSet_127": 8376404330218625130
+      "Bar2\xB0_TileSet_250": -1693923599510370567
+      "Bar2\xB0_TileSet_206": -1432141444831886247
+      "Bar2\xB0_TileSet_120": -3786112516496966798
+      "Bar2\xB0_TileSet_215": 6883403164506086578
+      "Bar2\xB0_TileSet_79": -2849382254820981157
+      "Bar2\xB0_TileSet_194": -2969436206880623626
+      "Bar2\xB0_TileSet_227": -2310430085785929809
+      "Bar2\xB0_TileSet_34": 5539323863104866133
+      "Bar2\xB0_TileSet_150": -1375570895283036586
+      "Bar2\xB0_TileSet_68": 6893593365936055483
+      "Bar2\xB0_TileSet_200": -2015087592026442347
+      "Bar2\xB0_TileSet_240": -5309771752740872685
+      "Bar2\xB0_TileSet_13": -8239131855089836557
+      "Bar2\xB0_TileSet_11": -7948613445565268768
+      "Bar2\xB0_TileSet_161": -2029776388243800703
+      "Bar2\xB0_TileSet_96": -6871613629200614459
+      "Bar2\xB0_TileSet_24": -8105249757016664724
+      "Bar2\xB0_TileSet_64": 3288527845983793830
+      "Bar2\xB0_TileSet_152": 3730236587879052066
+      "Bar2\xB0_TileSet_246": 8344682081770527387
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
