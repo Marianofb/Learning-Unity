@@ -5,9 +5,9 @@ using UnityEngine;
 public class IAWaypoints : MonoBehaviour
 {   
     public GameObject[] waypoints;
-    int _puntoAcutal = 0;
+    public int _puntoAcutal = 0;
     public float velocidadMovimiento = 3f;
-    //public float velocidadRotacion = 1f;
+    //private float velocidadRotacion = 1f;
     Mate _mate;
 
     void Start()

@@ -5,12 +5,12 @@ using UnityEngine;
 public class IAMovimiento : MonoBehaviour
 {   
     [Header ("Jugador")]
-    GameObject jugador;
-    IAWaypoints _waypoints;
-    Vector3 jugadorPosicion; 
+    public GameObject jugador;
+    public IAWaypoints _waypoints;
+    public Vector3 jugadorPosicion; 
 
     [Header ("IA")]
-    Vector3 IAPosicion;
+    public Vector3 IAPosicion;
 
     void Start()
     {

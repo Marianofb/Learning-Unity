@@ -40,9 +40,9 @@ public class JugadorValores : MonoBehaviour
         vidaTotal = Mathf.Clamp(vidaTotal + costo, 0f, vidaMax);    
     }
 
-    void RecuperarEstamina()
+    private void RecuperarEstamina()
     {
-        if(combate.espera == false & estaminaTotal < estaminaMax)
+        if(combate.getEspera() == false & estaminaTotal < estaminaMax)
         {
             ActualizarEstamina(recuperacionEstamina);
         }
@@ -53,7 +53,7 @@ public class JugadorValores : MonoBehaviour
         }
     }
 
-    void RecuperarVida()
+    private void RecuperarVida()
     {
         if(vidaTotal < vidaMax)
         {
@@ -63,5 +63,10 @@ public class JugadorValores : MonoBehaviour
         {
             //estoy lleno
         }
+    }
+
+    public float getEstaminaTotal()
+    {
+        return estaminaTotal;
     }
 }

@@ -6,15 +6,15 @@ public class JugadorMovimiento : MonoBehaviour
 {
     [Header ("Desplazamiento")]
     public float velocidad;
-    float x;
-    float y; 
+    public float x;
+    public float y; 
 
     [Header ("Animacion")]
-    Vector2 mirar = new Vector2();
+    public Vector2 mirar = new Vector2();
 
     [Header ("Componentes")]
-    Animator animador;
-    JugadorCombate combate;
+    public Animator animador;
+    public JugadorCombate combate;
 
 
     void Start()
@@ -39,7 +39,7 @@ public class JugadorMovimiento : MonoBehaviour
         y = Input.GetAxis("Vertical"); 
         Vector3 direccion = new Vector3(x,y);
 
-        if(combate.espera == false)
+        if(combate.getEspera() == false)
         {
             //El transform se normaliza para que cuando presionamos X e Y al mismo tiempo, el jugador no se mueva a mayor velocidad en diagonal
             transform.position += direccion.normalized * velocidad * Time.deltaTime;   
@@ -57,7 +57,7 @@ public class JugadorMovimiento : MonoBehaviour
             mirar.Normalize();
         }
         
-        if(combate.espera == true)
+        if(combate.getEspera() == true)
         {
             mirar.Set(animador.GetFloat("Accion X"), animador.GetFloat("Accion Y"));
         }

@@ -5,9 +5,9 @@ using UnityEngine;
 public class JugadorCombate : MonoBehaviour
 {
     [Header ("Componentes")]
-    Animator animador;
-    JugadorValores valores;
-    JugadorMovimiento movimiento;
+    public Animator animador;
+    public JugadorValores valores;
+    public JugadorMovimiento movimiento;
 
     [Header ("AccionBloqueaAccion")]
     public bool espera;
@@ -15,14 +15,15 @@ public class JugadorCombate : MonoBehaviour
     [Header ("RangoAtaque")]
     public LayerMask mascaraEnemigo; 
     public LayerMask mascaraObstaculo; 
-    float radio;
-    Vector2 direccionMouse = new Vector2();
-    Vector2 ataque = new Vector2();
+    public float radio;
+    public Vector2 direccionMouse = new Vector2();
+    public Vector2 ataque = new Vector2();
 
     void Start()
     {
         animador = GetComponent<Animator>();
         valores = GetComponent<JugadorValores>();
+        movimiento =  GetComponent<JugadorMovimiento>();
     }
 
     void Update()
@@ -46,7 +47,7 @@ public class JugadorCombate : MonoBehaviour
 
     void Puño()
     {
-        if(Input.GetMouseButtonDown(0) && valores.estaminaTotal > 2f && espera == false)
+        if(Input.GetMouseButtonDown(0) && valores.getEstaminaTotal() > 2f && espera == false)
         {
             animador.Play("Puño");
             valores.ActualizarEstamina(-25f);
@@ -56,7 +57,7 @@ public class JugadorCombate : MonoBehaviour
 
     void Patada()
     {
-        if(Input.GetMouseButtonDown(1) && valores.estaminaTotal > 5f && espera == false)
+        if(Input.GetMouseButtonDown(1) && valores.getEstaminaTotal() > 5f && espera == false)
         {
             animador.Play("Patada");
             valores.ActualizarEstamina(-35f);
@@ -124,5 +125,10 @@ public class JugadorCombate : MonoBehaviour
         {
            Debug.Log("Hicimos daño a: " + c.name);
         }
+    }
+
+    public bool getEspera()
+    {
+        return espera;
     }
 }

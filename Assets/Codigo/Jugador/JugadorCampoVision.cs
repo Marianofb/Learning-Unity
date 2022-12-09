@@ -10,12 +10,12 @@ public class JugadorCampoVision : MonoBehaviour
     [Range (0,360)]
     public float radio;
     public float angulo;
-    float radianes;
-    Vector2 rayoA;
-    Vector2 rayoB;
+    public float radianes;
+    public Vector2 rayoA;
+    public Vector2 rayoB;
 
     [Header("Componentes")]
-    Animator animador;
+    public Animator animador;
     
     void Start()
     {
