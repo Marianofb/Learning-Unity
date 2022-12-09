@@ -5,9 +5,8 @@ using UnityEngine;
 public class IAWaypoints : MonoBehaviour
 {   
     public GameObject[] waypoints;
+    public float distanciaLiderObjeto;
     public int _puntoAcutal = 0;
-    public float velocidadMovimiento = 3f;
-    //private float velocidadRotacion = 1f;
     Mate _mate;
 
     void Start()
@@ -15,19 +14,27 @@ public class IAWaypoints : MonoBehaviour
         _mate = GetComponent<Mate>();
     }
 
-    public void MoverWaypoints()
+    public void MoverWaypoints(GameObject lider, GameObject seguidor, float velocidad)
     {
-        float distancia = _mate.Distancia(transform.position, waypoints[_puntoAcutal].transform.position);
+        float distanciaWaypoint = _mate.Distancia(lider.transform.position, waypoints[_puntoAcutal].transform.position);
+        float distanciaLiderObjeto =  _mate.Distancia(lider.transform.position, seguidor.transform.position);
 
         //Seleccion de puntos
-        if(distancia < 1f)
+        if(distanciaWaypoint < 1f & distanciaLiderObjeto < 2f)  
             _puntoAcutal++;
+            
     
         if(_puntoAcutal >= waypoints.Length)
             _puntoAcutal = 0;
         
         //Desplazamiento entre puntos
-        Vector3 direccion = waypoints[_puntoAcutal].transform.position - this.transform.position;
-        this.transform.position += direccion.normalized * Time.deltaTime * velocidadMovimiento;
+        Vector3 direccion = waypoints[_puntoAcutal].transform.position - lider.transform.position;
+        lider.transform.position += direccion.normalized * Time.deltaTime * velocidad;
+    }
+
+    public void SeguirLider(GameObject lider, GameObject seguidor, float velocidad)
+    {
+        Vector3 direccion = lider.transform.position - seguidor.transform.position;
+        seguidor.transform.position += direccion.normalized * Time.deltaTime * velocidad;
     }
 }
