@@ -11,7 +11,7 @@ public class IAMovimiento : MonoBehaviour
     public Mate _mate;
 
     [Header ("Lider")]
-    float velocidadLider;
+    public float velocidadLider;
     GameObject lider;
     
     [Header ("IA")]
@@ -29,7 +29,7 @@ public class IAMovimiento : MonoBehaviour
         Destroy(lider.GetComponent<MeshRenderer>());
         lider.transform.position = this.transform.position;
         lider.transform.localScale -= new Vector3(0.35f, 0.5f, 0f);
-        velocidadLider = velocidad * 1.25f;
+        velocidadLider *= velocidad;
     }
 
     void FixedUpdate()
@@ -43,11 +43,10 @@ public class IAMovimiento : MonoBehaviour
 
     void Mover()
     {
-        //_waypoints.MoverWaypoints(this.gameObject, velocidad);
         _waypoints.SeguirLider(lider, this.gameObject, velocidad);
     }
 
-    public void CaminoLider()
+    void CaminoLider()
     {
        _waypoints.MoverWaypoints(lider, this.gameObject, velocidadLider);
     }

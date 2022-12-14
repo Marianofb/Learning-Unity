@@ -6,8 +6,8 @@ public class JugadorMovimiento : MonoBehaviour
 {
     [Header ("Desplazamiento")]
     public float velocidad;
-    public float x;
-    public float y; 
+    float x;
+    float y; 
 
     [Header ("Animacion")]
     public Vector2 mirar = new Vector2();

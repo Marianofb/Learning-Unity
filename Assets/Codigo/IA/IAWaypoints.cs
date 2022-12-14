@@ -16,20 +16,23 @@ public class IAWaypoints : MonoBehaviour
 
     public void MoverWaypoints(GameObject lider, GameObject seguidor, float velocidad)
     {
-        float distanciaWaypoint = _mate.Distancia(lider.transform.position, waypoints[_puntoAcutal].transform.position);
-        float distanciaLiderObjeto =  _mate.Distancia(lider.transform.position, seguidor.transform.position);
+        if(waypoints.Length != 0)
+        {
+            float distanciaWaypoint = _mate.Distancia(lider.transform.position, waypoints[_puntoAcutal].transform.position);
+            float distanciaLiderObjeto =  _mate.Distancia(lider.transform.position, seguidor.transform.position);
 
-        //Seleccion de puntos
-        if(distanciaWaypoint < 1f & distanciaLiderObjeto < 2f)  
-            _puntoAcutal++;
-            
-    
-        if(_puntoAcutal >= waypoints.Length)
-            _puntoAcutal = 0;
+            //Seleccion de puntos
+            if(distanciaWaypoint < 1f & distanciaLiderObjeto < 2f) 
+                _puntoAcutal++;
+                
         
-        //Desplazamiento entre puntos
-        Vector3 direccion = waypoints[_puntoAcutal].transform.position - lider.transform.position;
-        lider.transform.position += direccion.normalized * Time.deltaTime * velocidad;
+            if(_puntoAcutal >= waypoints.Length)
+                _puntoAcutal = 0;
+            
+            //Desplazamiento entre puntos
+            Vector3 direccion = waypoints[_puntoAcutal].transform.position - lider.transform.position;
+            lider.transform.position += direccion.normalized * Time.deltaTime * velocidad;
+        }
     }
 
     public void SeguirLider(GameObject lider, GameObject seguidor, float velocidad)
