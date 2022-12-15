@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IACampoVision : MonoBehaviour
+public class CampoVision : MonoBehaviour
 {
     [Header("Colisionador")]
     public LayerMask mascaraEnemigo; 
@@ -10,19 +10,19 @@ public class IACampoVision : MonoBehaviour
     [Range (0,360)]
     public float radio;
     public float angulo;
-    float radianes;
-    Vector2 rayoA;
-    Vector2 rayoB;
+    private float radianes;
+    private Vector2 rayoA;
+    private Vector2 rayoB;
 
     [Header("Componentes")]
-    Animator animador;
+    public Animator animador;
     
     void Start()
     {
         animador = GetComponent<Animator>();
         radianes = angulo * Mathf.Deg2Rad;
     }
-    
+
     void FixedUpdate()
     {
         EnemigoVisto();
@@ -33,21 +33,20 @@ public class IACampoVision : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, radio);
-        Gizmos.DrawRay(transform.position, rayoA);
-        Gizmos.DrawRay(transform.position, rayoB);
+        Gizmos.DrawRay(transform.position, -rayoA);
+        Gizmos.DrawRay(transform.position, -rayoB);
     }
 
     void EnemigoVisto()
     {
         Collider2D [] listaEnemigos = Physics2D.OverlapCircleAll(transform.position, radio, mascaraEnemigo );
-        foreach (Collider2D c in listaEnemigos)
+        foreach (Collider2D enemigo in listaEnemigos)
         {
             Vector2 posicionJugador = transform.position;
-            Vector2 posicionC = c.transform.position;
+            Vector2 posicionC = enemigo.transform.position;
             Vector2 direccionC = posicionC - posicionJugador;
             float distancia = Vector2.Distance(transform.position, posicionC);
 
-            //Hay que controlar cuando es que la IA esta mirando en la direccion en la que se encuentra el enemigo.
             if(Vector2.Angle(transform.right, direccionC) < angulo & animador.GetFloat("Mirar X") > 0)
             {   
                 if(!Physics2D.Raycast(transform.position, direccionC, distancia, mascaraObstaculo))
