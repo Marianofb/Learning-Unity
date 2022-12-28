@@ -14,6 +14,7 @@ public class Grid: MonoBehaviour
     private GameObject tileReferencia;
         
     [Header ("Nodos")]
+    public Transform posicionJugador;
     public LayerMask obstaculo;
     Nodo [,] nodos;
 
@@ -26,8 +27,7 @@ public class Grid: MonoBehaviour
         else
         {
             instancia = this;
-        }
-       
+        }  
     }
 
     private void Start()
@@ -35,20 +35,49 @@ public class Grid: MonoBehaviour
         CrearGrid();
     }
 
-
-    public Nodo GetNodo(Vector2 posicion)
+    public Nodo GetNodo(Vector3 posicion)
     {
         float gridAncho = ancho * tamañoCelda;
         float gridLargo = largo * tamañoCelda;
-        Vector2 surOeste = new Vector2((-gridAncho/2 + tamañoCelda) - 0.5f, (tamañoCelda - gridLargo/2) - 0.5f);
+        Vector3 surOeste = new Vector3((-gridAncho/2 + tamañoCelda) - 1, (tamañoCelda - gridLargo/2) - 1);
 
-        Vector2 posicionCentro = posicion - surOeste;
+        Vector3 posicionCentro = posicion - surOeste;
         int x = (int) posicionCentro.x / tamañoCelda;
         int y = (int) posicionCentro.y / tamañoCelda;
         //Debug.Log("X: " + x + " Y: "+ y);
 
-       
         return nodos[x,y];
+    }
+
+    public List<Nodo> GetVecinos(Nodo nodo)
+    {
+        List<Nodo> vecinos = new List<Nodo>();
+
+        //hay tres posibilidades por fila
+        //y hay tres filas, -1, 0 y 1
+        for(int x = -1; x <= 1; x++)
+        {
+            for(int y = -1; y <= 1; y++)
+            {
+                //saltamos al nodo del que buscamos los vecinos
+                if(x == 0 & y == 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    int controlX = nodo.gridX + x;
+                    int controlY = nodo.gridY + y;
+
+                    if(controlX >= 0 & controlX < ancho & controlY >= 0 & controlY < largo)
+                    {
+                        vecinos.Add(nodos[controlX, controlY]);
+                    }
+                }
+            }
+        }
+
+        return vecinos;
     }
 
     private void CrearGrid()
@@ -66,7 +95,8 @@ public class Grid: MonoBehaviour
 
         float gridAncho = ancho * tamañoCelda;
         float gridLargo = largo * tamañoCelda;
-        Vector2 surOeste = new Vector2((-gridAncho/2 + tamañoCelda) - 0.5f, (tamañoCelda - gridLargo/2) - 0.5f);
+
+        Vector3 surOeste = new Vector3((-gridAncho/2 + tamañoCelda) - 0.5f, (tamañoCelda - gridLargo/2) - 0.5f);
 
         for(int x = 0; x < ancho; x++)
         {
@@ -78,12 +108,12 @@ public class Grid: MonoBehaviour
                 if(tileReferencia != null)
                 {
                     GameObject tile = (GameObject)Instantiate(tileReferencia, transform);
-                    tile.transform.position = new Vector2(posX, posY);
+                    tile.transform.position = new Vector3(posX, posY);
                 }
 
-                Vector2 posicionMundo =  new Vector2(posX,posY) + surOeste;
-                bool caminable = !Physics2D.OverlapCircle(posicionMundo, tamañoCelda/2); 
-                nodos[x,y] = new Nodo(caminable, posicionMundo);
+                Vector3 posicionMundo =  new Vector3(posX, posY) + surOeste;
+                bool caminable = !Physics2D.OverlapCircle(posicionMundo, tamañoCelda/2, obstaculo); 
+                nodos[x,y] = new Nodo(caminable, posicionMundo, x, y);
                 //Debug.Log("X: " + x + "; Y: " + y);
                 //Debug.Log("posicion: " + posicionMundo);
                 //if(caminable == false)
@@ -94,5 +124,28 @@ public class Grid: MonoBehaviour
         transform.position = surOeste;
     }
 
+    public List<Nodo> camino;
+    private void OnDrawGizmos()
+    {
+        if(nodos != null)
+        {      
+            Nodo nodoJugador = GetNodo(posicionJugador.position);
+            foreach(Nodo n in nodos)
+            {
+                //si bool == true entonces blanco, sino rojo
+                Gizmos.color = (n.caminable)?Color.white:Color.red;
+                if(camino != null && camino.Contains(n))
+                {
+                    Gizmos.color = Color.black;
+                } 
 
+                if(n == nodoJugador)
+                {
+                    Gizmos.color = Color.green;
+                }
+
+                Gizmos.DrawCube(n.GetPosicionMundo(),  Vector3.one * (tamañoCelda - .1f));
+            }
+        }
+    }
 }

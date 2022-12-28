@@ -153,9 +153,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6604dabbf17c8d4087c140a411e7f7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ancho: 4
-  largo: 2
-  mostrarNodos: 1
+  ancho: 10
+  largo: 8
+  mostrarNodos: 0
+  posicionJugador: {fileID: 1715670924}
   obstaculo:
     serializedVersion: 2
     m_Bits: 512
@@ -599,6 +600,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1715670924 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8552964388868395373, guid: 9f0fdaf182705284dad4b84044f1ba57,
+    type: 3}
+  m_PrefabInstance: {fileID: 225336635}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2100911378
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,21 +4,103 @@ using UnityEngine;
 
 public class Pathfinding_AlgoritmoA : MonoBehaviour
 {
+    public Transform buscador, objetivo;
+
     Grid grid;
 
-    
-    private void Start()
+    private void Awake()
     {
         grid = GetComponent<Grid>();
     }
 
-    public void EncontrarCamino(Vector2 posicionInicio, Vector2 posicionDestino)
+    private void Update()
+    {
+        BusquedaCamino(buscador.position, objetivo.position);
+    }
+
+    private void BusquedaCamino(Vector2 posicionInicio, Vector2 posicionDestino)
     {
         Nodo nodoInicio = grid.GetNodo(posicionInicio);
         Nodo nodoDestino = grid.GetNodo(posicionDestino);
 
         List<Nodo> abierto = new List<Nodo>();
-        List<Nodo> cerrado = new List<Nodo>();
+        HashSet<Nodo> cerrado = new HashSet<Nodo>();
+        abierto.Add(nodoInicio);
 
+        while(abierto.Count > 0)
+        {
+            Nodo nodoActual = abierto[0];
+            for(int i = 1; i < abierto.Count; i++)
+            {
+                if(abierto[i].GetCostoF() < nodoActual.GetCostoF() || 
+                    abierto[i].GetCostoF() == nodoActual.GetCostoF() && 
+                    abierto[i].costoH < nodoActual.costoH)
+                {
+                    nodoActual = abierto[i];
+                }
+            }
+
+            abierto.Remove(nodoActual);
+            cerrado.Add(nodoActual);
+            if(nodoActual == grid.GetNodo(posicionDestino))
+            {
+                grid.camino = RastrearCamino(nodoInicio, nodoDestino);
+                return;
+            }
+
+            foreach(Nodo vecino in grid.GetVecinos(nodoActual))
+            {
+                if(!vecino.caminable || cerrado.Contains(vecino))
+                {
+                    continue;
+                }
+
+                int costoMovimientoAVecino =  nodoActual.costoG + GetDistancia(nodoActual, vecino);
+                if(costoMovimientoAVecino == vecino.costoG || !abierto.Contains(vecino))
+                {
+                    vecino.costoG = costoMovimientoAVecino;
+                    vecino.costoH = GetDistancia(vecino, nodoDestino);
+                    vecino.padre = nodoActual;
+
+                    if(!abierto.Contains(vecino))
+                    {
+                        abierto.Add(vecino);
+                    }
+
+                }
+            }
+        }
+    }
+
+    private List<Nodo> RastrearCamino(Nodo inicio, Nodo final)
+    {
+        List<Nodo> camino = new List<Nodo>();
+        Nodo nodoActual = final;
+
+        while(nodoActual != inicio)
+        {
+            camino.Add(nodoActual);
+            nodoActual = nodoActual.padre;
+        }
+
+        camino.Reverse();
+
+        return camino;
+    }
+
+    //seria el costo, luego definimos si es G o H, si miramos el nodo hacia el destino o del destino hacia el nodo
+    private int GetDistancia(Nodo inicio, Nodo destino)
+    {   
+        int distanciaX = Mathf.Abs(inicio.gridX - destino.gridX);
+        int distanciaY = Mathf.Abs(inicio.gridY - destino.gridY);
+
+        if(distanciaX > distanciaY)
+        {
+            return 14 * distanciaY + 10 * (distanciaX - distanciaY);
+        }
+        else
+        {
+            return 14 * distanciaX + 10 * (distanciaY - distanciaX);
+        }
     }
 }
