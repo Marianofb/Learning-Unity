@@ -35,6 +35,11 @@ public class Grid: MonoBehaviour
         CrearGrid();
     }
 
+    public int GetTamaño()
+    {
+        return ancho * largo;
+    }
+
     public Nodo GetNodo(Vector3 posicion)
     {
         float gridAncho = ancho * tamañoCelda;
@@ -82,14 +87,14 @@ public class Grid: MonoBehaviour
 
     private void CrearGrid()
     {
-        if(mostrarNodos == true)
+        /*if(mostrarNodos == true)
         {
             tileReferencia = (GameObject)Instantiate(Resources.Load("Tiles/probando"));
         }
         else
         {
             tileReferencia = null;
-        }
+        }*/
 
         nodos = new Nodo[ancho,largo];
 
@@ -105,11 +110,11 @@ public class Grid: MonoBehaviour
                 float posX = x * tamañoCelda;
                 float posY = y * tamañoCelda; 
 
-                if(tileReferencia != null)
+                /*if(tileReferencia != null)
                 {
                     GameObject tile = (GameObject)Instantiate(tileReferencia, transform);
                     tile.transform.position = new Vector3(posX, posY);
-                }
+                }*/
 
                 Vector3 posicionMundo =  new Vector3(posX, posY) + surOeste;
                 bool caminable = !Physics2D.OverlapCircle(posicionMundo, tamañoCelda/2, obstaculo); 
@@ -127,7 +132,7 @@ public class Grid: MonoBehaviour
     public List<Nodo> camino;
     private void OnDrawGizmos()
     {
-        if(nodos != null)
+        if(nodos != null && mostrarNodos == true)
         {      
             Nodo nodoJugador = GetNodo(posicionJugador.position);
             foreach(Nodo n in nodos)

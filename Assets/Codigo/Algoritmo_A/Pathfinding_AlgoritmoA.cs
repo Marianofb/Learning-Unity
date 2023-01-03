@@ -14,23 +14,29 @@ public class Pathfinding_AlgoritmoA : MonoBehaviour
     }
 
     private void Update()
-    {
+    {   
         BusquedaCamino(buscador.position, objetivo.position);
     }
 
     private void BusquedaCamino(Vector2 posicionInicio, Vector2 posicionDestino)
     {
+        Debug.Log(10);
         Nodo nodoInicio = grid.GetNodo(posicionInicio);
         Nodo nodoDestino = grid.GetNodo(posicionDestino);
 
-        List<Nodo> abierto = new List<Nodo>();
+        //List<Nodo> abierto = new List<Nodo>(grid.GetTamaño());
+        MinHeap<Nodo> abierto = new MinHeap<Nodo>(grid.GetTamaño());
         HashSet<Nodo> cerrado = new HashSet<Nodo>();
-        abierto.Add(nodoInicio);
+        abierto.Agregar(nodoInicio);
 
-        while(abierto.Count > 0)
+        while(abierto.GetContador() > 0)
         {
-            Nodo nodoActual = abierto[0];
-            for(int i = 1; i < abierto.Count; i++)
+            Debug.Log(20);
+            Nodo nodoActual = abierto.EliminarPrimero();
+            cerrado.Add(nodoActual);
+
+            //cuando era con lista
+            /*for(int i = 1; i < abierto.Count; i++)
             {
                 if(abierto[i].GetCostoF() < nodoActual.GetCostoF() || 
                     abierto[i].GetCostoF() == nodoActual.GetCostoF() && 
@@ -41,32 +47,37 @@ public class Pathfinding_AlgoritmoA : MonoBehaviour
             }
 
             abierto.Remove(nodoActual);
-            cerrado.Add(nodoActual);
-            if(nodoActual == grid.GetNodo(posicionDestino))
+            cerrado.Add(nodoActual);*/
+        
+            if(nodoActual == nodoDestino)
             {
                 grid.camino = RastrearCamino(nodoInicio, nodoDestino);
                 return;
             }
-
+            Debug.Log(25);
             foreach(Nodo vecino in grid.GetVecinos(nodoActual))
             {
+                Debug.Log(30);
                 if(!vecino.caminable || cerrado.Contains(vecino))
                 {
                     continue;
                 }
-
+                
                 int costoMovimientoAVecino =  nodoActual.costoG + GetDistancia(nodoActual, vecino);
-                if(costoMovimientoAVecino == vecino.costoG || !abierto.Contains(vecino))
+                
+                if(costoMovimientoAVecino == vecino.costoG || !abierto.Contiene(vecino))
                 {
+                    Debug.Log(40);
                     vecino.costoG = costoMovimientoAVecino;
                     vecino.costoH = GetDistancia(vecino, nodoDestino);
                     vecino.padre = nodoActual;
-
-                    if(!abierto.Contains(vecino))
+                    
+                    if(!abierto.Contiene(vecino))
                     {
-                        abierto.Add(vecino);
+                        Debug.Log(50);
+                        abierto.Agregar(vecino);
                     }
-
+                    
                 }
             }
         }
