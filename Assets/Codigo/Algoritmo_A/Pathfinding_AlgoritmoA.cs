@@ -25,7 +25,7 @@ public class Pathfinding_AlgoritmoA : MonoBehaviour
         Nodo nodoDestino = grid.GetNodo(posicionDestino);
 
         //List<Nodo> abierto = new List<Nodo>(grid.GetTamaño());
-        MinHeap<Nodo> abierto = new MinHeap<Nodo>(grid.GetTamaño());
+        MaxHeap<Nodo> abierto = new MaxHeap<Nodo>(grid.GetTamaño());
         HashSet<Nodo> cerrado = new HashSet<Nodo>();
         abierto.Agregar(nodoInicio);
 

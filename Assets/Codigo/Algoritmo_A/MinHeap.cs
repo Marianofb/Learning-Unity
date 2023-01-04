@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class MinHeap<T> where T : IHeapItem<T>
+public class MaxHeap<T> where T : IHeapItem<T>
 {
     T[] items;
     private int contador;
 
-    public MinHeap(int tamaño)
+    public MaxHeap(int tamaño)
     {
         items = new T[tamaño];
     }
