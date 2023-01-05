@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +15,9 @@ public class Grid: MonoBehaviour
     private GameObject tileReferencia;
         
     [Header ("Nodos")]
-    public Transform posicionJugador;
     public LayerMask obstaculo;
+    public Transform posicionJugador;
+    private Vector3 posicionStalker;
     Nodo [,] nodos;
 
     private void Awake()
@@ -85,6 +87,11 @@ public class Grid: MonoBehaviour
         return vecinos;
     }
 
+    public void SetStalker(Vector3 stalker)
+    {
+        posicionStalker = stalker;
+    }
+
     private void CrearGrid()
     {
         /*if(mostrarNodos == true)
@@ -129,17 +136,19 @@ public class Grid: MonoBehaviour
         transform.position = surOeste;
     }
 
-    public List<Nodo> camino;
+    public Vector3[] camino;
     private void OnDrawGizmos()
     {
         if(nodos != null && mostrarNodos == true)
         {      
             Nodo nodoJugador = GetNodo(posicionJugador.position);
+            Nodo nodoStalker = GetNodo(posicionStalker);
             foreach(Nodo n in nodos)
             {
                 //si bool == true entonces blanco, sino rojo
                 Gizmos.color = (n.caminable)?Color.white:Color.red;
-                if(camino != null && camino.Contains(n))
+                int existe = Array.IndexOf(camino, n.GetPosicionMundo());
+                if(camino != null && existe > -1)
                 {
                     Gizmos.color = Color.black;
                 } 
@@ -147,6 +156,11 @@ public class Grid: MonoBehaviour
                 if(n == nodoJugador)
                 {
                     Gizmos.color = Color.green;
+                }
+
+                if(n == nodoStalker)
+                {
+                    Gizmos.color = Color.yellow;
                 }
 
                 Gizmos.DrawCube(n.GetPosicionMundo(),  Vector3.one * (tamañoCelda - .1f));
