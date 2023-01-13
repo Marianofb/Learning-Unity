@@ -51,7 +51,7 @@ public class CampoVision : MonoBehaviour
             {   
                 if(!Physics2D.Raycast(transform.position, direccionC, distancia, mascaraObstaculo))
                 {
-                    //Debug.Log("Vimos a: " + c.name);
+                    Debug.Log("Vimos a: " + enemigo.name);
                 }
             }
 
@@ -59,7 +59,7 @@ public class CampoVision : MonoBehaviour
             {
                 if(!Physics2D.Raycast(transform.position, direccionC, distancia, mascaraObstaculo))
                 {
-                    //Debug.Log("Vimos a: " + c.name);
+                    Debug.Log("Vimos a: " + enemigo.name);
                 }
             }
 
@@ -67,7 +67,7 @@ public class CampoVision : MonoBehaviour
             {
                 if(!Physics2D.Raycast(transform.position, direccionC, distancia, mascaraObstaculo))
                 {
-                    //Debug.Log("Vimos a: " + c.name);
+                    Debug.Log("Vimos a: " + enemigo.name);
                 }
             }
 
@@ -75,7 +75,7 @@ public class CampoVision : MonoBehaviour
             {
                 if(!Physics2D.Raycast(transform.position, direccionC, distancia, mascaraObstaculo))
                 {
-                    //Debug.Log("Vimos a: " + c.name);
+                    Debug.Log("Vimos a: " + enemigo.name);
                 }
             }
         }

@@ -10,8 +10,8 @@ public class Grid: MonoBehaviour
     [Header ("Grid")]
     public int ancho;
     public int largo;
+    public int tamañoCelda = 1;
     public bool mostrarNodos = false;
-    static int tamañoCelda = 1;
     private GameObject tileReferencia;
         
     [Header ("Nodos")]

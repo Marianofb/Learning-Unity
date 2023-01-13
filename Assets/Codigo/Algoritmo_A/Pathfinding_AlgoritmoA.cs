@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class Pathfinding_AlgoritmoA : MonoBehaviour
 {
-    public Transform stalker, objetivo;
-
     Grid grid;
 
     private void Awake()
@@ -15,12 +13,7 @@ public class Pathfinding_AlgoritmoA : MonoBehaviour
         grid = GetComponent<Grid>();
     }
 
-    private void Update()
-    {   
-        BusquedaCamino(stalker.position, objetivo.position);
-    }
-
-    private void BusquedaCamino(Vector2 posicionInicio, Vector2 posicionDestino)
+    public Vector3[] BusquedaCamino(Vector2 posicionDestino, Vector2 posicionInicio)
     {
         Nodo nodoInicio = grid.GetNodo(posicionInicio);
         Nodo nodoDestino = grid.GetNodo(posicionDestino);
@@ -37,7 +30,7 @@ public class Pathfinding_AlgoritmoA : MonoBehaviour
                 Nodo nodoActual = abierto.EliminarPrimero();
                 cerrado.Add(nodoActual);
 
-                //cuando era con lista y no con MinHeap (abierto)
+                //cuando era con lista (abierto)
                 /*for(int i = 1; i < abierto.Count; i++)
                 {
                     if(abierto[i].GetCostoF() < nodoActual.GetCostoF() || 
@@ -53,12 +46,13 @@ public class Pathfinding_AlgoritmoA : MonoBehaviour
             
                 if(nodoActual == nodoDestino)
                 {   
+                    Vector3[] camino = RastrearCamino(nodoInicio, nodoDestino);
                     if(grid.mostrarNodos == true)
                     {
-                        grid.camino = RastrearCamino(nodoInicio, nodoDestino);
+                        grid.camino = camino;
                         grid.SetStalker(nodoInicio.GetPosicionMundo());
                     }
-                    return;
+                    return camino;
                 }
 
                 foreach(Nodo vecino in grid.GetVecinos(nodoActual))
@@ -80,11 +74,12 @@ public class Pathfinding_AlgoritmoA : MonoBehaviour
                         {
                             abierto.Agregar(vecino);
                         }
-                        
                     }
                 }
             }
         }
+
+        return null;
     }
 
     private Vector3[] RastrearCamino(Nodo inicio, Nodo final)

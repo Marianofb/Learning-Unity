@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class IAMovimiento : MonoBehaviour
 {   
-    [Header ("Camino")]
-    public GameObject jugador;
-    public Vector3 jugadorPosicion; 
-    public IAWaypoints _waypoints;
-    public Mate _mate;
+    [Header ("Waypoints")]
+    IAWaypoints _waypoints;
+    Mate _mate;
 
     [Header ("Lider")]
-    public float velocidadLider;
-    GameObject lider;
+    private float velocidadLider = 1f;
+    GameObject _lider;
     
     [Header ("IA")]
     public Vector3 IAPosicion;
@@ -20,34 +18,27 @@ public class IAMovimiento : MonoBehaviour
 
     void Start()
     {
-        jugador = GameObject.Find("Jugador");
         _waypoints = GetComponent<IAWaypoints>();
         _mate = GetComponent<Mate>();
 
-        lider = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-        Destroy(lider.GetComponent<Collider>());
-        Destroy(lider.GetComponent<MeshRenderer>());
-        lider.transform.position = this.transform.position;
-        lider.transform.localScale -= new Vector3(0.35f, 0.5f, 0f);
+        _lider = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+        //Destroy(lider.GetComponent<Collider>());
+        //Destroy(lider.GetComponent<MeshRenderer>());
+        _lider.transform.position = this.transform.position;
+        _lider.transform.localScale -= new Vector3(0.35f, 0.5f, 0f);
         velocidadLider *= velocidad;
     }
 
     void FixedUpdate()
     {
-        jugadorPosicion = jugador.transform.position;
-        IAPosicion = transform.position;
-
         Mover();
-        CaminoLider();
     }
 
     void Mover()
     {
-        _waypoints.SeguirLider(lider, this.gameObject, velocidad);
-    }
-
-    void CaminoLider()
-    {
-       _waypoints.MoverWaypoints(lider, this.gameObject, velocidadLider);
+        if(!_waypoints.LlegoDestino())
+        {
+            _waypoints.MoverWaypoints(this.gameObject, this.gameObject, velocidad);
+        }
     }
 }

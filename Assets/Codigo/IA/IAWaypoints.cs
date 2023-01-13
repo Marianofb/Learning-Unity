@@ -3,35 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class IAWaypoints : MonoBehaviour
-{   
-    public GameObject[] waypoints;
-    public float distanciaLiderObjeto;
-    public int _puntoAcutal = 0;
+{  
+    public Vector3[] camino;
+    public Vector3 direccion = new Vector2();
+    public float distanciaSeguidor;
+    public float distanciaWaypoint;
+    public int puntoActual;
+
     Mate _mate;
+    Animator _animador;
 
     void Start()
     {
+        _animador = GetComponent<Animator>();
         _mate = GetComponent<Mate>();
     }
 
-    public void MoverWaypoints(GameObject lider, GameObject seguidor, float velocidad)
+    public void MoverWaypoints( GameObject lider, GameObject seguidor, float velocidad)
     {
-        if(waypoints.Length != 0)
+        if(puntoActual < camino.Length)
         {
-            float distanciaWaypoint = _mate.Distancia(lider.transform.position, waypoints[_puntoAcutal].transform.position);
-            float distanciaLiderObjeto =  _mate.Distancia(lider.transform.position, seguidor.transform.position);
+            distanciaWaypoint = _mate.Distancia(lider.transform.position, camino[puntoActual]);
+            distanciaSeguidor =  _mate.Distancia(lider.transform.position, seguidor.transform.position);
 
-            //Seleccion de puntos
-            if(distanciaWaypoint < 1f & distanciaLiderObjeto < 2f) 
-                _puntoAcutal++;
-                
-        
-            if(_puntoAcutal >= waypoints.Length)
+            //Loop
+            /*if(_puntoAcutal == waypoints.Length)
+            {
                 _puntoAcutal = 0;
+            }*/
             
             //Desplazamiento entre puntos
-            Vector3 direccion = waypoints[_puntoAcutal].transform.position - lider.transform.position;
+            direccion = camino[puntoActual] - lider.transform.position;
             lider.transform.position += direccion.normalized * Time.deltaTime * velocidad;
+
+            _animador.SetFloat("Mirar X", direccion.x);
+            _animador.SetFloat("Mirar Y", direccion.y);
+
+            //Seleccion de puntos
+            if(distanciaWaypoint < 0.1f && distanciaSeguidor < 2f) 
+            {
+                puntoActual++;
+            }
         }
     }
 
@@ -39,5 +51,25 @@ public class IAWaypoints : MonoBehaviour
     {
         Vector3 direccion = lider.transform.position - seguidor.transform.position;
         seguidor.transform.position += direccion.normalized * Time.deltaTime * velocidad;
+    }
+
+    public bool LlegoDestino()
+    {
+        if(puntoActual != camino.Length)
+        {
+            return false;
+        }
+    
+        return true;
+    }
+
+    public void SetWaypoints(Vector3[] lista)
+    {
+        camino = lista;
+    }
+
+    public void ReiniciarPuntoActual()
+    {
+        puntoActual = 0;
     }
 }
