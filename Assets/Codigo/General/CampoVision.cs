@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class CampoVision : MonoBehaviour
 {
+    [Header("Deteccion")]
+    public float contadorLocalizador = 0;
+    public float esperaContador = 1f;
+    [Range (0,1000)]
+    public int tiempoDetectar;
+    public float adicion = 1f;
+    public float resta = 1f;
+  
     [Header("Colisionador")]
     public LayerMask mascaraEnemigo; 
     public LayerMask mascaraObstaculo; 
+
+    [Header("Radio")]
     [Range (0,360)]
     public float radio;
     public float angulo;
@@ -15,7 +25,8 @@ public class CampoVision : MonoBehaviour
     private Vector2 rayoB;
 
     [Header("Componentes")]
-    public Animator animador;
+    Animator animador;
+    Mate _mate;
     
     void Start()
     {
@@ -25,7 +36,6 @@ public class CampoVision : MonoBehaviour
 
     void FixedUpdate()
     {
-        EnemigoVisto();
         Angulo();
     }
 
@@ -37,7 +47,30 @@ public class CampoVision : MonoBehaviour
         Gizmos.DrawRay(transform.position, -rayoB);
     }
 
-    void EnemigoVisto()
+    public bool Localizamos()
+    {
+        if(Localizador())
+        {
+            contadorLocalizador +=  adicion;
+            contadorLocalizador = Mathf.Clamp(contadorLocalizador, 0, tiempoDetectar);
+        }
+        else
+        {
+            contadorLocalizador -=  resta;
+            contadorLocalizador = Mathf.Clamp(contadorLocalizador, 0, tiempoDetectar);
+        }
+
+        if(contadorLocalizador == tiempoDetectar)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    bool Localizador()
     {
         Collider2D [] listaEnemigos = Physics2D.OverlapCircleAll(transform.position, radio, mascaraEnemigo );
         foreach (Collider2D enemigo in listaEnemigos)
@@ -51,7 +84,8 @@ public class CampoVision : MonoBehaviour
             {   
                 if(!Physics2D.Raycast(transform.position, direccionC, distancia, mascaraObstaculo))
                 {
-                    Debug.Log("Vimos a: " + enemigo.name);
+                    //Debug.Log("Vimos a: " + enemigo.name);
+                    return true;
                 }
             }
 
@@ -59,7 +93,8 @@ public class CampoVision : MonoBehaviour
             {
                 if(!Physics2D.Raycast(transform.position, direccionC, distancia, mascaraObstaculo))
                 {
-                    Debug.Log("Vimos a: " + enemigo.name);
+                    //Debug.Log("Vimos a: " + enemigo.name);
+                    return true;
                 }
             }
 
@@ -67,7 +102,8 @@ public class CampoVision : MonoBehaviour
             {
                 if(!Physics2D.Raycast(transform.position, direccionC, distancia, mascaraObstaculo))
                 {
-                    Debug.Log("Vimos a: " + enemigo.name);
+                    //Debug.Log("Vimos a: " + enemigo.name);
+                    return true;
                 }
             }
 
@@ -75,10 +111,13 @@ public class CampoVision : MonoBehaviour
             {
                 if(!Physics2D.Raycast(transform.position, direccionC, distancia, mascaraObstaculo))
                 {
-                    Debug.Log("Vimos a: " + enemigo.name);
+                    //Debug.Log("Vimos a: " + enemigo.name);
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     void Angulo()

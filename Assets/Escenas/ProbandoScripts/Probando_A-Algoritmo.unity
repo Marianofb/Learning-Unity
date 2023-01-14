@@ -130,6 +130,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5063881517280617213, guid: 9f0fdaf182705284dad4b84044f1ba57,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8552964388868395373, guid: 9f0fdaf182705284dad4b84044f1ba57,
         type: 3}
       propertyPath: m_RootOrder
@@ -138,12 +143,12 @@ PrefabInstance:
     - target: {fileID: 8552964388868395373, guid: 9f0fdaf182705284dad4b84044f1ba57,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5
+      value: 1.45
       objectReference: {fileID: 0}
     - target: {fileID: 8552964388868395373, guid: 9f0fdaf182705284dad4b84044f1ba57,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.85
+      value: 1.67
       objectReference: {fileID: 0}
     - target: {fileID: 8552964388868395373, guid: 9f0fdaf182705284dad4b84044f1ba57,
         type: 3}
@@ -204,6 +209,16 @@ PrefabInstance:
       propertyPath: objetivo
       value: 
       objectReference: {fileID: 1715670924}
+    - target: {fileID: 4909447355367149548, guid: e18e4091ee391934495849e13ad9dfe0,
+        type: 3}
+      propertyPath: radio
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909447355367149548, guid: e18e4091ee391934495849e13ad9dfe0,
+        type: 3}
+      propertyPath: tiempoDetectar
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 5845713848313724929, guid: e18e4091ee391934495849e13ad9dfe0,
         type: 3}
       propertyPath: velocidad
@@ -213,11 +228,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ChicaMonstruo
-      objectReference: {fileID: 0}
-    - target: {fileID: 6841153808745512689, guid: e18e4091ee391934495849e13ad9dfe0,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6841153808745512703, guid: e18e4091ee391934495849e13ad9dfe0,
         type: 3}
@@ -274,6 +284,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7218600749354364633, guid: e18e4091ee391934495849e13ad9dfe0,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d420f8c4801d71f40be4c95c69953ca0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e18e4091ee391934495849e13ad9dfe0, type: 3}
 --- !u!1 &299651433
@@ -404,11 +419,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arrugado
       objectReference: {fileID: 0}
-    - target: {fileID: 3790478329087431785, guid: 670dbb8443b01a4429efdeadb5e6c4ba,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3790478329087431799, guid: 670dbb8443b01a4429efdeadb5e6c4ba,
         type: 3}
       propertyPath: m_RootOrder
@@ -417,12 +427,12 @@ PrefabInstance:
     - target: {fileID: 3790478329087431799, guid: 670dbb8443b01a4429efdeadb5e6c4ba,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.1
+      value: 4.46
       objectReference: {fileID: 0}
     - target: {fileID: 3790478329087431799, guid: 670dbb8443b01a4429efdeadb5e6c4ba,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.84
+      value: -0.16
       objectReference: {fileID: 0}
     - target: {fileID: 3790478329087431799, guid: 670dbb8443b01a4429efdeadb5e6c4ba,
         type: 3}
@@ -464,21 +474,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5973126132127221629, guid: 670dbb8443b01a4429efdeadb5e6c4ba,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7890305722679850896, guid: 670dbb8443b01a4429efdeadb5e6c4ba,
         type: 3}
       propertyPath: objetivo
       value: 
       objectReference: {fileID: 1715670924}
-    - target: {fileID: 8357021888043259574, guid: 670dbb8443b01a4429efdeadb5e6c4ba,
-        type: 3}
-      propertyPath: velocidadLider
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 670dbb8443b01a4429efdeadb5e6c4ba, type: 3}
 --- !u!1 &737351028
@@ -965,7 +965,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1072823925429466689, guid: 0caf2cc9d5ee80a46a1cd7e20c0b27f4,
         type: 3}
-      propertyPath: "tama\xF1oCelda"
+      propertyPath: ancho
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1072823925429466689, guid: 0caf2cc9d5ee80a46a1cd7e20c0b27f4,
+        type: 3}
+      propertyPath: largo
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1072823925429466689, guid: 0caf2cc9d5ee80a46a1cd7e20c0b27f4,
+        type: 3}
+      propertyPath: mostrarNodos
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1072823925429466689, guid: 0caf2cc9d5ee80a46a1cd7e20c0b27f4,

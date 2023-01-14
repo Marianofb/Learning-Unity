@@ -5,9 +5,8 @@ using UnityEngine;
 public class IAWaypoints : MonoBehaviour
 {  
     public Vector3[] camino;
-    public Vector3 direccion = new Vector2();
-    public float distanciaSeguidor;
-    public float distanciaWaypoint;
+    public Vector3 direccion = new Vector3();
+    public float distanciaPuntoSiguiente;
     public int puntoActual;
 
     Mate _mate;
@@ -19,28 +18,22 @@ public class IAWaypoints : MonoBehaviour
         _mate = GetComponent<Mate>();
     }
 
-    public void MoverWaypoints( GameObject lider, GameObject seguidor, float velocidad)
+    public void MoverWaypoints(GameObject objeto, float velocidad)
     {
         if(puntoActual < camino.Length)
         {
-            distanciaWaypoint = _mate.Distancia(lider.transform.position, camino[puntoActual]);
-            distanciaSeguidor =  _mate.Distancia(lider.transform.position, seguidor.transform.position);
-
-            //Loop
-            /*if(_puntoAcutal == waypoints.Length)
-            {
-                _puntoAcutal = 0;
-            }*/
+            distanciaPuntoSiguiente = _mate.Distancia(camino[puntoActual], objeto.transform.position);
             
             //Desplazamiento entre puntos
-            direccion = camino[puntoActual] - lider.transform.position;
-            lider.transform.position += direccion.normalized * Time.deltaTime * velocidad;
+            direccion = camino[puntoActual] - objeto.transform.position;
+            objeto.transform.position += direccion.normalized * Time.deltaTime * velocidad;
 
+            direccion.Normalize();
             _animador.SetFloat("Mirar X", direccion.x);
             _animador.SetFloat("Mirar Y", direccion.y);
 
             //Seleccion de puntos
-            if(distanciaWaypoint < 0.1f && distanciaSeguidor < 2f) 
+            if(distanciaPuntoSiguiente < 0.1f) 
             {
                 puntoActual++;
             }
@@ -66,6 +59,11 @@ public class IAWaypoints : MonoBehaviour
     public void SetWaypoints(Vector3[] lista)
     {
         camino = lista;
+    }
+
+    public Vector3[] GetWaypoints()
+    {
+        return camino;
     }
 
     public void ReiniciarPuntoActual()

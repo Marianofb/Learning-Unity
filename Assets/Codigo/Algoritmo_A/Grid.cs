@@ -146,7 +146,8 @@ public class Grid: MonoBehaviour
             foreach(Nodo n in nodos)
             {
                 //si bool == true entonces blanco, sino rojo
-                Gizmos.color = (n.caminable)?Color.white:Color.red;
+                //Gizmos.color = (n.caminable)?Color.white:Color.red;
+                Gizmos.color = Color.white;
                 int existe = Array.IndexOf(camino, n.GetPosicionMundo());
                 if(camino != null && existe > -1)
                 {
@@ -161,6 +162,11 @@ public class Grid: MonoBehaviour
                 if(n == nodoStalker)
                 {
                     Gizmos.color = Color.yellow;
+                }
+
+                if(!n.caminable)
+                {
+                    Gizmos.color = Color.red;
                 }
 
                 Gizmos.DrawCube(n.GetPosicionMundo(),  Vector3.one * (tamañoCelda - .1f));
