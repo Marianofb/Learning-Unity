@@ -10,11 +10,9 @@ public class IAWaypoints : MonoBehaviour
     public int puntoActual;
 
     Mate _mate;
-    Animator _animador;
 
     void Start()
     {
-        _animador = GetComponent<Animator>();
         _mate = GetComponent<Mate>();
     }
 
@@ -27,10 +25,6 @@ public class IAWaypoints : MonoBehaviour
             //Desplazamiento entre puntos
             direccion = camino[puntoActual] - objeto.transform.position;
             objeto.transform.position += direccion.normalized * Time.deltaTime * velocidad;
-
-            direccion.Normalize();
-            _animador.SetFloat("Mirar X", direccion.x);
-            _animador.SetFloat("Mirar Y", direccion.y);
 
             //Seleccion de puntos
             if(distanciaPuntoSiguiente < 0.1f) 
@@ -68,6 +62,6 @@ public class IAWaypoints : MonoBehaviour
 
     public void ReiniciarPuntoActual()
     {
-        puntoActual = 0;
+        puntoActual = 1;
     }
 }

@@ -130,11 +130,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5063881517280617213, guid: 9f0fdaf182705284dad4b84044f1ba57,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8552964388868395373, guid: 9f0fdaf182705284dad4b84044f1ba57,
         type: 3}
       propertyPath: m_RootOrder
@@ -209,21 +204,6 @@ PrefabInstance:
       propertyPath: objetivo
       value: 
       objectReference: {fileID: 1715670924}
-    - target: {fileID: 4909447355367149548, guid: e18e4091ee391934495849e13ad9dfe0,
-        type: 3}
-      propertyPath: radio
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4909447355367149548, guid: e18e4091ee391934495849e13ad9dfe0,
-        type: 3}
-      propertyPath: tiempoDetectar
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 5845713848313724929, guid: e18e4091ee391934495849e13ad9dfe0,
-        type: 3}
-      propertyPath: velocidad
-      value: 1.25
-      objectReference: {fileID: 0}
     - target: {fileID: 6841153808745512689, guid: e18e4091ee391934495849e13ad9dfe0,
         type: 3}
       propertyPath: m_Name
@@ -284,11 +264,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7218600749354364633, guid: e18e4091ee391934495849e13ad9dfe0,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: d420f8c4801d71f40be4c95c69953ca0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e18e4091ee391934495849e13ad9dfe0, type: 3}
 --- !u!1 &299651433

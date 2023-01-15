@@ -6,6 +6,7 @@ public class IAMovimiento : MonoBehaviour
 {   
     [Header ("Waypoints")]
     IAWaypoints _waypoints;
+    WPManager _wPManager;
     Mate _mate;
 
     [Header ("Lider")]
@@ -13,8 +14,9 @@ public class IAMovimiento : MonoBehaviour
     //GameObject _lider;
     
     [Header ("IA")]
-    public Vector3 IAPosicion;
     public float velocidad;
+    Vector3 direccion;
+    GameObject jugador;
 
     [Header ("Componentes")]
     Animator animador;
@@ -22,13 +24,20 @@ public class IAMovimiento : MonoBehaviour
     void Start()
     {
         _waypoints = GetComponent<IAWaypoints>();
+        _wPManager = GetComponent<WPManager>();
         _mate = GetComponent<Mate>();
         animador = GetComponent<Animator>();
 
         GenerarLider();
+        jugador = GameObject.Find("Jugador");
         animador.SetFloat("Mirar X", 1);
         animador.SetFloat("Mirar Y", 1);
        
+    }
+
+    void Update()
+    {
+        _wPManager.GenerarCaminoJugador(this.gameObject.transform, jugador.transform);
     }
 
     void FixedUpdate()
@@ -41,6 +50,11 @@ public class IAMovimiento : MonoBehaviour
         if(!_waypoints.LlegoDestino())
         {
             _waypoints.MoverWaypoints(this.gameObject, velocidad);
+            direccion = jugador.transform.position - this.gameObject.transform.position;
+            direccion.Normalize();
+
+            animador.SetFloat("Mirar X", direccion.x);
+            animador.SetFloat("Mirar Y", direccion.y);
         }
     }
 
