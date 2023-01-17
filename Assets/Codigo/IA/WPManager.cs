@@ -22,10 +22,10 @@ public class WPManager : MonoBehaviour
     {   
         if (campoVision.Localizamos())
         {
-            Vector3[] camino = algoritmoA.BusquedaCamino(seguidor.position, objetivo.position);
+            Vector3[] camino = algoritmoA.BusquedaCamino(objetivo.position, seguidor.position);
             if(!MismoCamino(iAWaypoints.GetWaypoints(), camino))
             {
-                iAWaypoints.ReiniciarPuntoActual();
+                iAWaypoints.SetPuntoActual(camino);
                 iAWaypoints.SetWaypoints(camino);
             }
         }

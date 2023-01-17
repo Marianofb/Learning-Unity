@@ -52,6 +52,8 @@ public class Pathfinding_AlgoritmoA : MonoBehaviour
                         grid.camino = camino;
                         grid.SetStalker(nodoInicio.GetPosicionMundo());
                     }
+
+                    abierto.Agregar(nodoActual);
                     return camino;
                 }
 

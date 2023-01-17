@@ -130,6 +130,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5063881517280617213, guid: 9f0fdaf182705284dad4b84044f1ba57,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8552964388868395373, guid: 9f0fdaf182705284dad4b84044f1ba57,
         type: 3}
       propertyPath: m_RootOrder
@@ -204,10 +209,25 @@ PrefabInstance:
       propertyPath: objetivo
       value: 
       objectReference: {fileID: 1715670924}
+    - target: {fileID: 4909447355367149548, guid: e18e4091ee391934495849e13ad9dfe0,
+        type: 3}
+      propertyPath: radio
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5845713848313724929, guid: e18e4091ee391934495849e13ad9dfe0,
+        type: 3}
+      propertyPath: velocidad
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6841153808745512689, guid: e18e4091ee391934495849e13ad9dfe0,
         type: 3}
       propertyPath: m_Name
       value: ChicaMonstruo
+      objectReference: {fileID: 0}
+    - target: {fileID: 6841153808745512689, guid: e18e4091ee391934495849e13ad9dfe0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6841153808745512703, guid: e18e4091ee391934495849e13ad9dfe0,
         type: 3}
