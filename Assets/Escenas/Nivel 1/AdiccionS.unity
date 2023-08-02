@@ -886,7 +886,7 @@ PrefabInstance:
     - target: {fileID: 8552964388868395373, guid: 9f0fdaf182705284dad4b84044f1ba57,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.22
+      value: 0.2399
       objectReference: {fileID: 0}
     - target: {fileID: 8552964388868395373, guid: 9f0fdaf182705284dad4b84044f1ba57,
         type: 3}
@@ -1036,6 +1036,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChicaMonstruo
       objectReference: {fileID: 0}
+    - target: {fileID: 6841153808745512689, guid: e18e4091ee391934495849e13ad9dfe0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6841153808745512702, guid: e18e4091ee391934495849e13ad9dfe0,
         type: 3}
       propertyPath: m_SortingOrder
@@ -1143,7 +1148,7 @@ PrefabInstance:
     - target: {fileID: 8098092643170521856, guid: b850e9ae48cdfea4684e7cb293ca71fe,
         type: 3}
       propertyPath: orthographic size
-      value: 3.0906277
+      value: 5.357618
       objectReference: {fileID: 0}
     - target: {fileID: 8098092643170521857, guid: b850e9ae48cdfea4684e7cb293ca71fe,
         type: 3}
