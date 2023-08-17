@@ -5,7 +5,7 @@ using UnityEngine;
 public class CamaraJugador : MonoBehaviour
 {
     public Transform jugador;
-    public Vector3 offset; 
+    public Vector3 offset;
     public float velocidadCamara;
 
     void FixedUpdate()

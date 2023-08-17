@@ -4,65 +4,46 @@ using UnityEngine;
 
 public class JugadorCombate : MonoBehaviour
 {
-    [Header ("Componentes")]
-    public Animator animador;
-    public JugadorValores valores;
-    public JugadorMovimiento movimiento;
+    [Header("Componentes")]
+    private JugadorAnimacion jugadorAnimador;
+    private JugadorValores jugadorValores;
 
-    [Header ("AccionBloqueaAccion")]
+    [Header("Booleanos")]
     public bool espera;
 
-    [Header ("RangoAtaque")]
-    public LayerMask mascaraEnemigo; 
-    public LayerMask mascaraObstaculo; 
+    [Header("Etiquetas")]
+    public LayerMask etiquetaEnemigo;
+    public LayerMask etiquetaObstaculo;
+
+    [Header("RangoAtaque")]
     public float radio;
-    public Vector2 direccionMouse = new Vector2();
-    public Vector2 ataque = new Vector2();
+    private Vector2 rango = new Vector2();
+    private Vector2 direccionMouse = new Vector2();
+
+    //Nombres de Animaciones de Combate
+    private const string jugadorPuño = "Puño";
+    private const string jugadorPatada = "Patada";
+
+    //Mouse
+    private float xAccion = 0f;
+    private float yAccion = 0f;
+
 
     void Start()
     {
-        animador = GetComponent<Animator>();
-        valores = GetComponent<JugadorValores>();
-        movimiento =  GetComponent<JugadorMovimiento>();
+        jugadorAnimador = GetComponent<JugadorAnimacion>();
+        jugadorValores = GetComponent<JugadorValores>();
     }
 
     void Update()
     {
-        Ataques();
         MouseAccion();
-        AccionBloqueaAccion();
     }
 
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(ataque, radio);
-    }
-
-    void Ataques()
-    {
-        Puño();
-        Patada();
-    }
-
-    void Puño()
-    {
-        if(Input.GetMouseButtonDown(0) && valores.getEstaminaTotal() > 2f && espera == false)
-        {
-            animador.Play("Puño");
-            valores.ActualizarEstamina(-25f);
-            RangoAtaque(0.25f,0.2f);
-        }
-    }
-
-    void Patada()
-    {
-        if(Input.GetMouseButtonDown(1) && valores.getEstaminaTotal() > 5f && espera == false)
-        {
-            animador.Play("Patada");
-            valores.ActualizarEstamina(-35f);
-            RangoAtaque(0.25f, 0.4f);
-        }
+        Gizmos.DrawWireSphere(rango, radio);
     }
 
     void MouseAccion()
@@ -72,58 +53,41 @@ public class JugadorCombate : MonoBehaviour
         direccionMouse = posicionMouse - transform.position;
         direccionMouse.Normalize();
 
-        if(espera == false)
+        if (espera == false)
         {
-            animador.SetFloat("Accion X", direccionMouse.x);
-            animador.SetFloat("Accion Y", direccionMouse.y);
+            xAccion = direccionMouse.x;
+            yAccion = direccionMouse.y;
         }
     }
 
-    void AccionBloqueaAccion()
-    {
-        if(
-            animador.GetCurrentAnimatorStateInfo(0).IsName("Puño") || 
-            animador.GetCurrentAnimatorStateInfo(0).IsName("Patada")
-            ) 
-        {
-            espera = true;
-        }
-        else
-        {
-            espera = false;
-        }
-    }
-
-    void RangoAtaque(float valor, float distancia)
+    public void RangoAtaque(float valor, float distancia)
     {
         radio = valor;
-        float x = animador.GetFloat("Accion X");
-        float y = animador.GetFloat("Accion Y");
-       
-        if(x <= -0.7f)
+
+        if (xAccion <= -0.7f)
         {
-            ataque.Set(transform.position.x - distancia, transform.position.y);
+            rango.Set(transform.position.x - distancia, transform.position.y);
         }
 
-        if(x >= 0.7f)
+        if (xAccion >= 0.7f)
         {
-            ataque.Set(transform.position.x + distancia, transform.position.y);
+            rango.Set(transform.position.x + distancia, transform.position.y);
         }
 
-        if(y <= -0.7f)
+        if (yAccion <= -0.7f)
         {
-            ataque.Set(transform.position.x, transform.position.y - distancia);
+            rango.Set(transform.position.x, transform.position.y - distancia);
         }
 
-        if(y >= 0.7f)
+        if (yAccion >= 0.7f)
         {
-            ataque.Set(transform.position.x, transform.position.y + distancia);
+            rango.Set(transform.position.x, transform.position.y + distancia);
         }
 
-        Collider2D [] listaEnemigos = Physics2D.OverlapCircleAll(ataque, radio, mascaraEnemigo );
+        Collider2D[] listaEnemigos = Physics2D.OverlapCircleAll(rango, radio, etiquetaEnemigo);
         foreach (Collider2D c in listaEnemigos)
         {
-           Debug.Log("Hicimos daño a: " + c.name);
+            Debug.Log("Hicimos daño a: " + c.name);
         }
     }
 
