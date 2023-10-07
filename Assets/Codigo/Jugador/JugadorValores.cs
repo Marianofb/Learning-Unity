@@ -4,24 +4,20 @@ using UnityEngine;
 
 public class JugadorValores : MonoBehaviour
 {
-    [Header ("Vida")]
+    [Header("Vida")]
     public float vidaTotal;
     public float vidaMax;
     public float recuperacionVida;
 
-    [Header ("Estamina")]
+    [Header("Estamina")]
     public float estaminaTotal;
     public float estaminaMax;
     public float recuperacionEstamina;
-
-    [Header ("Componentes")]
-    JugadorCombate combate;
 
     void Start()
     {
         estaminaTotal = estaminaMax;
         vidaTotal = vidaMax;
-        combate = GetComponent<JugadorCombate>();
     }
 
     void Update()
@@ -31,31 +27,31 @@ public class JugadorValores : MonoBehaviour
     }
 
     public void ActualizarEstamina(float costo)
-    { 
-        estaminaTotal = Mathf.Clamp(estaminaTotal + costo, 0f, estaminaMax);    
+    {
+        estaminaTotal = Mathf.Clamp(estaminaTotal + costo, 0f, estaminaMax);
     }
 
     public void ActualizarVida(float costo)
-    { 
-        vidaTotal = Mathf.Clamp(vidaTotal + costo, 0f, vidaMax);    
+    {
+        vidaTotal = Mathf.Clamp(vidaTotal + costo, 0f, vidaMax);
     }
 
     private void RecuperarEstamina()
     {
-        if(combate.getEspera() == false & estaminaTotal < estaminaMax)
+        if (estaminaTotal < estaminaMax)
         {
             ActualizarEstamina(recuperacionEstamina);
         }
 
-        if(estaminaTotal >= estaminaMax)
+        if (estaminaTotal >= estaminaMax)
         {
-             //estoy lleno
+            //estoy lleno
         }
     }
 
     private void RecuperarVida()
     {
-        if(vidaTotal < vidaMax)
+        if (vidaTotal < vidaMax)
         {
             ActualizarVida(recuperacionVida);
         }

@@ -8,15 +8,18 @@ public class JugadorMovimiento : MonoBehaviour
     //Axis
     private float xAxis;
     private float yAxis;
-    public Vector3 direccion;
+    private Vector3 direccion;
 
     [Header("Desplazamiento")]
     public float velocidad;
-    public float variacionPosicion;
+    private float variacionPosicion;
+
+    //Bool
+    public bool bloqueo;
 
     void Start()
     {
-
+        bloqueo = false;
     }
 
     void Update()
@@ -34,11 +37,19 @@ public class JugadorMovimiento : MonoBehaviour
 
     void Mover()
     {
-        transform.position += direccion.normalized * velocidad * Time.deltaTime;
+        if (bloqueo == false)
+            transform.position += direccion.normalized * velocidad * Time.deltaTime;
     }
 
     public float GetVariacionPosicion()
     {
         return variacionPosicion;
     }
+
+    public void SetBloqueo(bool b)
+    {
+        bloqueo = b;
+    }
+
+
 }

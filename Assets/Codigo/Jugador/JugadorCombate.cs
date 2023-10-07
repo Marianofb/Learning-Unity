@@ -4,25 +4,14 @@ using UnityEngine;
 
 public class JugadorCombate : MonoBehaviour
 {
-    [Header("Componentes")]
-    private JugadorAnimacion jugadorAnimador;
-    private JugadorValores jugadorValores;
-
-    [Header("Booleanos")]
-    public bool espera;
-
     [Header("Etiquetas")]
     public LayerMask etiquetaEnemigo;
     public LayerMask etiquetaObstaculo;
 
     [Header("RangoAtaque")]
     public float radio;
-    private Vector2 rango = new Vector2();
+    public Vector2 rango = new Vector2();
     private Vector2 direccionMouse = new Vector2();
-
-    //Nombres de Animaciones de Combate
-    private const string jugadorPuño = "Puño";
-    private const string jugadorPatada = "Patada";
 
     //Mouse
     private float xAccion = 0f;
@@ -31,13 +20,12 @@ public class JugadorCombate : MonoBehaviour
 
     void Start()
     {
-        jugadorAnimador = GetComponent<JugadorAnimacion>();
-        jugadorValores = GetComponent<JugadorValores>();
+
     }
 
     void Update()
     {
-        MouseAccion();
+        DireccionMouse();
     }
 
     void OnDrawGizmos()
@@ -46,39 +34,41 @@ public class JugadorCombate : MonoBehaviour
         Gizmos.DrawWireSphere(rango, radio);
     }
 
-    void MouseAccion()
+    void DireccionMouse()
     {
         //ScreenToWorldPoint --> nos traduce la posicion "pixel" a una posicion de "world space"
-        Vector3 posicionMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        direccionMouse = posicionMouse - transform.position;
+        Vector3 posicionMundoMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        direccionMouse = posicionMundoMouse - transform.position;
         direccionMouse.Normalize();
 
-        if (espera == false)
-        {
-            xAccion = direccionMouse.x;
-            yAccion = direccionMouse.y;
-        }
+        xAccion = direccionMouse.x;
+        yAccion = direccionMouse.y;
+
     }
 
-    public void RangoAtaque(float valor, float distancia)
+    public void RangoAtaqueVIEJO(float valor, float distancia)
     {
         radio = valor;
 
+        //oeste
         if (xAccion <= -0.7f)
         {
             rango.Set(transform.position.x - distancia, transform.position.y);
         }
 
+        //este
         if (xAccion >= 0.7f)
         {
             rango.Set(transform.position.x + distancia, transform.position.y);
         }
 
+        //sur
         if (yAccion <= -0.7f)
         {
             rango.Set(transform.position.x, transform.position.y - distancia);
         }
 
+        //norte
         if (yAccion >= 0.7f)
         {
             rango.Set(transform.position.x, transform.position.y + distancia);
@@ -91,8 +81,31 @@ public class JugadorCombate : MonoBehaviour
         }
     }
 
-    public bool getEspera()
+    public void RangoAtaque2(float valor, float distancia)
     {
-        return espera;
+        radio = valor;
+
+        float angle = Mathf.Atan2(direccionMouse.y, direccionMouse.x) * Mathf.Rad2Deg;
+
+        float x = transform.position.x + distancia * Mathf.Cos(angle * Mathf.Deg2Rad);
+        float y = transform.position.y + distancia * Mathf.Sin(angle * Mathf.Deg2Rad);
+
+        rango.Set(x, y);
+
+        Collider2D[] listaEnemigos = Physics2D.OverlapCircleAll(rango, radio, etiquetaEnemigo);
+        foreach (Collider2D c in listaEnemigos)
+        {
+            Debug.Log("Hicimos daño a: " + c.name);
+        }
+    }
+
+    public float GetXAccion()
+    {
+        return xAccion;
+    }
+
+    public float GetYAccion()
+    {
+        return yAccion;
     }
 }

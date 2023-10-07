@@ -17,9 +17,11 @@ public class JugadorAnimacion : MonoBehaviour
     private Vector2 rumbo;
 
     //Booleanos
+    public bool debugLog;
     private bool estaIdle;
     private bool estaCaminando;
     private bool estaAtacando;
+
 
     //Nombres de Animaciones 
     private string animacionActual;
@@ -30,6 +32,8 @@ public class JugadorAnimacion : MonoBehaviour
     //Nombres de Variables del Controlador Animador
     private const string rumboX = "Rumbo X";
     private const string rumboY = "Rumbo Y";
+    private const string accionX = "Accion X";
+    private const string accionY = "Accion Y";
 
 
     void Start()
@@ -40,16 +44,26 @@ public class JugadorAnimacion : MonoBehaviour
         jugadorValores = GetComponent<JugadorValores>();
 
         rumbo = new Vector2();
+
+        debugLog = false;
     }
 
     void Update()
     {
+        //Axis
         xAxis = Input.GetAxis("Horizontal");
         yAxis = Input.GetAxis("Vertical");
 
+        //Animacion
         Direccion();
         Caminar();
         Puño();
+
+        //Booleano
+        EstaAtacando();
+
+        //Debug
+        DebugAxisAccion();
     }
 
     void Direccion()
@@ -66,7 +80,7 @@ public class JugadorAnimacion : MonoBehaviour
 
     void Caminar()
     {
-        if (jugadorMovimiento.GetVariacionPosicion() != 0)
+        if (jugadorMovimiento.GetVariacionPosicion() != 0 && estaAtacando == false)
         {
             CambiarAnimacion(jugadorCaminar);
             estaCaminando = true;
@@ -86,21 +100,42 @@ public class JugadorAnimacion : MonoBehaviour
         {
             CambiarAnimacion(jugadorPuño);
             jugadorValores.ActualizarEstamina(-25f);
-            jugadorCombate.RangoAtaque(0.25f, 0.2f);
+            jugadorCombate.RangoAtaque2(0.25f, 0.2f);
+            SetAxisAccion();
         }
     }
 
     void EstaAtacando()
     {
+        //Esta animacion o mas ||
         if (GetAnimacionActual(jugadorPuño))
         {
             estaAtacando = true;
+            jugadorMovimiento.SetBloqueo(estaAtacando);
         }
         else
         {
             estaAtacando = false;
+            jugadorMovimiento.SetBloqueo(estaAtacando);
         }
     }
+
+    void SetAxisAccion()
+    {
+        animador.SetFloat(accionX, jugadorCombate.GetXAccion());
+        animador.SetFloat(accionY, jugadorCombate.GetYAccion());
+    }
+
+
+    void DebugAxisAccion()
+    {
+        if (debugLog == true)
+        {
+            Debug.Log("Valor xAccion:" + jugadorCombate.GetXAccion());
+            Debug.Log("Valor yAccion:" + jugadorCombate.GetYAccion());
+        }
+    }
+
 
     public void CambiarAnimacion(String nombreAnimacion)
     {
@@ -114,4 +149,5 @@ public class JugadorAnimacion : MonoBehaviour
 
         return false;
     }
+
 }
