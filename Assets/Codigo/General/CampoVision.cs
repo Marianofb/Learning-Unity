@@ -21,11 +21,6 @@ public class CampoVision : MonoBehaviour
     private Vector2 rayoPositivo;
     private Vector2 rayoNegativo;
 
-    //Nombre de Animaciones
-    private const string jugadorIdle = "Idle";
-    private const string jugadorCaminar = "Caminar";
-    private const string jugadorPuño = "Puño";
-
     //Nombres de Variables del Controlador Animador
     private const string rumboX = "Rumbo X";
     private const string rumboY = "Rumbo Y";
@@ -34,11 +29,11 @@ public class CampoVision : MonoBehaviour
     void Start()
     {
         animador = GetComponent<Animator>();
+        Debug.Log("COS: " + Mathf.Cos(radianes) + "//SIN: " + Mathf.Sin(radianes));
     }
 
     void Update()
     {
-        Debug.Log(animador.GetLayerName(0));
         Rayos();
         Detectar();
     }
@@ -55,6 +50,9 @@ public class CampoVision : MonoBehaviour
         Gizmos.DrawRay(transform.position, rayoNegativo);
     }
 
+    //Intercambiamos entre Cos y Sin, pro el valor que da cada uno
+    //Por ejemplo
+    //angulo = 60; COS = 0.5; SIN = 0.8660254
     void Rayos()
     {
         radianes = angulo * Mathf.Deg2Rad;
@@ -95,34 +93,36 @@ public class CampoVision : MonoBehaviour
             }
         }
 
+        //En la comaparacion tiene que ser contra 0.5f, porque todavia no cambia a la animacion "en diagonal"... 
+        //Por ejemplo si estuvieramos comparando con 0f ya esta detectando al NE aunque la animacion este en direccion al ESTE
         //SE, SO, NE, NO
         if (animador.GetFloat(rumboX) != 0 && animador.GetFloat(rumboY) != 0)
         {
-            float x = Mathf.Cos(radianes);
-            float y = Mathf.Sin(radianes);
+            float x = Mathf.Sin(radianes);
+            float y = Mathf.Cos(radianes);
 
-            if (animador.GetFloat(rumboX) > 0 && animador.GetFloat(rumboY) > 0)
+            if (animador.GetFloat(rumboX) > 0.5f && animador.GetFloat(rumboY) > 0.5f)
             {
                 rayoPositivo = Vector2.right * radio;
                 rayoNegativo = new Vector2(-x, y) * radio;
             }
 
-            if (animador.GetFloat(rumboX) > 0 && animador.GetFloat(rumboY) < 0)
+            if (animador.GetFloat(rumboX) > 0.5f && animador.GetFloat(rumboY) < -0.5f)
             {
                 rayoPositivo = Vector2.right * radio;
-                rayoNegativo = new Vector2(-y, -x) * radio;
+                rayoNegativo = new Vector2(-x, -y) * radio;
             }
 
-            if (animador.GetFloat(rumboX) < 0 && animador.GetFloat(rumboY) < 0)
+            if (animador.GetFloat(rumboX) < -0.5f && animador.GetFloat(rumboY) < -0.5f)
             {
                 rayoPositivo = -Vector2.right * radio;
-                rayoNegativo = new Vector2(y, -x) * radio;
+                rayoNegativo = new Vector2(x, -y) * radio;
             }
 
-            if (animador.GetFloat(rumboX) < 0 && animador.GetFloat(rumboY) > 0)
+            if (animador.GetFloat(rumboX) < -0.5f && animador.GetFloat(rumboY) > 0.5f)
             {
                 rayoPositivo = -Vector2.right * radio;
-                rayoNegativo = new Vector2(y, x) * radio;
+                rayoNegativo = new Vector2(x, y) * radio;
             }
         }
     }

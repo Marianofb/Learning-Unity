@@ -2,57 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Nodo : IHeapItem<Nodo>
+public class Nodo
 {
-    public bool caminable;
-    public Vector3 posicionMundo;
-    public int gridX;
-    public int gridY;
-    
-    //Algoritmo A*
-    public int costoG;
-    public int costoH;
-    public Nodo padre;
-    int indiceHeap;
+    bool obstruido;
+    Vector2 posicion;
 
-    public Nodo(bool caminable, Vector3 posicionMundo, int x,  int y)
+    public Nodo(bool _obstruido, Vector2 _posicion)
     {
-        this.caminable = caminable;
-        this.posicionMundo = posicionMundo;
-        this.gridX = x;
-        this.gridY = y;
+        obstruido = _obstruido;
+        posicion = _posicion;
     }
 
-    public Vector3 GetPosicionMundo()
+    public bool GetObstruido()
     {
-        return posicionMundo;
+        return obstruido;
     }
 
-    public int GetCostoF()
+    public Vector2 GetPosicionEscena()
     {
-        return costoG + costoH;
+        return posicion;
     }
 
-    public int IndiceHeap
-    {
-        get
-        {
-            return indiceHeap;
-        }
-        set
-        {
-            indiceHeap = value;
-        }
-    }
-
-    public int CompareTo(Nodo nodoComparar)
-    {
-        int comparo = GetCostoF().CompareTo(nodoComparar.GetCostoF());
-        if(comparo == 0)
-        {
-            comparo = costoH.CompareTo(nodoComparar.costoH);
-        }
-
-        return -comparo;
-    }
 }

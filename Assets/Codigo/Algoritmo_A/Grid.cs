@@ -3,173 +3,58 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grid: MonoBehaviour
+public class Grid : MonoBehaviour
 {
-    private static Grid instancia = null;
+    [Header("Configuracion Grid")]
+    public int altoGrid;
+    public int anchoGrid;
 
-    [Header ("Grid")]
-    public int ancho;
-    public int largo;
-    public int tamañoCelda = 1;
-    public bool mostrarNodos = false;
-    private GameObject tileReferencia;
-        
-    [Header ("Nodos")]
-    public LayerMask obstaculo;
-    public Transform posicionJugador;
-    private Vector3 posicionStalker;
-    Nodo [,] nodos;
+    [Header("Configuracion Nodo")]
+    public float ladoNodo;
+    public LayerMask mascaraObstaculo;
 
-    private void Awake()
+    private Nodo[,] red;
+
+    void Start()
     {
-         if(instancia != null)
+        CrearRed();
+    }
+
+    private void CrearRed()
+    {
+        red = new Nodo[anchoGrid, altoGrid];
+        Vector3 posicionEscena_SO = transform.position -
+                                    Vector3.right * anchoGrid / 2 -
+                                    Vector3.up * altoGrid / 2;
+
+        for (int y = 0; y < altoGrid; y++)
         {
-            Destroy(this.gameObject);
-        }            
-        else
-        {
-            instancia = this;
-        }  
-    }
-
-    private void Start()
-    {
-        CrearGrid();
-    }
-
-    public int GetTamaño()
-    {
-        return ancho * largo;
-    }
-
-    public Nodo GetNodo(Vector3 posicion)
-    {
-        float gridAncho = ancho * tamañoCelda;
-        float gridLargo = largo * tamañoCelda;
-        Vector3 surOeste = new Vector3((-gridAncho/2 + tamañoCelda) - 1, (tamañoCelda - gridLargo/2) - 1);
-
-        Vector3 posicionCentro = posicion - surOeste;
-        int x = (int) posicionCentro.x / tamañoCelda;
-        int y = (int) posicionCentro.y / tamañoCelda;
-        //Debug.Log("X: " + x + " Y: "+ y);
-
-        return nodos[x,y];
-    }
-
-    public List<Nodo> GetVecinos(Nodo nodo)
-    {
-        List<Nodo> vecinos = new List<Nodo>();
-
-        //hay tres posibilidades por fila
-        //y hay tres filas, -1, 0 y 1
-        for(int x = -1; x <= 1; x++)
-        {
-            for(int y = -1; y <= 1; y++)
+            for (int x = 0; x < anchoGrid; x++)
             {
-                //saltamos al nodo del que buscamos los vecinos
-                if(x == 0 & y == 0)
-                {
-                    continue;
-                }
-                else
-                {
-                    int controlX = nodo.gridX + x;
-                    int controlY = nodo.gridY + y;
+                //divide por 2 porque en vez de estar empezando en SO, empieza desde el centro
+                Vector3 posicionEscena = posicionEscena_SO / 2 +
+                                                Vector3.right * x * ladoNodo +
+                                                Vector3.up * y * ladoNodo;
+                //0.05f funciona bien para detectar colisiones
+                bool obstruido = Physics2D.OverlapCircle(posicionEscena, 0.05f, mascaraObstaculo);
 
-                    if(controlX >= 0 & controlX < ancho & controlY >= 0 & controlY < largo)
-                    {
-                        vecinos.Add(nodos[controlX, controlY]);
-                    }
-                }
+                red[x, y] = new Nodo(obstruido, posicionEscena);
             }
         }
-
-        return vecinos;
     }
 
-    public void SetStalker(Vector3 stalker)
+    private void OnDrawGizmosSelected()
     {
-        posicionStalker = stalker;
-    }
-
-    private void CrearGrid()
-    {
-        /*if(mostrarNodos == true)
+        if (red != null)
         {
-            tileReferencia = (GameObject)Instantiate(Resources.Load("Tiles/probando"));
-        }
-        else
-        {
-            tileReferencia = null;
-        }*/
-
-        nodos = new Nodo[ancho,largo];
-
-        float gridAncho = ancho * tamañoCelda;
-        float gridLargo = largo * tamañoCelda;
-
-        Vector3 surOeste = new Vector3((-gridAncho/2 + tamañoCelda) - 0.5f, (tamañoCelda - gridLargo/2) - 0.5f);
-
-        for(int x = 0; x < ancho; x++)
-        {
-            for(int y = 0; y < largo; y++)
+            foreach (Nodo n in red)
             {
-                float posX = x * tamañoCelda;
-                float posY = y * tamañoCelda; 
-
-                /*if(tileReferencia != null)
-                {
-                    GameObject tile = (GameObject)Instantiate(tileReferencia, transform);
-                    tile.transform.position = new Vector3(posX, posY);
-                }*/
-
-                Vector3 posicionMundo =  new Vector3(posX, posY) + surOeste;
-                bool caminable = !Physics2D.OverlapCircle(posicionMundo, tamañoCelda/2, obstaculo); 
-                nodos[x,y] = new Nodo(caminable, posicionMundo, x, y);
-                //Debug.Log("X: " + x + "; Y: " + y);
-                //Debug.Log("posicion: " + posicionMundo);
-                //if(caminable == false)
-                    //Debug.Log("caminable: " + caminable);
-            }
-        }
-        Destroy(tileReferencia);
-        transform.position = surOeste;
-    }
-
-    public Vector3[] camino;
-    private void OnDrawGizmos()
-    {
-        if(nodos != null && mostrarNodos == true)
-        {      
-            Nodo nodoJugador = GetNodo(posicionJugador.position);
-            Nodo nodoStalker = GetNodo(posicionStalker);
-            foreach(Nodo n in nodos)
-            {
-                //si bool == true entonces blanco, sino rojo
-                //Gizmos.color = (n.caminable)?Color.white:Color.red;
                 Gizmos.color = Color.white;
-                int existe = Array.IndexOf(camino, n.GetPosicionMundo());
-                if(camino != null && existe > -1)
-                {
-                    Gizmos.color = Color.black;
-                } 
-
-                if(n == nodoJugador)
-                {
-                    Gizmos.color = Color.green;
-                }
-
-                if(n == nodoStalker)
-                {
-                    Gizmos.color = Color.yellow;
-                }
-
-                if(!n.caminable)
+                if (n.GetObstruido())
                 {
                     Gizmos.color = Color.red;
                 }
-
-                Gizmos.DrawCube(n.GetPosicionMundo(),  Vector3.one * (tamañoCelda - .1f));
+                Gizmos.DrawCube(n.GetPosicionEscena(), Vector2.one * ladoNodo);
             }
         }
     }
