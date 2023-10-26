@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mate : MonoBehaviour
+public class Matematica : MonoBehaviour
 {
     public float Distancia(Vector3 tuPosicion, Vector3 otraPosicion)
     {
         //Teorema de Pitagoras
-        float distancia = Mathf.Sqrt(Mathf.Pow(otraPosicion.x - tuPosicion.x, 2) + 
+        float distancia = Mathf.Sqrt(Mathf.Pow(otraPosicion.x - tuPosicion.x, 2) +
                             Mathf.Pow(otraPosicion.y - tuPosicion.y, 2));
 
         return distancia;
@@ -30,7 +30,7 @@ public class Mate : MonoBehaviour
 
     public Vector3 ProductoVectorial(Vector3 a, Vector3 b)
     {
-        Vector3 v = new Vector3 (a.y * b.z - a.z * b.y,
+        Vector3 v = new Vector3(a.y * b.z - a.z * b.y,
                                 a.x * b.z - a.z * b.x,
                                 a.x * b.y - a.y * b.x);
 

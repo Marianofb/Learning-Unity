@@ -29,7 +29,7 @@ public class CampoVision : MonoBehaviour
     void Start()
     {
         animador = GetComponent<Animator>();
-        Debug.Log("COS: " + Mathf.Cos(radianes) + "//SIN: " + Mathf.Sin(radianes));
+        //Debug.Log("COS: " + Mathf.Cos(radianes) + "//SIN: " + Mathf.Sin(radianes));
     }
 
     void Update()

@@ -26,7 +26,7 @@ public class VIEJOCampoVision : MonoBehaviour
 
     [Header("Componentes")]
     Animator animador;
-    Mate _mate;
+    Matematica _mate;
 
     void Start()
     {

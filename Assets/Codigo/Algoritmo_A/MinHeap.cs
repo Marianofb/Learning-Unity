@@ -2,147 +2,149 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using System.Linq;
 
-public class MinHeap<T> where T : IHeapItem<T>
+public class MinHeap
 {
-    T[] items;
-    private int contador;
+    Nodo[] items;
+    int contador;
 
     public MinHeap(int tamaño)
     {
-        items = new T[tamaño];
+        items = new Nodo[tamaño];
+        contador = 0;
     }
 
-    public void Agregar(T item)
+    public void Intercambiar(int indice, int indice2)
     {
-        item.IndiceHeap = contador;
-        items[contador] = item;
-        ParaArriba(item);
-        contador++;
-    }  
-
-    public T EliminarPrimero()
-    {
-        T primerItem = items[0];
-        items[0] = items[contador -1];
-        items[0].IndiceHeap = 0;
-        ParaAbajo(items[0]);
-        contador--;
-        return primerItem;
+        Nodo aux = items[indice];
+        items[indice] = items[indice2];
+        items[indice2] = aux;
     }
 
-    public T Primero()
+    public Nodo Raiz()
     {
+        if (Vacio())
+        {
+            throw new InvalidOperationException("El Heap esta vacio");
+        }
+
         return items[0];
     }
 
-    public bool Contiene(T item)
+    public Nodo Eliminar()
     {
-        return Equals(item, items[item.IndiceHeap]);
+        Nodo raiz = Raiz();
+        items[0] = items[contador - 1];
+        items[0].SetIndiceHeap(0);
+        contador--;
+        OrdenarParaAbajo();
+        return raiz;
     }
 
-    public void ActualizarItem(T item)
+    public void Agregar(Nodo nodo)
     {
-        ParaArriba(item);
+        nodo.SetIndiceHeap(contador);
+        items[contador] = nodo;
+        contador++;
+        OrdenarParaArriba();
     }
 
-    public int GetContador()
+    public void OrdenarParaArriba()
     {
-        return contador;
-    }
-
-   private void Intercambiar(T itemA, T itemB)
-   {   
-        int indiceA = itemA.IndiceHeap;
-        int indiceB = itemB.IndiceHeap;
-
-        items[indiceA] = itemB;
-        items[indiceB] = itemA;
-        itemA.IndiceHeap = indiceB;
-        itemB.IndiceHeap = indiceA;
-   }
-
-    private void ParaArriba(T item)
-    {
-        //item < padre     = 1
-        //item > padre     = -1
-        //item == padre    = 0
-        while(TienePadre(item) && item.CompareTo(GetPadre(item)) > 0)
-        { 
-            Intercambiar(item, GetPadre(item));
+        int indice = contador - 1;
+        while (TienePadre(indice) &&
+                GetPadre(indice).CompareTo(items[indice]) > 0)
+        {
+            Intercambiar(indice, GetIndicePadre(indice));
+            indice = GetIndicePadre(indice);
         }
     }
 
-    private void ParaAbajo(T item)
+    public void OrdenarParaAbajo()
     {
-        //solo controlamos si tiene un hijo izquierdo porque si no lo tiene tampoco va a tener el derecho
-        while(TieneHijoIzq(item))
+        int indice = 0;
+        while (TieneHijoIzq(indice))
         {
-            int indiceHijoChico = GetHijoIzq(item).IndiceHeap;
-            if(TieneHijoDrcho(item))
+            int indiceNodoMasChico = GetIndiceHijoIzquierdo(indice);
+            if (TieneHijoDrch(indice) && GetHijoIzquierdo(indice).CompareTo(GetHijoDerecho(indice)) > 0)
             {
-                if(GetHijoIzq(item).CompareTo(GetHijoDercho(item)) < 0)
-                {
-                    indiceHijoChico = GetHijoDercho(item).IndiceHeap;
-                }
+                indiceNodoMasChico = GetIndiceHijoDerecho(indice);
             }
 
-            if(item.CompareTo(items[indiceHijoChico]) < 0)
-            {
-                Intercambiar(item, items[indiceHijoChico]);
-            }
-            else
+            if (items[indice].CompareTo(items[indiceNodoMasChico]) < 0)
             {
                 break;
             }
+            else
+            {
+                Intercambiar(indice, indiceNodoMasChico);
+            }
+
+            indice = indiceNodoMasChico;
         }
     }
 
-    private T GetPadre(T item)
-    {   
-        return items[(item.IndiceHeap - 1) / 2];
+    public bool Contiene(Nodo n)
+    {
+        return Equals(n, items[n.GetIndiceHeap()]);
     }
 
-    private T GetHijoIzq(T item)
+    //GETTERS
+    int GetIndiceHijoIzquierdo(int indicePadre)
     {
-        return items[(item.IndiceHeap * 2) + 1];
+        return 2 * indicePadre + 1;
     }
 
-    private T GetHijoDercho(T item)
+    int GetIndiceHijoDerecho(int indicePadre)
     {
-        return items[(item.IndiceHeap * 2) + 2];
+        return 2 * indicePadre + 2;
     }
 
-    private bool TienePadre(T item)
+    int GetIndicePadre(int indicePadre)
     {
-        if(GetPadre(item) != null)
+        return (indicePadre - 1) / 2;
+    }
+
+    Nodo GetHijoIzquierdo(int indice)
+    {
+        return items[GetIndiceHijoIzquierdo(indice)];
+    }
+
+    Nodo GetHijoDerecho(int indice)
+    {
+        return items[GetIndiceHijoDerecho(indice)];
+    }
+
+    Nodo GetPadre(int indice)
+    {
+        return items[GetIndicePadre(indice)];
+    }
+
+    //BOLEANS
+    bool TieneHijoIzq(int indice)
+    {
+        return GetIndiceHijoIzquierdo(indice) < contador;
+    }
+
+    bool TieneHijoDrch(int indice)
+    {
+        return GetIndiceHijoDerecho(indice) < contador;
+    }
+
+    bool TienePadre(int indice)
+    {
+        return GetIndicePadre(indice) >= 0;
+    }
+
+    public bool Vacio()
+    {
+        if (contador == 0)
+        {
             return true;
+        }
 
         return false;
     }
 
-    private bool TieneHijoIzq(T item)
-    {
-        if(GetHijoIzq(item) != null)
-            return true;
-
-        return false;
-    }
-
-    private bool TieneHijoDrcho(T item)
-    {
-        if(GetHijoDercho(item) != null)
-            return true;
-
-        return false;
-    }
-}
-
-public interface IHeapItem<T> : IComparable<T>
-{
-    int IndiceHeap
-    {
-        get;
-        set;
-    }
 }
