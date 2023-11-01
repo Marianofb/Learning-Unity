@@ -8,10 +8,7 @@ public class AEstrella : MonoBehaviour
 {
     Grid grid;
     Matematica mate;
-
-    public GameObject r;
-    public GameObject t;
-    public List<Nodo> camino = new List<Nodo>();
+    List<Nodo> camino;
 
     void Awake()
     {
@@ -19,13 +16,7 @@ public class AEstrella : MonoBehaviour
         mate = GetComponent<Matematica>();
     }
 
-    void Update()
-    {
-        BusquedaCamino(r.transform.position, t.transform.position);
-        camino = ConstruirCamino(grid.GetNodo(r.transform.position), grid.GetNodo(t.transform.position));
-    }
-
-    void BusquedaCamino(Vector3 i, Vector3 f)
+    public void BusquedaCamino(Vector3 i, Vector3 f)
     {
         Nodo inicio = grid.GetNodo(i);
         Nodo fin = grid.GetNodo(f);
@@ -78,7 +69,7 @@ public class AEstrella : MonoBehaviour
         }
     }
 
-    List<Nodo> ConstruirCamino(Nodo i, Nodo f)
+    public List<Nodo> ConstruirCamino(Nodo i, Nodo f)
     {
         List<Nodo> posiciones = new List<Nodo>();
         Nodo actual = f;
@@ -104,19 +95,6 @@ public class AEstrella : MonoBehaviour
         }
 
         return posiciones;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        foreach (Nodo n in camino)
-        {
-            Gizmos.color = Color.green;
-            if (n.GetObstruido())
-            {
-                Gizmos.color = Color.red;
-            }
-            Gizmos.DrawCube(n.GetPosicionEscena(), Vector2.one * grid.ladoNodo);
-        }
     }
 }
 

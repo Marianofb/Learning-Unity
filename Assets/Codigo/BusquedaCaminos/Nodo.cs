@@ -13,7 +13,7 @@ public class Nodo
 
     [Header("Propiedades")]
     bool obstruido;
-    Vector2 posicion;
+    Vector3 posicion;
 
     public Nodo(bool _obstruido, Vector2 _posicion)
     {
@@ -38,7 +38,7 @@ public class Nodo
         return obstruido;
     }
 
-    public Vector2 GetPosicionEscena()
+    public Vector3 GetPosicionEscena()
     {
         return posicion;
     }

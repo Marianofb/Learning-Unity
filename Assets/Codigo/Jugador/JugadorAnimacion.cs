@@ -56,7 +56,7 @@ public class JugadorAnimacion : MonoBehaviour
 
         //Animacion
         Direccion();
-        Caminar();
+        CaminarIdle();
         Puño();
 
         //Booleano
@@ -78,7 +78,7 @@ public class JugadorAnimacion : MonoBehaviour
         animador.SetFloat(rumboY, rumbo.y);
     }
 
-    void Caminar()
+    void CaminarIdle()
     {
         if (jugadorMovimiento.GetVariacionPosicion() != 0 && estaAtacando == false)
         {

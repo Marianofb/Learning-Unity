@@ -113,7 +113,7 @@ public class Grid : MonoBehaviour
                 {
                     Gizmos.color = Color.red;
                 }
-                Gizmos.DrawCube(n.GetPosicionEscena(), Vector2.one * ladoNodo);
+                Gizmos.DrawWireCube(n.GetPosicionEscena(), Vector2.one * ladoNodo);
             }
         }
     }
