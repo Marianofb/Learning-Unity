@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class IAWaypoints : MonoBehaviour
@@ -12,11 +13,13 @@ public class IAWaypoints : MonoBehaviour
     Matematica mate;
 
     //Variables
+    GameObject entusiasta;
     public bool seguirJugador = false;
     public float velocidad = 0.5f;
+    public float velocidadEntusiasta = 1f;
+    public float precision = 3f;
     List<Nodo> camino;
-    int contador;
-    int distanciaCamino;
+    int contador = 0;
 
     void Start()
     {
@@ -26,41 +29,65 @@ public class IAWaypoints : MonoBehaviour
         generadorCamino = aEstrella.GetComponent<AEstrella>();
         grid = aEstrella.GetComponent<Grid>();
         mate = aEstrella.GetComponent<Matematica>();
+
+        entusiasta = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        entusiasta.transform.position = transform.position;
+        entusiasta.transform.localScale = transform.localScale / 2;
+        Destroy(entusiasta.GetComponent<Collider>());
+        Destroy(entusiasta.GetComponent<MeshRenderer>());
     }
 
     void Update()
     {
-        GenerarCamino();
-        SeguirCamino();
+        DirigirseJugador();
     }
 
-    void SeguirCamino()
+    public void AcompañarEntusiasta()
     {
-        if (camino != null)
+        RatrearCamino();
+        if (grid.GetNodo(transform.position) != grid.GetNodo(guerrero.transform.position))
         {
-            distanciaCamino = camino.Count;
-            contador = 0;
-            if (mate.Distancia(transform.position, camino[contador].GetPosicionEscena()) < 3f)
-            {
-                contador++;
-            }
-
-            if (contador < distanciaCamino)
-            {
-                Vector3 direccion = camino[contador].GetPosicionEscena() - transform.position;
-                transform.position += direccion.normalized * velocidad * Time.deltaTime;
-            }
+            Vector3 direccion = entusiasta.transform.position - transform.position;
+            transform.position += direccion.normalized * velocidad * Time.deltaTime;
         }
     }
 
-    void GenerarCamino()
+    void DirigirseJugador()
     {
         if (seguirJugador == true)
         {
-            Vector3 posicionJugador = guerrero.transform.position;
-            generadorCamino.BusquedaCamino(transform.position, posicionJugador);
-            camino = generadorCamino.ConstruirCamino(grid.GetNodo(transform.position), grid.GetNodo(posicionJugador));
+            GenerarCamino(entusiasta, guerrero);
         }
+    }
+
+    void RatrearCamino()
+    {
+        if (camino != null)
+        {
+            int distanciaCamino = camino.Count - 1;
+            contador = 0;
+
+            //Debug.Log("Contador: " + contador + "/// LargoCamino: " + distanciaCamino);
+            if (contador < distanciaCamino)
+            {
+                if (mate.Distancia(entusiasta.transform.position, camino[contador].GetPosicionEscena()) < precision)
+                {
+                    contador++;
+                }
+            }
+
+            if (contador <= distanciaCamino)
+            {
+                Vector3 direccion = camino[contador].GetPosicionEscena() - entusiasta.transform.position;
+                entusiasta.transform.position += direccion.normalized * velocidadEntusiasta * Time.deltaTime;
+            }
+        }
+    }
+
+    void GenerarCamino(GameObject inicio, GameObject fin)
+    {
+        generadorCamino.BusquedaCamino(inicio.transform.position, fin.transform.position);
+        camino = generadorCamino.ConstruirCamino(grid.GetNodo(inicio.transform.position), grid.GetNodo(fin.transform.position));
     }
 
     private void OnDrawGizmosSelected()
@@ -73,6 +100,10 @@ public class IAWaypoints : MonoBehaviour
                 if (n.GetObstruido())
                 {
                     Gizmos.color = Color.red;
+                }
+                if (n == grid.GetNodo(guerrero.transform.position))
+                {
+                    Gizmos.color = Color.blue;
                 }
                 Gizmos.DrawCube(n.GetPosicionEscena(), Vector2.one * grid.ladoNodo);
             }

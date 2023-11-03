@@ -4,5 +4,16 @@ using UnityEngine;
 
 public class IAMovimiento : MonoBehaviour
 {
+    //componentes
+    IAWaypoints waypoints;
 
+    void Start()
+    {
+        waypoints = GetComponent<IAWaypoints>();
+    }
+
+    void Update()
+    {
+        waypoints.AcompañarEntusiasta();
+    }
 }

@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class AEstrella : MonoBehaviour
 {
+    [Header("LayerMask")]
+    public LayerMask mascaraObstaculo;
+
     Grid grid;
     Matematica mate;
     List<Nodo> camino;
@@ -94,7 +97,52 @@ public class AEstrella : MonoBehaviour
             Debug.LogError("No se pudo construir un camino.");
         }
 
-        return posiciones;
+        //No Funciona
+
+
+        return Refinar(posiciones);
+        //return posiciones;
+    }
+
+    List<Nodo> Refinar(List<Nodo> nodos)
+    {
+        List<Nodo> refinado = new List<Nodo>();
+        List<Nodo> visto = new List<Nodo>();
+        for (int i = 0; i + 2 < nodos.Count(); i++)
+        {
+            //Debug.Log("Nodo: " + i + "/// Pos:  " + nodos[i].GetPosicionEscena());
+            Nodo padre = nodos[i];
+            Nodo hijo = nodos[i + 1];
+            Nodo hijoSegundo = nodos[i + 2];
+
+            float distanciaActual = mate.Distancia(padre.GetPosicionEscena(), hijo.GetPosicionEscena()) + mate.Distancia(hijo.GetPosicionEscena(), hijoSegundo.GetPosicionEscena());
+            float distanciaSegundoHijo = mate.Distancia(padre.GetPosicionEscena(), hijoSegundo.GetPosicionEscena());
+
+            Vector3 direccionSegundoHijo = hijoSegundo.GetPosicionEscena() - padre.GetPosicionEscena();
+
+            if (!visto.Contains(padre) & refinado.Count() > 0)
+                refinado.Add(padre);
+
+            if (distanciaActual > distanciaSegundoHijo &
+                !Physics2D.Raycast(transform.position, direccionSegundoHijo, distanciaSegundoHijo, mascaraObstaculo))
+            {
+                //Debug.Log("Nodo: " + i + "/// Pos:  " + nodos[i].GetPosicionEscena());
+                refinado.Add(hijoSegundo);
+                visto.Add(hijo);
+                visto.Add(hijoSegundo);
+            }
+            else
+            {
+                refinado.Add(hijo);
+            }
+        }
+
+        if (!refinado.Contains(nodos[nodos.Count() - 1]))
+        {
+            refinado.Add(nodos[nodos.Count() - 1]);
+        }
+
+        return refinado;
     }
 }
 

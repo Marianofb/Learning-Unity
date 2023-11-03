@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class CampoVision : MonoBehaviour
+public class JugadorCampoVision : MonoBehaviour
 {
     //Componentes
     private Animator animador;
