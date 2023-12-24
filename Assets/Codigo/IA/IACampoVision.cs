@@ -1,9 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 
-public class JugadorCampoVision : MonoBehaviour
+public class IACampoVision : MonoBehaviour
 {
     //Componentes
     private Animator animador;
@@ -24,7 +24,6 @@ public class JugadorCampoVision : MonoBehaviour
     //Nombres de Variables del Controlador Animador
     private const string rumboX = "Rumbo X";
     private const string rumboY = "Rumbo Y";
-
 
     void Start()
     {
@@ -57,8 +56,12 @@ public class JugadorCampoVision : MonoBehaviour
     {
         radianes = angulo * Mathf.Deg2Rad;
 
+
+        bool controlX = EstaEnRango(animador.GetFloat(rumboX), 0.5f, 1f) || EstaEnRango(animador.GetFloat(rumboX), -1f, -0.5f);
+        bool controlY = EstaEnRango(animador.GetFloat(rumboY), 0f, 0.3f) || EstaEnRango(animador.GetFloat(rumboY), -0.3f, 0);
+
         //Este, Oeste
-        if (animador.GetFloat(rumboX) != 0 && animador.GetFloat(rumboY) == 0)
+        if (controlX && controlY)
         {
             float x = Mathf.Cos(radianes);
             float y = Mathf.Sin(radianes);
@@ -76,7 +79,7 @@ public class JugadorCampoVision : MonoBehaviour
         }
 
         //Norte, Sur
-        if (animador.GetFloat(rumboX) == 0 && animador.GetFloat(rumboY) != 0)
+        if (!controlX && !controlY)
         {
             float x = Mathf.Sin(radianes);
             float y = Mathf.Cos(radianes);
@@ -125,6 +128,11 @@ public class JugadorCampoVision : MonoBehaviour
                 rayoNegativo = new Vector2(x, y) * radio;
             }
         }
+    }
+
+    bool EstaEnRango(float valor, float rangoMinimo, float rangoMaximo)
+    {
+        return valor >= rangoMinimo && valor <= rangoMaximo;
     }
 
     bool Detectamos(Vector2 direccion)

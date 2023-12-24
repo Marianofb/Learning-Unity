@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JugadorCombate : MonoBehaviour
+public class JugadorControlesCombate : MonoBehaviour
 {
     [Header("Etiquetas")]
     public LayerMask etiquetaEnemigo;
@@ -46,9 +46,9 @@ public class JugadorCombate : MonoBehaviour
 
     }
 
-    public void RangoAtaqueVIEJO(float valor, float distancia)
+    public void RangoAtaqueVIEJO(float radio, float distancia)
     {
-        radio = valor;
+        this.radio = radio;
 
         //oeste
         if (xAccion <= -0.7f)

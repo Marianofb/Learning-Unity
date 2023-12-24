@@ -7,9 +7,8 @@ public class JugadorAnimacion : MonoBehaviour
 {
     [Header("Componentes")]
     private Animator animador;
-    private JugadorMovimiento jugadorMovimiento;
-    private JugadorCombate jugadorCombate;
-    private JugadorValores jugadorValores;
+    private Jugador jugador;
+    private JugadorControlesCombate jugadorControlesCombate;
 
     //Axis
     private float xAxis;
@@ -25,9 +24,9 @@ public class JugadorAnimacion : MonoBehaviour
 
     //Nombres de Animaciones 
     private string animacionActual;
-    private const string jugadorIdle = "Idle";
-    private const string jugadorCaminar = "Caminar";
-    private const string jugadorPuño = "Puño";
+    private const string Idle = "Idle";
+    private const string Caminar = "Caminar";
+    private const string Puño = "Puño";
 
     //Nombres de Variables del Controlador Animador
     private const string rumboX = "Rumbo X";
@@ -39,10 +38,8 @@ public class JugadorAnimacion : MonoBehaviour
     void Start()
     {
         animador = GetComponent<Animator>();
-        jugadorMovimiento = GetComponent<JugadorMovimiento>();
-        jugadorCombate = GetComponent<JugadorCombate>();
-        jugadorValores = GetComponent<JugadorValores>();
-
+        jugador = GetComponent<Jugador>();
+        jugadorControlesCombate = GetComponent<JugadorControlesCombate>();
         rumbo = new Vector2();
 
         debugLog = false;
@@ -57,7 +54,7 @@ public class JugadorAnimacion : MonoBehaviour
         //Animacion
         Direccion();
         CaminarIdle();
-        Puño();
+        AtaquePuño();
 
         //Booleano
         EstaAtacando();
@@ -80,27 +77,27 @@ public class JugadorAnimacion : MonoBehaviour
 
     void CaminarIdle()
     {
-        if (jugadorMovimiento.GetVariacionPosicion() != 0 && estaAtacando == false)
+        if (jugador.GetVariacionPosicion() != 0 && estaAtacando == false)
         {
-            CambiarAnimacion(jugadorCaminar);
+            CambiarAnimacion(Caminar);
             estaCaminando = true;
             estaIdle = false;
         }
         else
         {
-            CambiarAnimacion(jugadorIdle);
+            CambiarAnimacion(Idle);
             estaCaminando = false;
             estaIdle = true;
         }
     }
 
-    void Puño()
+    void AtaquePuño()
     {
-        if (Input.GetMouseButtonDown(0) && jugadorValores.getEstaminaTotal() > 2f && estaAtacando == false)
+        if (Input.GetMouseButtonDown(0) && jugador.GetEstaminaActual() > 2f && estaAtacando == false)
         {
-            CambiarAnimacion(jugadorPuño);
-            jugadorValores.ActualizarEstamina(-25f);
-            jugadorCombate.RangoAtaque2(0.25f, 0.2f);
+            CambiarAnimacion(Puño);
+            jugador.ActualizarEstamina(-25f);
+            jugadorControlesCombate.RangoAtaque2(0.25f, 0.2f);
             SetAxisAccion();
         }
     }
@@ -108,22 +105,22 @@ public class JugadorAnimacion : MonoBehaviour
     void EstaAtacando()
     {
         //Esta animacion o mas ||
-        if (GetAnimacionActual(jugadorPuño))
+        if (GetAnimacionActual(Puño))
         {
             estaAtacando = true;
-            jugadorMovimiento.SetBloqueo(estaAtacando);
+            jugador.SetBloqueo(estaAtacando);
         }
         else
         {
             estaAtacando = false;
-            jugadorMovimiento.SetBloqueo(estaAtacando);
+            jugador.SetBloqueo(estaAtacando);
         }
     }
 
     void SetAxisAccion()
     {
-        animador.SetFloat(accionX, jugadorCombate.GetXAccion());
-        animador.SetFloat(accionY, jugadorCombate.GetYAccion());
+        animador.SetFloat(accionX, jugadorControlesCombate.GetXAccion());
+        animador.SetFloat(accionY, jugadorControlesCombate.GetYAccion());
     }
 
 
@@ -131,18 +128,18 @@ public class JugadorAnimacion : MonoBehaviour
     {
         if (debugLog == true)
         {
-            Debug.Log("Valor xAccion:" + jugadorCombate.GetXAccion());
-            Debug.Log("Valor yAccion:" + jugadorCombate.GetYAccion());
+            Debug.Log("Valor xAccion:" + jugadorControlesCombate.GetXAccion());
+            Debug.Log("Valor yAccion:" + jugadorControlesCombate.GetYAccion());
         }
     }
 
 
-    public void CambiarAnimacion(String nombreAnimacion)
+    public void CambiarAnimacion(string nombreAnimacion)
     {
         animador.Play(nombreAnimacion);
     }
 
-    public bool GetAnimacionActual(String nombreAnimacion)
+    public bool GetAnimacionActual(string nombreAnimacion)
     {
         if (animador.GetCurrentAnimatorStateInfo(0).IsName(nombreAnimacion))
             return true;

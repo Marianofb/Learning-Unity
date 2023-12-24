@@ -97,17 +97,14 @@ public class AEstrella : MonoBehaviour
             Debug.LogError("No se pudo construir un camino.");
         }
 
-        //No Funciona
-
-
         return Refinar(posiciones);
-        //return posiciones;
     }
 
     List<Nodo> Refinar(List<Nodo> nodos)
     {
         List<Nodo> refinado = new List<Nodo>();
-        List<Nodo> visto = new List<Nodo>();
+        HashSet<Nodo> visto = new HashSet<Nodo>();
+
         for (int i = 0; i + 2 < nodos.Count(); i++)
         {
             //Debug.Log("Nodo: " + i + "/// Pos:  " + nodos[i].GetPosicionEscena());
@@ -120,7 +117,7 @@ public class AEstrella : MonoBehaviour
 
             Vector3 direccionSegundoHijo = hijoSegundo.GetPosicionEscena() - padre.GetPosicionEscena();
 
-            if (!visto.Contains(padre) & refinado.Count() > 0)
+            if (!visto.Contains(padre))
                 refinado.Add(padre);
 
             if (distanciaActual > distanciaSegundoHijo &
