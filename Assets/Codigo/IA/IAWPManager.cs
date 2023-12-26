@@ -54,24 +54,6 @@ public class IAWPManager : MonoBehaviour
         return guia.transform.position;
     }
 
-    public bool LlegueDestino()
-    {
-        if (grid.GetNodo(transform.position) == grid.GetNodo(destino.transform.position) && camino == null)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    void CrearCaminoOrigenDestino()
-    {
-        if (!LlegueDestino())
-        {
-            GenerarCamino(guia, destino);
-        }
-    }
-
     public void SeguirGuia(float velocidad)
     {
         GuiaRecorreCamino();
@@ -82,7 +64,25 @@ public class IAWPManager : MonoBehaviour
         }
     }
 
-    void GuiaRecorreCamino()
+    public bool LlegueDestino()
+    {
+        if (grid.GetNodo(transform.position) == grid.GetNodo(destino.transform.position) && camino == null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void CrearCaminoOrigenDestino()
+    {
+        if (!LlegueDestino())
+        {
+            GenerarCamino(guia, destino);
+        }
+    }
+
+    private void GuiaRecorreCamino()
     {
         if (camino != null)
         {
@@ -106,7 +106,7 @@ public class IAWPManager : MonoBehaviour
         }
     }
 
-    void GenerarCamino(GameObject inicio, GameObject fin)
+    private void GenerarCamino(GameObject inicio, GameObject fin)
     {
         generadorCamino.BusquedaCamino(inicio.transform.position, fin.transform.position);
         camino = generadorCamino.ConstruirCamino(grid.GetNodo(inicio.transform.position), grid.GetNodo(fin.transform.position));

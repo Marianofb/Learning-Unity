@@ -19,37 +19,72 @@ public class IA : MonoBehaviour
     public bool bloqueo = false;
     private Vector3 direccion;
 
+    [Header("Niveles Deteccion")]
+    private string nivelNulo = "Nada";
+    private string nivelBajo = "Bajo";
+    private string nivelMedio = "Medio";
+    private string nivelAlto = "Alto";
+
     [Header("Componentes")]
     IAWPManager iAWPManager;
+    IANivelDeteccion iANivelDeteccion;
+
+    //StateMachine
+    public IAStateMachine StateMachine { get; set; }
+
+    public IAIdle IdleState { get; set; }
+
+    public IAPatrullar PatrullarState { get; set; }
+
+    public IAPerseguir PerseguirState { get; set; }
+
 
     void Awake()
     {
+        SetStateMachineStates();
         SetComponentes();
+        SetVariablesVidaEstamina();
     }
 
     void Start()
     {
-        SetVariablesVidaEstamina();
+        StateMachine.InicializarEstado(IdleState);
     }
 
     void Update()
     {
-        Desplazar();
+        StateMachine.EstadoActual.Desplazar();
+        EntrarCombate();
+
     }
 
     //FUNCIONES 
-    private void Desplazar()
-    {
-        iAWPManager.SeguirGuia(velocidad);
-    }
-
-    public void ActualizarEstamina(float x)
+    private void ActualizarEstamina(float x)
     {
         estaminaActual -= x;
     }
 
-    //GETTERS y SETTERS
+    public bool EntrarCombate()
+    {
+        Debug.Log("COSO: " + iANivelDeteccion.GetNivelDeteccion());
+        if (iANivelDeteccion.GetNivelDeteccion() == nivelAlto)
+        {
+            Debug.Log("Entrando en combate");
+            return true;
+        }
 
+        return false;
+    }
+
+    public void Mover()
+    {
+        Debug.Log("MOVEEER");
+
+        iAWPManager.SeguirGuia(velocidad);
+    }
+
+
+    //GETTERS y SETTERS
     public float GetEstaminaActual()
     {
         return estaminaActual;
@@ -74,12 +109,16 @@ public class IA : MonoBehaviour
     private void SetComponentes()
     {
         iAWPManager = GetComponent<IAWPManager>();
+        iANivelDeteccion = GetComponent<IANivelDeteccion>();
     }
 
-
-    public void SetBloqueo(bool x)
+    private void SetStateMachineStates()
     {
-        bloqueo = x;
+        StateMachine = new IAStateMachine();
+
+        IdleState = new IAIdle(this, StateMachine);
+        PatrullarState = new IAPatrullar(this, StateMachine);
+        PerseguirState = new IAPerseguir(this, StateMachine);
     }
 }
 

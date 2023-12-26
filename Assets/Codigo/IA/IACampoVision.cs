@@ -34,7 +34,6 @@ public class IACampoVision : MonoBehaviour
     void Update()
     {
         Rayos();
-        Detectar();
     }
 
     void OnDrawGizmosSelected()
@@ -52,10 +51,9 @@ public class IACampoVision : MonoBehaviour
     //Intercambiamos entre Cos y Sin, pro el valor que da cada uno
     //Por ejemplo
     //angulo = 60; COS = 0.5; SIN = 0.8660254
-    void Rayos()
+    private void Rayos()
     {
         radianes = angulo * Mathf.Deg2Rad;
-
 
         bool controlX = EstaEnRango(animador.GetFloat(rumboX), 0.5f, 1f) || EstaEnRango(animador.GetFloat(rumboX), -1f, -0.5f);
         bool controlY = EstaEnRango(animador.GetFloat(rumboY), 0f, 0.3f) || EstaEnRango(animador.GetFloat(rumboY), -0.3f, 0);
@@ -130,38 +128,40 @@ public class IACampoVision : MonoBehaviour
         }
     }
 
-    bool EstaEnRango(float valor, float rangoMinimo, float rangoMaximo)
+    private bool EstaEnRango(float valor, float rangoMinimo, float rangoMaximo)
     {
         return valor >= rangoMinimo && valor <= rangoMaximo;
     }
 
-    bool Detectamos(Vector2 direccion)
+    private bool Visible(Vector2 direccion, float distancia, LayerMask obstaculo)
     {
-
-        if (Vector2.Angle(transform.right, direccion) < angulo && animador.GetFloat(rumboX) > 0)
+        if (!Physics2D.Raycast(transform.position, direccion, distancia, mascaraObstaculo))
         {
-            return true;
-        }
+            if (Vector2.Angle(transform.right, direccion) < angulo && animador.GetFloat(rumboX) > 0)
+            {
+                return true;
+            }
 
-        if (Vector2.Angle(-transform.right, direccion) < angulo && animador.GetFloat(rumboX) < 0)
-        {
-            return true;
-        }
+            if (Vector2.Angle(-transform.right, direccion) < angulo && animador.GetFloat(rumboX) < 0)
+            {
+                return true;
+            }
 
-        if (Vector2.Angle(transform.up, direccion) < angulo && animador.GetFloat(rumboY) > 0)
-        {
-            return true;
-        }
+            if (Vector2.Angle(transform.up, direccion) < angulo && animador.GetFloat(rumboY) > 0)
+            {
+                return true;
+            }
 
-        if (Vector2.Angle(-transform.up, direccion) < angulo && animador.GetFloat(rumboY) < 0)
-        {
-            return true;
+            if (Vector2.Angle(-transform.up, direccion) < angulo && animador.GetFloat(rumboY) < 0)
+            {
+                return true;
+            }
         }
 
         return false;
     }
 
-    void Detectar()
+    public bool Detectamos()
     {
         Collider2D[] listaColisiones = Physics2D.OverlapCircleAll(transform.position, radio, mascaraDetectar);
         foreach (Collider2D colision in listaColisiones)
@@ -169,13 +169,12 @@ public class IACampoVision : MonoBehaviour
             Vector2 direccion = colision.transform.position - transform.position;
             float distancia = Vector2.Distance(transform.position, colision.transform.position);
 
-            if (Detectamos(direccion))
+            if (Visible(direccion, distancia, mascaraObstaculo))
             {
-                if (!Physics2D.Raycast(transform.position, direccion, distancia, mascaraObstaculo))
-                {
-                    Debug.Log("Vimos a: " + colision.name);
-                }
+                return true;
             }
         }
+
+        return false;
     }
 }

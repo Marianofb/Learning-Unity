@@ -15,9 +15,6 @@ public class IAAnimacion : MonoBehaviour
     private float yAxis;
     private Vector2 direccion = new Vector2();
 
-    [Header("Debug")]
-    public bool debugLog = false;
-
     //Booleans
     bool estaIdle;
     bool estaCaminando;
@@ -84,6 +81,12 @@ public class IAAnimacion : MonoBehaviour
         animador.SetFloat(rumboY, direccion.y);
 
         iA.SetDireccion(xAxis, yAxis);
+
+        if (xAxis == 0 && yAxis == 0)
+        {
+            animador.SetFloat(rumboX, 1);
+            animador.SetFloat(rumboY, 0);
+        }
     }
 
     private void SetComponentes()
