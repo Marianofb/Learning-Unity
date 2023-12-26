@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.WSA;
 
 public class IAAnimacion : MonoBehaviour
 {
     //Componentes
     private Animator animador;
-    private IA iA;
-    private IACampoVision iACampoVision;
     private IAWPManager iAWPManager;
 
     //Direccion
@@ -19,6 +18,7 @@ public class IAAnimacion : MonoBehaviour
     bool estaIdle;
     bool estaCaminando;
     bool estaAtacando;
+    bool direccionInicializada = false;
 
     //Nombres de Variables del Controlador Animador
     private const string rumboX = "Rumbo X";
@@ -34,30 +34,17 @@ public class IAAnimacion : MonoBehaviour
         SetComponentes();
     }
 
-    void Update()
+    public void SetIdle()
     {
-
-        ControlarCaminarIdle();
-        SetDireccion();
+        CambiarAnimacion(Idle);
     }
 
-    void ControlarCaminarIdle()
+    public void SetCaminar()
     {
-        if (iAWPManager.LlegueDestino())
-        {
-            CambiarAnimacion(Idle);
-            estaCaminando = true;
-            estaIdle = false;
-        }
-        else
-        {
-            CambiarAnimacion(Caminar);
-            estaCaminando = false;
-            estaIdle = true;
-        }
+        CambiarAnimacion(Caminar);
     }
 
-    public void CambiarAnimacion(string nombreAnimacion)
+    private void CambiarAnimacion(string nombreAnimacion)
     {
         animador.Play(nombreAnimacion);
     }
@@ -70,7 +57,20 @@ public class IAAnimacion : MonoBehaviour
         return false;
     }
 
-    private void SetDireccion()
+    public void SetDireccion()
+    {
+        if (animador.GetFloat(rumboX) == 0.0f && animador.GetFloat(rumboY) == 0.0f && direccionInicializada == false)
+        {
+            Vector2 random = Random.insideUnitCircle - (Vector2)transform.position;
+
+            animador.SetFloat(rumboX, random.x);
+            animador.SetFloat(rumboY, random.y);
+
+            direccionInicializada = true;
+        }
+    }
+
+    public void SetDireccionObjetivo()
     {
         xAxis = iAWPManager.GetPosicionGuia().x - transform.position.x;
         yAxis = iAWPManager.GetPosicionGuia().y - transform.position.y;
@@ -79,21 +79,11 @@ public class IAAnimacion : MonoBehaviour
 
         animador.SetFloat(rumboX, direccion.x);
         animador.SetFloat(rumboY, direccion.y);
-
-        iA.SetDireccion(xAxis, yAxis);
-
-        if (xAxis == 0 && yAxis == 0)
-        {
-            animador.SetFloat(rumboX, 1);
-            animador.SetFloat(rumboY, 0);
-        }
     }
 
     private void SetComponentes()
     {
         animador = GetComponent<Animator>();
-        iA = GetComponent<IA>();
-        iACampoVision = GetComponent<IACampoVision>();
         iAWPManager = GetComponent<IAWPManager>();
     }
 }

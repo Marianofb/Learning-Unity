@@ -18,18 +18,15 @@ public class IAWPManager : MonoBehaviour
     List<Nodo> camino;
     int contador = 0;
 
-    [Header("Nodos")]
-    GameObject destino;
-
     [Header("Guia")]
     public float precision = 3f;
     public float velocidadGuia;
     GameObject guia;
+    GameObject destino = null;
 
     void Start()
     {
         aEstrella = GameObject.Find("AEstrella");
-        destino = GameObject.Find("Guerrero");
 
         iA = GetComponent<IA>();
         generadorCamino = aEstrella.GetComponent<AEstrella>();
@@ -44,17 +41,13 @@ public class IAWPManager : MonoBehaviour
         velocidadGuia = iA.GetVelocidad() * 2;
     }
 
-    void Update()
-    {
-        CrearCaminoOrigenDestino();
-    }
 
     public Vector3 GetPosicionGuia()
     {
         return guia.transform.position;
     }
 
-    public void SeguirGuia(float velocidad)
+    public void SeguirGuia(float velocidad, GameObject destino)
     {
         GuiaRecorreCamino();
         if (grid.GetNodo(transform.position) != grid.GetNodo(destino.transform.position))
@@ -64,7 +57,17 @@ public class IAWPManager : MonoBehaviour
         }
     }
 
-    public bool LlegueDestino()
+    public void GenerarCamino(GameObject inicio, GameObject destino)
+    {
+        if (!LlegueDestino(destino))
+        {
+            generadorCamino.BusquedaCamino(inicio.transform.position, destino.transform.position);
+            camino = generadorCamino.ConstruirCamino(grid.GetNodo(inicio.transform.position), grid.GetNodo(destino.transform.position));
+        }
+    }
+
+
+    private bool LlegueDestino(GameObject destino)
     {
         if (grid.GetNodo(transform.position) == grid.GetNodo(destino.transform.position) && camino == null)
         {
@@ -72,14 +75,6 @@ public class IAWPManager : MonoBehaviour
         }
 
         return false;
-    }
-
-    private void CrearCaminoOrigenDestino()
-    {
-        if (!LlegueDestino())
-        {
-            GenerarCamino(guia, destino);
-        }
     }
 
     private void GuiaRecorreCamino()
@@ -106,16 +101,15 @@ public class IAWPManager : MonoBehaviour
         }
     }
 
-    private void GenerarCamino(GameObject inicio, GameObject fin)
-    {
-        generadorCamino.BusquedaCamino(inicio.transform.position, fin.transform.position);
-        camino = generadorCamino.ConstruirCamino(grid.GetNodo(inicio.transform.position), grid.GetNodo(fin.transform.position));
-    }
-
     //GETTERS y SETTERS
     public Vector3 GetCaminoDireccion()
     {
         return camino[contador].GetPosicionEscena();
+    }
+
+    public void SetDestino(GameObject destino)
+    {
+        this.destino = destino;
     }
 
     private void OnDrawGizmosSelected()

@@ -22,11 +22,12 @@ public class IAIdle : IAState
     {
         base.Desplazar();
 
-        Debug.Log("HAGO NADA");
-        if (iA.EntrarCombate())
+        if (iA.iANivelDeteccion.Agro())
         {
             StateMachine.CambiarEstado(iA.PerseguirState);
         }
 
+        iA.iAAnimacion.SetDireccion();
+        iA.iAAnimacion.SetIdle();
     }
 }

@@ -16,18 +16,14 @@ public class IA : MonoBehaviour
 
     [Header("Variables Desplazar")]
     public float velocidad;
-    public bool bloqueo = false;
-    private Vector3 direccion;
 
-    [Header("Niveles Deteccion")]
-    private string nivelNulo = "Nada";
-    private string nivelBajo = "Bajo";
-    private string nivelMedio = "Medio";
-    private string nivelAlto = "Alto";
+    [Header("Jugador")]
+    public GameObject jugador;
 
     [Header("Componentes")]
-    IAWPManager iAWPManager;
-    IANivelDeteccion iANivelDeteccion;
+    public IAWPManager iAWPManager;
+    public IANivelDeteccion iANivelDeteccion;
+    public IAAnimacion iAAnimacion;
 
     //StateMachine
     public IAStateMachine StateMachine { get; set; }
@@ -44,6 +40,9 @@ public class IA : MonoBehaviour
         SetStateMachineStates();
         SetComponentes();
         SetVariablesVidaEstamina();
+
+        jugador = GameObject.Find("Jugador");
+        iAWPManager.SetDestino(jugador);
     }
 
     void Start()
@@ -54,8 +53,6 @@ public class IA : MonoBehaviour
     void Update()
     {
         StateMachine.EstadoActual.Desplazar();
-        EntrarCombate();
-
     }
 
     //FUNCIONES 
@@ -63,26 +60,6 @@ public class IA : MonoBehaviour
     {
         estaminaActual -= x;
     }
-
-    public bool EntrarCombate()
-    {
-        Debug.Log("COSO: " + iANivelDeteccion.GetNivelDeteccion());
-        if (iANivelDeteccion.GetNivelDeteccion() == nivelAlto)
-        {
-            Debug.Log("Entrando en combate");
-            return true;
-        }
-
-        return false;
-    }
-
-    public void Mover()
-    {
-        Debug.Log("MOVEEER");
-
-        iAWPManager.SeguirGuia(velocidad);
-    }
-
 
     //GETTERS y SETTERS
     public float GetEstaminaActual()
@@ -101,13 +78,9 @@ public class IA : MonoBehaviour
         vidaActual = vidaMax;
     }
 
-    public void SetDireccion(float x, float y)
-    {
-        direccion = new Vector2(x, y);
-    }
-
     private void SetComponentes()
     {
+        iAAnimacion = GetComponent<IAAnimacion>();
         iAWPManager = GetComponent<IAWPManager>();
         iANivelDeteccion = GetComponent<IANivelDeteccion>();
     }

@@ -89,5 +89,15 @@ public class IANivelDeteccion : MonoBehaviour
         nivelDeteccion = nivel;
     }
 
+    public bool Agro()
+    {
+        if (GetNivelDeteccion() == nivelAlto)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 
 }
