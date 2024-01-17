@@ -42,7 +42,8 @@ public class Jugador : MonoBehaviour
         variacionPosicion = direccion.magnitude;
 
         //Desplazar
-        transform.position += direccion.normalized * velocidad * Time.deltaTime;
+        if (bloqueo == false)
+            transform.position += direccion.normalized * velocidad * Time.deltaTime;
     }
 
     public void ActualizarEstamina(float x)

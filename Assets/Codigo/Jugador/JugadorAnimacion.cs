@@ -19,11 +19,12 @@ public class JugadorAnimacion : MonoBehaviour
     public bool debugLog;
     private bool estaIdle;
     private bool estaCaminando;
-    private bool estaAtacando;
+    private bool estaAtacando = false;
 
 
     //Nombres de Animaciones 
     private string animacionActual;
+    private float delay;
     private const string Idle = "Idle";
     private const string Caminar = "Caminar";
     private const string Puño = "Puño";
@@ -56,9 +57,6 @@ public class JugadorAnimacion : MonoBehaviour
         CaminarIdle();
         AtaquePuño();
 
-        //Booleano
-        EstaAtacando();
-
         //Debug
         DebugAxisAccion();
     }
@@ -77,17 +75,20 @@ public class JugadorAnimacion : MonoBehaviour
 
     void CaminarIdle()
     {
-        if (jugador.GetVariacionPosicion() != 0 && estaAtacando == false)
+        if (estaAtacando == false)
         {
-            CambiarAnimacion(Caminar);
-            estaCaminando = true;
-            estaIdle = false;
-        }
-        else
-        {
-            CambiarAnimacion(Idle);
-            estaCaminando = false;
-            estaIdle = true;
+            if (jugador.GetVariacionPosicion() != 0)
+            {
+                CambiarAnimacion(Caminar);
+                estaCaminando = true;
+                estaIdle = false;
+            }
+            else
+            {
+                CambiarAnimacion(Idle);
+                estaCaminando = false;
+                estaIdle = true;
+            }
         }
     }
 
@@ -95,26 +96,24 @@ public class JugadorAnimacion : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && jugador.GetEstaminaActual() > 2f && estaAtacando == false)
         {
+            estaAtacando = true;
+            jugador.SetBloqueo(true);
+
             CambiarAnimacion(Puño);
             jugador.ActualizarEstamina(-25f);
             jugadorControlesCombate.RangoAtaque2(0.25f, 0.2f);
             SetAxisAccion();
+
+
+            delay = animador.GetCurrentAnimatorStateInfo(0).length;
+            Invoke("AtaqueCompleado", delay / 2);
         }
     }
 
-    void EstaAtacando()
+    void AtaqueCompleado()
     {
-        //Esta animacion o mas ||
-        if (GetAnimacionActual(Puño))
-        {
-            estaAtacando = true;
-            jugador.SetBloqueo(estaAtacando);
-        }
-        else
-        {
-            estaAtacando = false;
-            jugador.SetBloqueo(estaAtacando);
-        }
+        estaAtacando = false;
+        jugador.SetBloqueo(false);
     }
 
     void SetAxisAccion()
