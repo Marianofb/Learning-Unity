@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IAIdle : IAState
+public class IAAtaque : IAState
 {
-    public IAIdle(IA iA, IAStateMachine StateMachine) : base(iA, StateMachine)
+    public IAAtaque(IA iA, IAStateMachine iAStateMachine) : base(iA, iAStateMachine)
     {
     }
 
     public override void ActivarEstado()
     {
-        iA.estadoActual = "IDLE";
-        iA.iAAnimacion.PlayIdle();
+        iA.estadoActual = "ATAQUE";
 
         base.ActivarEstado();
     }
@@ -23,13 +22,12 @@ public class IAIdle : IAState
 
     public override void ActualizarEstado()
     {
-        if (iA.iANivelDeteccion.Agro())
+        if (!iA.CercaJugador() && !iA.bloqueo)
         {
             StateMachine.CambiarEstado(iA.PerseguirState);
         }
 
-        iA.iAAnimacion.SetDireccion();
-
+        iA.iAAnimacion.PlayAtaquePuño();
         base.ActualizarEstado();
     }
 }

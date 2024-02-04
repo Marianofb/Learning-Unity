@@ -14,11 +14,14 @@ public class IA : MonoBehaviour
     public float estaminaMax;
     public float velRecuperacionEstamina;
 
-    [Header("Variables Desplazar")]
+    [Header("Variables")]
+    public bool bloqueo = false;
+    public float distanciaAtaque = 1f;
     public float velocidad;
+    public string estadoActual;
 
     [Header("Jugador")]
-    public GameObject jugador;
+    GameObject jugador;
 
     [Header("Componentes")]
     public IAWPManager iAWPManager;
@@ -34,15 +37,14 @@ public class IA : MonoBehaviour
 
     public IAPerseguir PerseguirState { get; set; }
 
+    public IAAtaque AtaqueState { get; set; }
+
 
     void Awake()
     {
         SetStateMachineStates();
         SetComponentes();
         SetVariablesVidaEstamina();
-
-        jugador = GameObject.Find("Jugador");
-        iAWPManager.SetDestino(jugador);
     }
 
     void Start()
@@ -52,13 +54,25 @@ public class IA : MonoBehaviour
 
     void Update()
     {
-        StateMachine.EstadoActual.Desplazar();
+        StateMachine.EstadoActual.ActualizarEstado();
     }
 
     //FUNCIONES 
     private void ActualizarEstamina(float x)
     {
         estaminaActual -= x;
+    }
+
+    public bool CercaJugador()
+    {
+        float distanciaJugador = Vector3.Distance(transform.position, jugador.transform.position);
+
+        if (distanciaJugador <= distanciaAtaque)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     //GETTERS y SETTERS
@@ -70,6 +84,11 @@ public class IA : MonoBehaviour
     public float GetVelocidad()
     {
         return velocidad;
+    }
+
+    public void SetBloqueo(bool bloqueo)
+    {
+        this.bloqueo = bloqueo;
     }
 
     private void SetVariablesVidaEstamina()
@@ -88,10 +107,12 @@ public class IA : MonoBehaviour
     private void SetStateMachineStates()
     {
         StateMachine = new IAStateMachine();
+        jugador = GameObject.Find("Jugador");
 
         IdleState = new IAIdle(this, StateMachine);
         PatrullarState = new IAPatrullar(this, StateMachine);
         PerseguirState = new IAPerseguir(this, StateMachine);
+        AtaqueState = new IAAtaque(this, StateMachine);
     }
 }
 

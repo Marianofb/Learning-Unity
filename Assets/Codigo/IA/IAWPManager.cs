@@ -22,7 +22,7 @@ public class IAWPManager : MonoBehaviour
     public float precision = 3f;
     public float velocidadGuia;
     GameObject guia;
-    GameObject destino = null;
+    public GameObject jugador;
 
     void Start()
     {
@@ -38,7 +38,9 @@ public class IAWPManager : MonoBehaviour
         guia.transform.localScale = transform.localScale / 2;
         Destroy(guia.GetComponent<Collider>());
         Destroy(guia.GetComponent<MeshRenderer>());
-        velocidadGuia = iA.GetVelocidad() * 2;
+        velocidadGuia = iA.GetVelocidad() * 1.5f;
+
+        SetJugador();
     }
 
 
@@ -55,26 +57,6 @@ public class IAWPManager : MonoBehaviour
             Vector3 direccion = guia.transform.position - transform.position;
             transform.position += direccion.normalized * velocidad * Time.deltaTime;
         }
-    }
-
-    public void GenerarCamino(GameObject inicio, GameObject destino)
-    {
-        if (!LlegueDestino(destino))
-        {
-            generadorCamino.BusquedaCamino(inicio.transform.position, destino.transform.position);
-            camino = generadorCamino.ConstruirCamino(grid.GetNodo(inicio.transform.position), grid.GetNodo(destino.transform.position));
-        }
-    }
-
-
-    private bool LlegueDestino(GameObject destino)
-    {
-        if (grid.GetNodo(transform.position) == grid.GetNodo(destino.transform.position) && camino == null)
-        {
-            return true;
-        }
-
-        return false;
     }
 
     private void GuiaRecorreCamino()
@@ -101,15 +83,35 @@ public class IAWPManager : MonoBehaviour
         }
     }
 
+    public void GenerarCamino(GameObject inicio, GameObject destino)
+    {
+        if (!LlegueDestino(destino))
+        {
+            generadorCamino.BusquedaCamino(inicio.transform.position, destino.transform.position);
+            camino = generadorCamino.ConstruirCamino(grid.GetNodo(inicio.transform.position), grid.GetNodo(destino.transform.position));
+        }
+    }
+
+
+    private bool LlegueDestino(GameObject destino)
+    {
+        if (grid.GetNodo(transform.position) == grid.GetNodo(destino.transform.position) && camino == null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     //GETTERS y SETTERS
     public Vector3 GetCaminoDireccion()
     {
         return camino[contador].GetPosicionEscena();
     }
 
-    public void SetDestino(GameObject destino)
+    public void SetJugador()
     {
-        this.destino = destino;
+        this.jugador = GameObject.Find("Jugador");
     }
 
     private void OnDrawGizmosSelected()
@@ -123,7 +125,7 @@ public class IAWPManager : MonoBehaviour
                 {
                     Gizmos.color = Color.red;
                 }
-                if (n == grid.GetNodo(destino.transform.position))
+                if (n == grid.GetNodo(jugador.transform.position))
                 {
                     Gizmos.color = Color.blue;
                 }

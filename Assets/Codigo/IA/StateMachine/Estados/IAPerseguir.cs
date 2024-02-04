@@ -10,6 +10,9 @@ public class IAPerseguir : IAState
 
     public override void ActivarEstado()
     {
+        iA.estadoActual = "PERSEGUIR";
+        iA.iAAnimacion.PlayCaminar();
+
         base.ActivarEstado();
     }
 
@@ -18,18 +21,22 @@ public class IAPerseguir : IAState
         base.DesactivarEstado();
     }
 
-    public override void Desplazar()
+    public override void ActualizarEstado()
     {
-        base.Desplazar();
-
-        if (!iA.iANivelDeteccion.Agro())
+        if (iA.iANivelDeteccion.Nada())
         {
             StateMachine.CambiarEstado(iA.IdleState);
         }
 
-        iA.iAWPManager.GenerarCamino(iA.gameObject, iA.jugador);
-        iA.iAWPManager.SeguirGuia(iA.velocidad, iA.jugador);
+        if (iA.CercaJugador() && iA.iANivelDeteccion.Agro())
+        {
+            StateMachine.CambiarEstado(iA.AtaqueState);
+        }
+
+        iA.iAWPManager.GenerarCamino(iA.gameObject, iA.iAWPManager.jugador);
         iA.iAAnimacion.SetDireccionObjetivo();
-        iA.iAAnimacion.SetCaminar();
+        iA.iAWPManager.SeguirGuia(iA.velocidad, iA.iAWPManager.jugador);
+
+        base.ActualizarEstado();
     }
 }

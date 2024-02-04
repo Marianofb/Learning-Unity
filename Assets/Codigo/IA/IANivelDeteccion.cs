@@ -68,22 +68,18 @@ public class IANivelDeteccion : MonoBehaviour
         if (totalDeteccion >= minTotalDeteccion && totalDeteccion <= nivelDeteccionBajo)
         {
             nivel = nivelBajo;
-            //Debug.Log("HMMM");
         }
         else if (totalDeteccion > nivelDeteccionBajo && totalDeteccion <= nivelDeteccionMedio)
         {
             nivel = nivelMedio;
-            //Debug.Log("HOLA?");
         }
         else if (totalDeteccion > nivelDeteccionMedio && totalDeteccion <= maxTotalDeteccion)
         {
             nivel = nivelAlto;
-            //Debug.Log("¡QUIETO!");
         }
         else
         {
-            nivel = "CERO";
-            //Debug.Log("TODO TRANQUILO");
+            nivel = nivelNulo;
         }
 
         nivelDeteccion = nivel;
@@ -92,6 +88,16 @@ public class IANivelDeteccion : MonoBehaviour
     public bool Agro()
     {
         if (GetNivelDeteccion() == nivelAlto)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool Nada()
+    {
+        if (GetNivelDeteccion() == nivelNulo)
         {
             return true;
         }

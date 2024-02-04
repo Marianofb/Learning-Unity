@@ -104,7 +104,6 @@ public class JugadorAnimacion : MonoBehaviour
             jugadorControlesCombate.RangoAtaque2(0.25f, 0.2f);
             SetAxisAccion();
 
-
             delay = animador.GetCurrentAnimatorStateInfo(0).length;
             Invoke("AtaqueCompleado", delay / 2);
         }

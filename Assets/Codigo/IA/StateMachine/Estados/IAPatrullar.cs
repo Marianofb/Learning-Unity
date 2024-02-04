@@ -8,18 +8,19 @@ public class IAPatrullar : IAState
     {
     }
 
-    public virtual void ActivarEstado()
+    public override void ActivarEstado()
     {
+        iA.estadoActual = "PATRULLAR";
         base.ActivarEstado();
     }
 
-    public virtual void DesactivarEstado()
+    public override void DesactivarEstado()
     {
         base.DesactivarEstado();
     }
 
-    public virtual void Desplazar()
+    public override void ActualizarEstado()
     {
-        base.Desplazar();
+        base.ActualizarEstado();
     }
 }

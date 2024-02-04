@@ -133,6 +133,23 @@ public class IACampoVision : MonoBehaviour
         return valor >= rangoMinimo && valor <= rangoMaximo;
     }
 
+    public bool Detectamos()
+    {
+        Collider2D[] listaColisiones = Physics2D.OverlapCircleAll(transform.position, radio, mascaraDetectar);
+        foreach (Collider2D colision in listaColisiones)
+        {
+            Vector2 direccion = colision.transform.position - transform.position;
+            float distancia = Vector2.Distance(transform.position, colision.transform.position);
+
+            if (Visible(direccion, distancia, mascaraObstaculo))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private bool Visible(Vector2 direccion, float distancia, LayerMask obstaculo)
     {
         if (!Physics2D.Raycast(transform.position, direccion, distancia, mascaraObstaculo))
@@ -153,23 +170,6 @@ public class IACampoVision : MonoBehaviour
             }
 
             if (Vector2.Angle(-transform.up, direccion) < angulo && animador.GetFloat(rumboY) < 0)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public bool Detectamos()
-    {
-        Collider2D[] listaColisiones = Physics2D.OverlapCircleAll(transform.position, radio, mascaraDetectar);
-        foreach (Collider2D colision in listaColisiones)
-        {
-            Vector2 direccion = colision.transform.position - transform.position;
-            float distancia = Vector2.Distance(transform.position, colision.transform.position);
-
-            if (Visible(direccion, distancia, mascaraObstaculo))
             {
                 return true;
             }

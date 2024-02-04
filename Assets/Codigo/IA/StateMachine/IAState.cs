@@ -17,5 +17,5 @@ public class IAState
 
     public virtual void DesactivarEstado() { }
 
-    public virtual void Desplazar() { }
+    public virtual void ActualizarEstado() { }
 }

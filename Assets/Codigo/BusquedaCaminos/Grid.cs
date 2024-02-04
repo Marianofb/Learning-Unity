@@ -33,7 +33,7 @@ public class Grid : MonoBehaviour
             for (int x = 0; x < anchoGrid; x++)
             {
                 //divide por 2 porque en vez de estar empezando en SO, empieza desde el centro
-                Vector3 posicionNodo = posicionEscena_SO / 2 +
+                Vector3 posicionNodo = posicionEscena_SO / 2f +
                                                 Vector3.right * x * ladoNodo +
                                                 Vector3.up * y * ladoNodo;
                 //0.05f funciona bien para detectar colisiones
