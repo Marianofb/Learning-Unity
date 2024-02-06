@@ -22,7 +22,7 @@ public class IAAtaque : IAState
 
     public override void ActualizarEstado()
     {
-        if (!iA.CercaJugador() && !iA.bloqueo)
+        if (!iA.PuedoAtacar() && !iA.bloqueo)
         {
             StateMachine.CambiarEstado(iA.PerseguirState);
         }

@@ -21,12 +21,13 @@ public class IA : MonoBehaviour
     public string estadoActual;
 
     [Header("Jugador")]
-    GameObject jugador;
+    public GameObject jugador;
 
     [Header("Componentes")]
     public IAWPManager iAWPManager;
     public IANivelDeteccion iANivelDeteccion;
     public IAAnimacion iAAnimacion;
+    public IACampoVision iACampoVision;
 
     //StateMachine
     public IAStateMachine StateMachine { get; set; }
@@ -63,7 +64,7 @@ public class IA : MonoBehaviour
         estaminaActual -= x;
     }
 
-    public bool CercaJugador()
+    public bool PuedoAtacar()
     {
         float distanciaJugador = Vector3.Distance(transform.position, jugador.transform.position);
 
@@ -102,6 +103,7 @@ public class IA : MonoBehaviour
         iAAnimacion = GetComponent<IAAnimacion>();
         iAWPManager = GetComponent<IAWPManager>();
         iANivelDeteccion = GetComponent<IANivelDeteccion>();
+        iACampoVision = GetComponent<IACampoVision>();
     }
 
     private void SetStateMachineStates()

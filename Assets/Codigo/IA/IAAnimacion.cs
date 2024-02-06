@@ -99,10 +99,10 @@ public class IAAnimacion : MonoBehaviour
 
     public void SetDireccionObjetivo()
     {
-        xAxis = iAWPManager.GetPosicionGuia().x - transform.position.x;
-        yAxis = iAWPManager.GetPosicionGuia().y - transform.position.y;
+        xAxis = iAWPManager.jugador.transform.position.x - transform.position.x;
+        yAxis = iAWPManager.jugador.transform.position.y - transform.position.y;
 
-        direccion = new Vector2(xAxis, yAxis).normalized;
+        direccion = new Vector2(xAxis, yAxis);
 
         animador.SetFloat(rumboX, direccion.x);
         animador.SetFloat(rumboY, direccion.y);

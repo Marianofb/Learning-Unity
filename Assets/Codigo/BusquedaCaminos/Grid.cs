@@ -26,14 +26,13 @@ public class Grid : MonoBehaviour
         Vector3 posicionEscena_SO = transform.position -
                                     Vector3.right * anchoGrid / 2 -
                                     Vector3.up * altoGrid / 2;
-        Debug.Log("Posicion del SO: " + posicionEscena_SO / 2);
 
         for (int y = 0; y < altoGrid; y++)
         {
             for (int x = 0; x < anchoGrid; x++)
             {
                 //divide por 2 porque en vez de estar empezando en SO, empieza desde el centro
-                Vector3 posicionNodo = posicionEscena_SO / 2f +
+                Vector3 posicionNodo = posicionEscena_SO / 3f +
                                                 Vector3.right * x * ladoNodo +
                                                 Vector3.up * y * ladoNodo;
                 //0.05f funciona bien para detectar colisiones
@@ -90,7 +89,7 @@ public class Grid : MonoBehaviour
         Vector3 posicionEscena_SO = transform.position -
                                     Vector3.right * anchoGrid / 2 -
                                     Vector3.up * altoGrid / 2;
-        Vector3 indice = posicion - (posicionEscena_SO / 2);
+        Vector3 indice = posicion - (posicionEscena_SO / 3f);
         float x = indice.x / ladoNodo;
         float y = indice.y / ladoNodo;
 
@@ -113,6 +112,7 @@ public class Grid : MonoBehaviour
                 {
                     Gizmos.color = Color.red;
                 }
+                Gizmos.DrawCube(n.GetPosicionEscena(), Vector2.one * ladoNodo);
                 Gizmos.DrawWireCube(n.GetPosicionEscena(), Vector2.one * ladoNodo);
             }
         }

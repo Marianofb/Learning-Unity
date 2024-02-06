@@ -95,6 +95,16 @@ public class IANivelDeteccion : MonoBehaviour
         return false;
     }
 
+    public bool Medio()
+    {
+        if (GetNivelDeteccion() == nivelMedio)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public bool Nada()
     {
         if (GetNivelDeteccion() == nivelNulo)

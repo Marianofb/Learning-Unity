@@ -24,7 +24,8 @@ public class AEstrella : MonoBehaviour
         Nodo inicio = grid.GetNodo(i);
         Nodo fin = grid.GetNodo(f);
 
-        if (!inicio.GetObstruido() && !fin.GetObstruido())
+        //if (!inicio.GetObstruido() && !fin.GetObstruido())
+        if (!fin.GetObstruido())
         {
             MinHeap openSet = new MinHeap(grid.GetTamaño());
             HashSet<Nodo> closeSet = new HashSet<Nodo>();

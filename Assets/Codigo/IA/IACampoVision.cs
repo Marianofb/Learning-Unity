@@ -7,6 +7,7 @@ public class IACampoVision : MonoBehaviour
 {
     //Componentes
     private Animator animador;
+    private IA iA;
 
     [Header("LayerMask")]
     public LayerMask mascaraDetectar;
@@ -28,6 +29,7 @@ public class IACampoVision : MonoBehaviour
     void Start()
     {
         animador = GetComponent<Animator>();
+        iA = GetComponent<IA>();
         //Debug.Log("COS: " + Mathf.Cos(radianes) + "//SIN: " + Mathf.Sin(radianes));
     }
 
@@ -135,11 +137,11 @@ public class IACampoVision : MonoBehaviour
 
     public bool Detectamos()
     {
-        Collider2D[] listaColisiones = Physics2D.OverlapCircleAll(transform.position, radio, mascaraDetectar);
-        foreach (Collider2D colision in listaColisiones)
+        Collider2D[] objetivos = Physics2D.OverlapCircleAll(transform.position, radio, mascaraDetectar);
+        foreach (Collider2D obj in objetivos)
         {
-            Vector2 direccion = colision.transform.position - transform.position;
-            float distancia = Vector2.Distance(transform.position, colision.transform.position);
+            Vector2 direccion = obj.transform.position - transform.position;
+            float distancia = Vector2.Distance(transform.position, obj.transform.position);
 
             if (Visible(direccion, distancia, mascaraObstaculo))
             {
@@ -150,7 +152,7 @@ public class IACampoVision : MonoBehaviour
         return false;
     }
 
-    private bool Visible(Vector2 direccion, float distancia, LayerMask obstaculo)
+    public bool Visible(Vector2 direccion, float distancia, LayerMask obstaculo)
     {
         if (!Physics2D.Raycast(transform.position, direccion, distancia, mascaraObstaculo))
         {
@@ -176,5 +178,10 @@ public class IACampoVision : MonoBehaviour
         }
 
         return false;
+    }
+
+    public float GetRadio()
+    {
+        return radio;
     }
 }
