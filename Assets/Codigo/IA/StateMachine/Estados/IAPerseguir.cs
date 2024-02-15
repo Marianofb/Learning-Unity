@@ -10,8 +10,8 @@ public class IAPerseguir : IAState
     public override void ActivarEstado()
     {
         iA.estadoActual = "PERSEGUIR";
-        iA.iAAnimacion.PlayCaminar();
         iA.iAWPManager.GenerarCamino(iA.gameObject, iA.iAWPManager.jugador);
+        iA.iAAnimacion.SetDireccionObjetivo();
 
         base.ActivarEstado();
     }
@@ -23,32 +23,61 @@ public class IAPerseguir : IAState
 
     public override void ActualizarEstado()
     {
-        if (iA.iANivelDeteccion.Nada())
-        {
-            StateMachine.CambiarEstado(iA.IdleState);
-        }
+        EstadoIdle();
+        EstadoAtacar();
+        ObjetivoAvistado();
+        ObjetivoPredecirUbicacion();
+        CaminarObservar();
 
+        base.ActualizarEstado();
+    }
+
+    private void CaminarObservar()
+    {
+        if (iA.iAWPManager.CaminoVacio() || iA.iAWPManager.LlegueDestino())
+        {
+            iA.iAAnimacion.PlayIdle();
+        }
+        else
+        {
+            iA.iAAnimacion.SetDireccionObjetivo();
+            iA.iAAnimacion.PlayCaminar();
+            iA.iAWPManager.SeguirGuia(iA.velocidad, iA.iAWPManager.jugador);
+        }
+    }
+
+    private void ObjetivoAvistado()
+    {
+        //Dentro del campo de vision
+        if (iA.iACampoVision.Detectamos())
+        {
+            iA.iAWPManager.GenerarCaminoConEspera(iA.gameObject, iA.iAWPManager.jugador);
+        }
+    }
+
+    private void ObjetivoPredecirUbicacion()
+    {
+        //Genero un Camino prediciendo/adivinando en que direccion se fue (PODRIA SER POR ZONAS)
+        if (iA.iANivelDeteccion.Medio())
+        {
+            iA.iAWPManager.GenerarCaminoConEspera(iA.gameObject, iA.iAWPManager.jugador);
+        }
+    }
+
+    private void EstadoAtacar()
+    {
         //Atacar
         if (iA.iANivelDeteccion.Agro() && iA.PuedoAtacar())
         {
             StateMachine.CambiarEstado(iA.AtaqueState);
         }
+    }
 
-        //Dentro del campo de vision
-        if (iA.iACampoVision.Detectamos())
+    private void EstadoIdle()
+    {
+        if (iA.iANivelDeteccion.Nulo() && iA.iAWPManager.LlegueDestino())
         {
-            iA.iAWPManager.GenerarCamino(iA.gameObject, iA.iAWPManager.jugador);
+            StateMachine.CambiarEstado(iA.IdleState);
         }
-
-        //Genero un Camino prediciendo/adivinando en que direccion se fue (PODRIA SER POR ZONAS)
-        if (iA.iANivelDeteccion.Medio())
-        {
-            iA.iAWPManager.GenerarCamino(iA.gameObject, iA.iAWPManager.jugador);
-        }
-
-        iA.iAAnimacion.SetDireccionObjetivo();
-        iA.iAWPManager.SeguirGuia(iA.velocidad, iA.iAWPManager.jugador);
-
-        base.ActualizarEstado();
     }
 }

@@ -11,6 +11,8 @@ public class IAAtaque : IAState
     public override void ActivarEstado()
     {
         iA.estadoActual = "ATAQUE";
+        iA.iAAnimacion.SetDireccionObjetivo();
+        iA.iAAnimacion.PlayAtaquePuño();
 
         base.ActivarEstado();
     }
@@ -27,6 +29,7 @@ public class IAAtaque : IAState
             StateMachine.CambiarEstado(iA.PerseguirState);
         }
 
+        iA.iAAnimacion.SetDireccionObjetivo();
         iA.iAAnimacion.PlayAtaquePuño();
         base.ActualizarEstado();
     }

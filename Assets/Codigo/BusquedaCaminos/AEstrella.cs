@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,22 +8,27 @@ public class AEstrella : MonoBehaviour
     [Header("LayerMask")]
     public LayerMask mascaraObstaculo;
 
+    List<Nodo> camino;
+
     Grid grid;
     Matematica mate;
-    List<Nodo> camino;
+    PedidoCaminoManager pedidoCaminoManger;
 
     void Awake()
     {
         grid = GetComponent<Grid>();
         mate = GetComponent<Matematica>();
+        pedidoCaminoManger = GetComponent<PedidoCaminoManager>();
     }
+
 
     public void BusquedaCamino(Vector3 i, Vector3 f)
     {
         Nodo inicio = grid.GetNodo(i);
         Nodo fin = grid.GetNodo(f);
 
-        //if (!inicio.GetObstruido() && !fin.GetObstruido())
+        //bool encontramosCamino = false;
+
         if (!fin.GetObstruido())
         {
             MinHeap openSet = new MinHeap(grid.GetTamaño());
@@ -38,6 +42,7 @@ public class AEstrella : MonoBehaviour
 
                 if (actual == fin)
                 {
+                    //encontramosCamino = true;
                     break;
                 }
 
@@ -73,12 +78,13 @@ public class AEstrella : MonoBehaviour
         }
     }
 
-    public List<Nodo> ConstruirCamino(Nodo i, Nodo f)
+    public List<Nodo> ConstruirCamino(Vector3 i, Vector3 f)
     {
         List<Nodo> posiciones = new List<Nodo>();
-        Nodo actual = f;
+        Nodo actual = grid.GetNodo(f);
+        Nodo origen = grid.GetNodo(i);
 
-        while (actual != null && actual != i)
+        while (actual != null && actual != origen)
         {
             //Debug.Log(nodoActual.GetIndiceHeap());
             posiciones.Add(actual);
@@ -86,10 +92,10 @@ public class AEstrella : MonoBehaviour
 
         }
 
-        if (actual == i)
+        if (actual == origen)
         {
             // Agrega el nodo inicial al camino
-            posiciones.Add(i);
+            posiciones.Add(origen);
             posiciones.Reverse();
         }
         else
@@ -106,6 +112,28 @@ public class AEstrella : MonoBehaviour
         List<Nodo> refinado = new List<Nodo>();
         HashSet<Nodo> visto = new HashSet<Nodo>();
 
+
+        //Con esto descartamos los Nodos que no cambian de direccion a su predecesor
+        Vector2 direccionAux = Vector2.zero;
+        for (int j = 1; j < nodos.Count(); j++)
+        {
+            //Posiciones
+            Vector3 poscionActual = nodos[j].GetPosicionEscena();
+            Vector3 poscionPredecesor = nodos[j - 1].GetPosicionEscena();
+
+            Vector2 direccionComparar = new Vector2(poscionActual.x - poscionPredecesor.x, poscionActual.y - poscionPredecesor.y);
+            if (direccionComparar == direccionAux)
+            {
+                nodos.Remove(nodos[j]);
+            }
+
+            direccionAux = direccionComparar;
+        }
+
+        //En un caso de 3 nodos pegado en L
+        //Solo se mantenga las dos puntas de esa L
+        //Mientras no haya ni una colision en el medio
+        //Asi no permitimos ningun cambio brusco y raro de la direccion que toma
         for (int i = 0; i + 2 < nodos.Count(); i++)
         {
             //Debug.Log("Nodo: " + i + "/// Pos:  " + nodos[i].GetPosicionEscena());

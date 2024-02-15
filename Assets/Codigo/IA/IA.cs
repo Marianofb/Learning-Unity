@@ -59,11 +59,6 @@ public class IA : MonoBehaviour
     }
 
     //FUNCIONES 
-    private void ActualizarEstamina(float x)
-    {
-        estaminaActual -= x;
-    }
-
     public bool PuedoAtacar()
     {
         float distanciaJugador = Vector3.Distance(transform.position, jugador.transform.position);
@@ -74,6 +69,11 @@ public class IA : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void ActualizarEstamina(float x)
+    {
+        estaminaActual -= x;
     }
 
     //GETTERS y SETTERS

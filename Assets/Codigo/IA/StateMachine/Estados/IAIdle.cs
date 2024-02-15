@@ -5,8 +5,7 @@ using UnityEngine;
 public class IAIdle : IAState
 {
     public IAIdle(IA iA, IAStateMachine StateMachine) : base(iA, StateMachine)
-    {
-    }
+    { }
 
     public override void ActivarEstado()
     {
@@ -23,12 +22,17 @@ public class IAIdle : IAState
 
     public override void ActualizarEstado()
     {
+        if (iA.iANivelDeteccion.Medio())
+        {
+            iA.iAAnimacion.SetDireccionObjetivo();
+        }
+
         if (iA.iANivelDeteccion.Agro())
         {
             StateMachine.CambiarEstado(iA.PerseguirState);
         }
 
-        iA.iAAnimacion.SetDireccion();
+        iA.iAAnimacion.SetDireccionRandom();
 
         base.ActualizarEstado();
     }

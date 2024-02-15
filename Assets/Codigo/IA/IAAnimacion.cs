@@ -84,7 +84,7 @@ public class IAAnimacion : MonoBehaviour
         animador.CrossFade(nombreAnimacion, 0.1f); // Puedes ajustar el tiempo de transición según tu necesidad
     }
 
-    public void SetDireccion()
+    public void SetDireccionRandom()
     {
         if (animador.GetFloat(rumboX) == 0.0f && animador.GetFloat(rumboY) == 0.0f && direccionInicializada == false)
         {
@@ -99,8 +99,8 @@ public class IAAnimacion : MonoBehaviour
 
     public void SetDireccionObjetivo()
     {
-        xAxis = iAWPManager.jugador.transform.position.x - transform.position.x;
-        yAxis = iAWPManager.jugador.transform.position.y - transform.position.y;
+        xAxis = iAWPManager.GetPosicionObjetivo().x - transform.position.x;
+        yAxis = iAWPManager.GetPosicionObjetivo().y - transform.position.y;
 
         direccion = new Vector2(xAxis, yAxis);
 
