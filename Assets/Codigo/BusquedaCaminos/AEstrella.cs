@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,8 +8,6 @@ public class AEstrella : MonoBehaviour
 {
     [Header("LayerMask")]
     public LayerMask mascaraObstaculo;
-
-    List<Nodo> camino;
 
     Grid grid;
     Matematica mate;
@@ -22,15 +21,22 @@ public class AEstrella : MonoBehaviour
     }
 
 
-    public void BusquedaCamino(Vector3 i, Vector3 f)
+    public void ComenzarBusquedaCamino(Vector3 i, Vector3 f)
+    {
+        StartCoroutine(BusquedaCamino(i, f));
+    }
+
+    IEnumerator BusquedaCamino(Vector3 i, Vector3 f)
     {
         Nodo inicio = grid.GetNodo(i);
         Nodo fin = grid.GetNodo(f);
 
-        //bool encontramosCamino = false;
+        bool encontramosCamino = false;
+        List<Nodo> nuevoCamino = new List<Nodo>();
 
         if (!fin.GetObstruido())
         {
+
             MinHeap openSet = new MinHeap(grid.GetTamaño());
             HashSet<Nodo> closeSet = new HashSet<Nodo>();
 
@@ -42,7 +48,7 @@ public class AEstrella : MonoBehaviour
 
                 if (actual == fin)
                 {
-                    //encontramosCamino = true;
+                    encontramosCamino = true;
                     break;
                 }
 
@@ -72,10 +78,13 @@ public class AEstrella : MonoBehaviour
 
             }
         }
-        else
+        //Esperar un frame
+        yield return null;
+        if (encontramosCamino)
         {
-            throw new InvalidOperationException("No se puede llegar al destino");
+            nuevoCamino = ConstruirCamino(i, f);
         }
+        pedidoCaminoManger.FinalizarProcesarPedido(nuevoCamino, encontramosCamino);
     }
 
     public List<Nodo> ConstruirCamino(Vector3 i, Vector3 f)

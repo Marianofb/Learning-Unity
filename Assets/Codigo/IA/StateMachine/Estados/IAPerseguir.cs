@@ -10,7 +10,7 @@ public class IAPerseguir : IAState
     public override void ActivarEstado()
     {
         iA.estadoActual = "PERSEGUIR";
-        iA.iAWPManager.GenerarCamino(iA.gameObject, iA.iAWPManager.jugador);
+        iA.iAWPManager.GenerarCamino();
         iA.iAAnimacion.SetDireccionObjetivo();
 
         base.ActivarEstado();
@@ -51,7 +51,7 @@ public class IAPerseguir : IAState
         //Dentro del campo de vision
         if (iA.iACampoVision.Detectamos())
         {
-            iA.iAWPManager.GenerarCaminoConEspera(iA.gameObject, iA.iAWPManager.jugador);
+            iA.iAWPManager.GenerarCamino();
         }
     }
 
@@ -60,7 +60,7 @@ public class IAPerseguir : IAState
         //Genero un Camino prediciendo/adivinando en que direccion se fue (PODRIA SER POR ZONAS)
         if (iA.iANivelDeteccion.Medio())
         {
-            iA.iAWPManager.GenerarCaminoConEspera(iA.gameObject, iA.iAWPManager.jugador);
+            iA.iAWPManager.GenerarCamino();
         }
     }
 

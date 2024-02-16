@@ -31,7 +31,7 @@ public class PedidoCaminoManager : MonoBehaviour
         {
             pedidoActual = colaPedidos.Dequeue();
             procesandoPedido = true;
-            //generadorCamino.ComenzarBusquedaCamino(pedidoActual.inicio, pedidoActual.fin);
+            generadorCamino.ComenzarBusquedaCamino(pedidoActual.inicio, pedidoActual.fin);
         }
     }
 
@@ -58,7 +58,6 @@ public class PedidoCaminoManager : MonoBehaviour
             this.inicio = inicio;
             this.fin = fin;
             this.resultado = resultado;
-
         }
     }
 }

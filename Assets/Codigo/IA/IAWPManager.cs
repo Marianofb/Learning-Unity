@@ -8,6 +8,7 @@ public class IAWPManager : MonoBehaviour
     IA iA;
     GameObject aEstrella;
     AEstrella generadorCamino;
+    PedidoCaminoManager pedidoCaminoManager;
     Grid grid;
     Matematica mate;
     IACampoVision campoVision;
@@ -33,47 +34,41 @@ public class IAWPManager : MonoBehaviour
         SetJugador();
     }
 
-    bool generandoCamino = false;
     float tiempoEspera = 1.0f; // Tiempo de espera en segundos entre generaciones de camino
     float tiempoUltimaGeneracion = 0.0f;
 
     // Lógica para generar un nuevo camino con un tiempo de espera entre generaciones
-    public void GenerarCaminoConEspera(GameObject inicio, GameObject destino)
+    public void GenerarCamino()
     {
-        if (Time.time - tiempoUltimaGeneracion >= tiempoEspera && !generandoCamino)
+        if (Time.time - tiempoUltimaGeneracion >= tiempoEspera)
         {
-            generandoCamino = true;
-            GenerarCamino(inicio, destino);
             tiempoUltimaGeneracion = Time.time;
-            StartCoroutine(ResetearGenerandoCamino());
+            pedidoCaminoManager.SolicitarCamino(transform.position, jugador.transform.position, ResultadoEncontrarCamino);
+            StartCoroutine(EsperaGenenrarCamino());
+        }
+    }
+
+    private void ResultadoEncontrarCamino(List<Nodo> nuevoCamino, bool encontramosCamino)
+    {
+        if (encontramosCamino)
+        {
+            camino = nuevoCamino;
+            nodoActual = 0;
         }
     }
 
     // Método auxiliar para restablecer la bandera de generandoCamino después de un tiempo
-    IEnumerator ResetearGenerandoCamino()
+    IEnumerator EsperaGenenrarCamino()
     {
         yield return new WaitForSeconds(tiempoEspera);
-        generandoCamino = false;
-    }
-
-    bool si = true;
-    public void GenerarCamino(GameObject inicio, GameObject destino)
-    {
-        //reseteo el contador de camino cada vez que genero otro.
-        //if (si)
-        //{
-        //  si = false;
-        nodoActual = 0;
-        generadorCamino.BusquedaCamino(inicio.transform.position, destino.transform.position);
-        camino = generadorCamino.ConstruirCamino(inicio.transform.position, destino.transform.position);
-        //}
     }
 
     public void SeguirGuia(float velocidad, GameObject destino)
     {
         GuiaRecorreCamino();
-        Vector3 direccion = guia.transform.position - transform.position;
-        transform.position += direccion.normalized * velocidad * Time.deltaTime;
+        //Vector3 direccion = guia.transform.position - transform.position;
+        //transform.position += direccion.normalized * velocidad * Time.deltaTime;
+        transform.position = Vector2.MoveTowards(transform.position, guia.transform.position, velocidad * Time.deltaTime);
     }
 
     private void GuiaRecorreCamino()
@@ -85,36 +80,32 @@ public class IAWPManager : MonoBehaviour
         else
         {
             int distanciaCamino = camino.Count - 1;
-            if (nodoActual < distanciaCamino)
+            if (nodoActual <= distanciaCamino)
             {
 
                 if (mate.Distancia(transform.position, camino[nodoActual].GetPosicionEscena()) < precision)
                 {
                     nodoActual++;
                 }
-
-                //Debug.Log("Contador: " + nodoActual + "|| LargoCamino: " + distanciaCamino + "|| Distancia: " + mate.Distancia(guia.transform.position, camino[nodoActual].GetPosicionEscena()));
-                //Debug.Log("Contador: " + nodoActual + "|| posicion: " + camino[nodoActual].GetPosicionEscena());
             }
 
             if (nodoActual <= distanciaCamino)
             {
-                Vector3 direccion = camino[nodoActual].GetPosicionEscena() - guia.transform.position;
-                guia.transform.position += direccion.normalized * velocidadGuia * Time.deltaTime;
+                //Vector3 direccion = camino[nodoActual].GetPosicionEscena() - guia.transform.position;
+                //guia.transform.position += direccion.normalized * velocidadGuia * Time.deltaTime;
+                guia.transform.position = Vector2.MoveTowards(guia.transform.position, camino[nodoActual].GetPosicionEscena(), velocidadGuia * Time.deltaTime);
 
-                if (guia.transform.position == camino[nodoActual].GetPosicionEscena())
-                {
-                    guia.transform.position = transform.position;
-                }
+                //Debug.Log("Contador: " + nodoActual + "|| LargoCamino: " + distanciaCamino + "|| Distancia: " + mate.Distancia(guia.transform.position, camino[nodoActual].GetPosicionEscena()));
+                //Debug.Log("Contador: " + nodoActual + "|| posicion: " + camino[nodoActual].GetPosicionEscena());
             }
         }
     }
 
     public bool LlegueDestino()
     {
-        // Debug.Log("Pos Origen; " + transform.position + "|| Pos Destino: " + camino[camino.Count - 1].GetPosicionEscena());
+        //Debug.Log("Pos; " + transform.position + "|| Pos FINAL: " + camino[camino.Count - 1].GetPosicionEscena());
 
-        if (grid.GetNodo(transform.position).GetPosicionEscena() == camino[camino.Count - 1].GetPosicionEscena())
+        if (transform.position == camino[camino.Count - 1].GetPosicionEscena())
         {
             return true;
         }
@@ -155,6 +146,7 @@ public class IAWPManager : MonoBehaviour
 
         aEstrella = GameObject.Find("AEstrella");
         generadorCamino = aEstrella.GetComponent<AEstrella>();
+        pedidoCaminoManager = aEstrella.GetComponent<PedidoCaminoManager>();
         grid = aEstrella.GetComponent<Grid>();
         mate = aEstrella.GetComponent<Matematica>();
     }
@@ -190,6 +182,10 @@ public class IAWPManager : MonoBehaviour
                 if (n == grid.GetNodo(jugador.transform.position))
                 {
                     Gizmos.color = Color.blue;
+                }
+                if (n == grid.GetNodo(camino[camino.Count - 1].GetPosicionEscena()))
+                {
+                    Gizmos.color = Color.cyan;
                 }
                 Gizmos.DrawCube(n.GetPosicionEscena(), Vector2.one * grid.ladoNodo);
             }
