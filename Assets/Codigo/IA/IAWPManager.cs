@@ -16,7 +16,6 @@ public class IAWPManager : MonoBehaviour
     [Header("Camino")]
     public LayerMask mascaraObstaculo;
     public bool guiaCreaCamino = false;
-    public Vector2 direccionDestino;
     List<Nodo> camino;
     int nodoActual = 0;
 
@@ -24,6 +23,10 @@ public class IAWPManager : MonoBehaviour
     public float precision = 2f;
     public float velocidadGuia;
     public GameObject guia;
+
+    [Header("Jugador")]
+    public Vector2 direccionActual;
+    public Vector2 direccionGuardada;
     public GameObject jugador;
 
     void Awake()
@@ -34,9 +37,14 @@ public class IAWPManager : MonoBehaviour
         SetJugador();
     }
 
+    void Update()
+    {
+        DireccionDestino();
+        JugadorCambiaZonaDireccion();
+    }
+
     float tiempoEspera = 1.0f; // Tiempo de espera en segundos entre generaciones de camino
     float tiempoUltimaGeneracion = 0.0f;
-
     // Lógica para generar un nuevo camino con un tiempo de espera entre generaciones
     public void GenerarCamino()
     {
@@ -54,6 +62,7 @@ public class IAWPManager : MonoBehaviour
         {
             camino = nuevoCamino;
             nodoActual = 0;
+            direccionGuardada = direccionActual;
         }
     }
 
@@ -80,7 +89,7 @@ public class IAWPManager : MonoBehaviour
         else
         {
             int distanciaCamino = camino.Count - 1;
-            if (nodoActual <= distanciaCamino)
+            if (nodoActual < distanciaCamino)
             {
 
                 if (mate.Distancia(transform.position, camino[nodoActual].GetPosicionEscena()) < precision)
@@ -113,7 +122,37 @@ public class IAWPManager : MonoBehaviour
         return false;
     }
 
+    public void JugadorCambiaZonaDireccion()
+    {
+        if (direccionActual != direccionGuardada)
+        {
+            guia.transform.position = transform.position;
+            CaminoEliminarUltimo();
+        }
+    }
 
+    private void DireccionDestino()
+    {
+        Vector2 direccionObjetivo = jugador.transform.position - transform.position;
+        if (direccionObjetivo.x > 0)
+        {
+            direccionActual.x = 1;
+        }
+        else
+        {
+            direccionActual.x = -1;
+        }
+
+        if (direccionObjetivo.y > 0)
+        {
+            direccionActual.y = 1;
+        }
+        else
+        {
+            direccionActual.y = -1;
+        }
+
+    }
 
     public bool CaminoVacio()
     {
@@ -121,7 +160,16 @@ public class IAWPManager : MonoBehaviour
         {
             return true;
         }
+
         return false;
+    }
+
+    public void CaminoEliminarUltimo()
+    {
+        if (!CaminoVacio())
+        {
+            camino.Remove(camino[camino.Count - 1]);
+        }
     }
 
     //GETTERS y SETTERS
@@ -154,7 +202,7 @@ public class IAWPManager : MonoBehaviour
     private void SetCamino()
     {
         camino = new List<Nodo>();
-        direccionDestino = new Vector2();
+        direccionActual = new Vector2();
     }
 
     public Vector3 GetPosicionGuia()
