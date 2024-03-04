@@ -30,7 +30,6 @@ public class IACampoVision : MonoBehaviour
     {
         animador = GetComponent<Animator>();
         iA = GetComponent<IA>();
-        //Debug.Log("COS: " + Mathf.Cos(radianes) + "//SIN: " + Mathf.Sin(radianes));
     }
 
     void Update()

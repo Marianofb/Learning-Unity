@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class IA : MonoBehaviour
@@ -9,35 +7,35 @@ public class IA : MonoBehaviour
     public float vidaMax;
     public float velRecuperacionVida;
 
-    [Header("Estamina")]
+    [Header("Movimiento")]
+    public float velocidad;
+
+    [Header("Ataque")]
+    public float distanciaAtaque = 1f;
     public float estaminaActual;
     public float estaminaMax;
     public float velRecuperacionEstamina;
+    private bool estaRealizandoAtaque = false;
 
-    [Header("Variables")]
-    public bool bloqueo = false;
-    public float distanciaAtaque = 1f;
-    public float velocidad;
+    [Header("Estado")]
     public string estadoActual;
 
     [Header("Jugador")]
     public GameObject jugador;
+    public LayerMask mascaraJugador;
 
     [Header("Componentes")]
+    public IAMovimiento iAMovimiento;
     public IAWPManager iAWPManager;
+    public IACampoVision iACampoVision;
     public IANivelDeteccion iANivelDeteccion;
     public IAAnimacion iAAnimacion;
-    public IACampoVision iACampoVision;
 
     //StateMachine
     public IAStateMachine StateMachine { get; set; }
-
     public IAIdle IdleState { get; set; }
-
     public IAPatrullar PatrullarState { get; set; }
-
     public IAPerseguir PerseguirState { get; set; }
-
     public IAAtaque AtaqueState { get; set; }
 
 
@@ -59,10 +57,9 @@ public class IA : MonoBehaviour
     }
 
     //FUNCIONES 
-    public bool PuedoAtacar()
+    public bool EstoyCercaJugador()
     {
         float distanciaJugador = Vector3.Distance(transform.position, jugador.transform.position);
-
         if (distanciaJugador <= distanciaAtaque)
         {
             return true;
@@ -71,12 +68,12 @@ public class IA : MonoBehaviour
         return false;
     }
 
-    private void ActualizarEstamina(float x)
+    //GETTERS y SETTERS
+    public bool GetEstaRealizandoAtaque()
     {
-        estaminaActual -= x;
+        return estaRealizandoAtaque;
     }
 
-    //GETTERS y SETTERS
     public float GetEstaminaActual()
     {
         return estaminaActual;
@@ -87,9 +84,14 @@ public class IA : MonoBehaviour
         return velocidad;
     }
 
-    public void SetBloqueo(bool bloqueo)
+    public Vector3 GetPosicionJugador()
     {
-        this.bloqueo = bloqueo;
+        return jugador.transform.position;
+    }
+
+    public void SetBloqueo(bool estaRealizandoAtaque)
+    {
+        this.estaRealizandoAtaque = estaRealizandoAtaque;
     }
 
     private void SetVariablesVidaEstamina()
@@ -101,6 +103,7 @@ public class IA : MonoBehaviour
     private void SetComponentes()
     {
         iAAnimacion = GetComponent<IAAnimacion>();
+        iAMovimiento = GetComponent<IAMovimiento>();
         iAWPManager = GetComponent<IAWPManager>();
         iANivelDeteccion = GetComponent<IANivelDeteccion>();
         iACampoVision = GetComponent<IACampoVision>();

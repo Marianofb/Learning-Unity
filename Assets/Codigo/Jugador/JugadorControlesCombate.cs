@@ -13,7 +13,7 @@ public class JugadorControlesCombate : MonoBehaviour
     public Vector2 rango = new Vector2();
     private Vector2 direccionMouse = new Vector2();
 
-    //Mouse
+    [Header("Mouse")]
     private float xAccion = 0f;
     private float yAccion = 0f;
 

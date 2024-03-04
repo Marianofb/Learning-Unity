@@ -121,22 +121,22 @@ public class AEstrella : MonoBehaviour
         List<Nodo> refinado = new List<Nodo>();
         HashSet<Nodo> visto = new HashSet<Nodo>();
 
-
         //Con esto descartamos los Nodos que no cambian de direccion a su predecesor
-        Vector2 direccionAux = Vector2.zero;
-        for (int j = 1; j < nodos.Count(); j++)
+        Vector2 direccionAnterior = Vector2.zero;
+        for (int j = 1; j < nodos.Count() - 1; j++)
         {
             //Posiciones
-            Vector3 poscionActual = nodos[j].GetPosicionEscena();
-            Vector3 poscionPredecesor = nodos[j - 1].GetPosicionEscena();
+            Vector2 poscionActual = nodos[j].GetPosicionEscena();
+            Vector2 poscionPredecesor = nodos[j - 1].GetPosicionEscena();
 
-            Vector2 direccionComparar = new Vector2(poscionActual.x - poscionPredecesor.x, poscionActual.y - poscionPredecesor.y);
-            if (direccionComparar == direccionAux)
+            Vector2 direccionActual = new Vector2(poscionActual.x - poscionPredecesor.x, poscionActual.y - poscionPredecesor.y);
+            if (direccionActual == direccionAnterior)
             {
                 nodos.Remove(nodos[j]);
+                nodos.Remove(nodos[j - 1]);
             }
 
-            direccionAux = direccionComparar;
+            direccionAnterior = direccionActual;
         }
 
         //En un caso de 3 nodos pegado en L
@@ -145,7 +145,6 @@ public class AEstrella : MonoBehaviour
         //Asi no permitimos ningun cambio brusco y raro de la direccion que toma
         for (int i = 0; i + 2 < nodos.Count(); i++)
         {
-            //Debug.Log("Nodo: " + i + "/// Pos:  " + nodos[i].GetPosicionEscena());
             Nodo padre = nodos[i];
             Nodo hijo = nodos[i + 1];
             Nodo hijoSegundo = nodos[i + 2];
@@ -161,7 +160,6 @@ public class AEstrella : MonoBehaviour
             if (distanciaActual > distanciaSegundoHijo &
                 !Physics2D.Raycast(transform.position, direccionSegundoHijo, distanciaSegundoHijo, mascaraObstaculo))
             {
-                //Debug.Log("Nodo: " + i + "/// Pos:  " + nodos[i].GetPosicionEscena());
                 refinado.Add(hijoSegundo);
                 visto.Add(hijo);
                 visto.Add(hijoSegundo);
@@ -177,7 +175,7 @@ public class AEstrella : MonoBehaviour
             refinado.Add(nodos[nodos.Count() - 1]);
         }
 
-        return refinado;
+        return nodos;
     }
 }
 

@@ -6,54 +6,50 @@ public class IAWPManager : MonoBehaviour
 {
     [Header("Componentes")]
     IA iA;
+    IAMovimiento iAMovimiento;
     GameObject aEstrella;
-    AEstrella generadorCamino;
     PedidoCaminoManager pedidoCaminoManager;
     Grid grid;
     Matematica mate;
-    IACampoVision campoVision;
 
     [Header("Camino")]
-    public LayerMask mascaraObstaculo;
-    public bool guiaCreaCamino = false;
     List<Nodo> camino;
-    int nodoActual = 0;
-
-    [Header("Guia")]
+    public LayerMask mascaraObstaculo;
     public float precision = 2f;
-    public float velocidadGuia;
-    public GameObject guia;
+    public int nodoGuia = 0;
+    public int nodoIA = 0;
 
     [Header("Jugador")]
-    public Vector2 direccionActual;
+    public Vector2 direccionObjetivo;
     public Vector2 direccionGuardada;
-    public GameObject jugador;
+
+    [Header("Guia")]
+    public float velocidadGuia;
+    GameObject guia;
 
     void Awake()
     {
         SetCamino();
         SetComponentes();
         SetGuia();
-        SetJugador();
     }
 
     void Update()
     {
-        DireccionDestino();
-        JugadorCambiaZonaDireccion();
+        ZonaXYJugador();
     }
 
-    float tiempoEspera = 1.0f; // Tiempo de espera en segundos entre generaciones de camino
-    float tiempoUltimaGeneracion = 0.0f;
-    // Lógica para generar un nuevo camino con un tiempo de espera entre generaciones
+    float tiempoEspera = .5f;
+    float tiempoUltimo = 0.0f;
     public void GenerarCamino()
     {
-        if (Time.time - tiempoUltimaGeneracion >= tiempoEspera)
+        if (Time.time - tiempoUltimo >= tiempoEspera)
         {
-            tiempoUltimaGeneracion = Time.time;
-            pedidoCaminoManager.SolicitarCamino(transform.position, jugador.transform.position, ResultadoEncontrarCamino);
+            tiempoUltimo = Time.time;
+            pedidoCaminoManager.SolicitarCamino(transform.position, iA.jugador.transform.position, ResultadoEncontrarCamino);
             StartCoroutine(EsperaGenenrarCamino());
         }
+
     }
 
     private void ResultadoEncontrarCamino(List<Nodo> nuevoCamino, bool encontramosCamino)
@@ -61,60 +57,64 @@ public class IAWPManager : MonoBehaviour
         if (encontramosCamino)
         {
             camino = nuevoCamino;
-            nodoActual = 0;
-            direccionGuardada = direccionActual;
+            nodoGuia = 1;
+            direccionGuardada = direccionObjetivo;
         }
     }
 
-    // Método auxiliar para restablecer la bandera de generandoCamino después de un tiempo
     IEnumerator EsperaGenenrarCamino()
     {
         yield return new WaitForSeconds(tiempoEspera);
     }
 
-    public void SeguirGuia(float velocidad, GameObject destino)
+    public void GuiaRecorreCamino()
     {
-        GuiaRecorreCamino();
-        //Vector3 direccion = guia.transform.position - transform.position;
-        //transform.position += direccion.normalized * velocidad * Time.deltaTime;
-        transform.position = Vector2.MoveTowards(transform.position, guia.transform.position, velocidad * Time.deltaTime);
-    }
-
-    private void GuiaRecorreCamino()
-    {
-        if (camino == null)
+        if (CaminoVacio())
         {
-            nodoActual = 0;
+            nodoGuia = 0;
         }
         else
         {
             int distanciaCamino = camino.Count - 1;
-            if (nodoActual < distanciaCamino)
+            if (nodoGuia < distanciaCamino)
             {
-
-                if (mate.Distancia(transform.position, camino[nodoActual].GetPosicionEscena()) < precision)
+                if (mate.Distancia(transform.position, camino[nodoGuia].GetPosicionEscena()) < precision)
                 {
-                    nodoActual++;
+                    nodoGuia++;
                 }
             }
 
-            if (nodoActual <= distanciaCamino)
+            if (nodoGuia <= distanciaCamino)
             {
-                //Vector3 direccion = camino[nodoActual].GetPosicionEscena() - guia.transform.position;
-                //guia.transform.position += direccion.normalized * velocidadGuia * Time.deltaTime;
-                guia.transform.position = Vector2.MoveTowards(guia.transform.position, camino[nodoActual].GetPosicionEscena(), velocidadGuia * Time.deltaTime);
-
-                //Debug.Log("Contador: " + nodoActual + "|| LargoCamino: " + distanciaCamino + "|| Distancia: " + mate.Distancia(guia.transform.position, camino[nodoActual].GetPosicionEscena()));
-                //Debug.Log("Contador: " + nodoActual + "|| posicion: " + camino[nodoActual].GetPosicionEscena());
+                guia.transform.position = Vector2.MoveTowards(guia.transform.position, camino[nodoGuia].GetPosicionEscena(), velocidadGuia * Time.deltaTime);
             }
         }
     }
 
     public bool LlegueDestino()
     {
-        //Debug.Log("Pos; " + transform.position + "|| Pos FINAL: " + camino[camino.Count - 1].GetPosicionEscena());
+        if (!CaminoVacio())
+        {
+            if (transform.position == camino[camino.Count - 1].GetPosicionEscena())
+            {
+                return true;
+            }
+        }
 
-        if (transform.position == camino[camino.Count - 1].GetPosicionEscena())
+        return false;
+    }
+
+    public void ReiniciarPoscionGuia()
+    {
+        if (!CaminoVacio() && JugadorCambiaZonaXY() || CaminoGuiaBloqueado())
+        {
+            guia.transform.position = iA.jugador.transform.position;
+        }
+    }
+
+    private bool JugadorCambiaZonaXY()
+    {
+        if (direccionObjetivo != direccionGuardada)
         {
             return true;
         }
@@ -122,34 +122,37 @@ public class IAWPManager : MonoBehaviour
         return false;
     }
 
-    public void JugadorCambiaZonaDireccion()
+    private bool CaminoGuiaBloqueado()
     {
-        if (direccionActual != direccionGuardada)
+        Vector2 direccionGuia = guia.transform.position - transform.position;
+        float distanciaGuia = Vector2.Distance(transform.position, guia.transform.position);
+        if (Physics2D.Raycast(transform.position, direccionGuia, distanciaGuia, mascaraObstaculo))
         {
-            guia.transform.position = transform.position;
-            CaminoEliminarUltimo();
+            return true;
         }
+
+        return false;
     }
 
-    private void DireccionDestino()
+    private void ZonaXYJugador()
     {
-        Vector2 direccionObjetivo = jugador.transform.position - transform.position;
-        if (direccionObjetivo.x > 0)
+        Vector2 direccion = iA.jugador.transform.position - transform.position;
+        if (direccion.x > 0)
         {
-            direccionActual.x = 1;
+            direccionObjetivo.x = 1;
         }
         else
         {
-            direccionActual.x = -1;
+            direccionObjetivo.x = -1;
         }
 
-        if (direccionObjetivo.y > 0)
+        if (direccion.y > 0)
         {
-            direccionActual.y = 1;
+            direccionObjetivo.y = 1;
         }
         else
         {
-            direccionActual.y = -1;
+            direccionObjetivo.y = -1;
         }
 
     }
@@ -166,44 +169,13 @@ public class IAWPManager : MonoBehaviour
 
     public void CaminoEliminarUltimo()
     {
-        if (!CaminoVacio())
+        if (camino.Count > 3)
         {
             camino.Remove(camino[camino.Count - 1]);
         }
     }
 
     //GETTERS y SETTERS
-    private void SetGuia()
-    {
-        guia = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        guia.transform.position = transform.position;
-        guia.transform.localScale = transform.localScale / 2;
-        Destroy(guia.GetComponent<Collider>());
-        Destroy(guia.GetComponent<MeshRenderer>());
-        velocidadGuia = iA.GetVelocidad() * 2f;
-    }
-
-    private void SetJugador()
-    {
-        jugador = GameObject.Find("Jugador");
-    }
-
-    private void SetComponentes()
-    {
-        iA = GetComponent<IA>();
-
-        aEstrella = GameObject.Find("AEstrella");
-        generadorCamino = aEstrella.GetComponent<AEstrella>();
-        pedidoCaminoManager = aEstrella.GetComponent<PedidoCaminoManager>();
-        grid = aEstrella.GetComponent<Grid>();
-        mate = aEstrella.GetComponent<Matematica>();
-    }
-
-    private void SetCamino()
-    {
-        camino = new List<Nodo>();
-        direccionActual = new Vector2();
-    }
 
     public Vector3 GetPosicionGuia()
     {
@@ -211,9 +183,44 @@ public class IAWPManager : MonoBehaviour
     }
 
 
-    public Vector3 GetPosicionObjetivo()
+    public Vector3 GetPoscionUltimoNodo()
     {
-        return jugador.transform.position;
+        if (!CaminoVacio())
+        {
+            return camino[camino.Count - 1].GetPosicionEscena();
+        }
+
+        return Vector3.zero;
+    }
+
+    private void SetCamino()
+    {
+        camino = new List<Nodo>();
+        direccionObjetivo = new Vector2();
+    }
+
+
+    private void SetComponentes()
+    {
+        iA = GetComponent<IA>();
+        iAMovimiento = GetComponent<IAMovimiento>();
+
+        aEstrella = GameObject.Find("AEstrella");
+        pedidoCaminoManager = aEstrella.GetComponent<PedidoCaminoManager>();
+        grid = aEstrella.GetComponent<Grid>();
+        mate = aEstrella.GetComponent<Matematica>();
+    }
+
+    private void SetGuia()
+    {
+        guia = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        guia.name = "Guia " + this.name;
+        guia.transform.position = transform.position;
+        guia.transform.localScale = transform.localScale / 2;
+        Destroy(guia.GetComponent<Collider>());
+        Destroy(guia.GetComponent<MeshRenderer>());
+        Destroy(guia.GetComponent<MeshFilter>());
+        velocidadGuia = iA.GetVelocidad() * 2f;
     }
 
     private void OnDrawGizmosSelected()
@@ -227,15 +234,17 @@ public class IAWPManager : MonoBehaviour
                 {
                     Gizmos.color = Color.red;
                 }
-                if (n == grid.GetNodo(jugador.transform.position))
-                {
-                    Gizmos.color = Color.blue;
-                }
+
                 if (n == grid.GetNodo(camino[camino.Count - 1].GetPosicionEscena()))
                 {
                     Gizmos.color = Color.cyan;
                 }
-                Gizmos.DrawCube(n.GetPosicionEscena(), Vector2.one * grid.ladoNodo);
+
+                if (n == grid.GetNodo(iA.jugador.transform.position))
+                {
+                    Gizmos.color = Color.magenta;
+                }
+                Gizmos.DrawCube(n.GetPosicionEscena(), Vector2.one * grid.GetLadoNodo());
             }
         }
     }

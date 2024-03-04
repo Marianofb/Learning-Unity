@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.WSA;
 
 public class IAAnimacion : MonoBehaviour
 {
@@ -15,18 +12,11 @@ public class IAAnimacion : MonoBehaviour
     private float yAxis;
     private Vector2 direccion = new Vector2();
 
-    //Booleans
-    bool estaIdle;
-    bool estaCaminando;
-    bool estaAtacando;
-    bool direccionInicializada = false;
-
     //Nombres de Variables del Controlador Animador
     private const string rumboX = "Rumbo X";
     private const string rumboY = "Rumbo Y";
 
     //Nombres de Animaciones 
-    private string animacionActual;
     public const string Idle = "Idle";
     public const string Caminar = "Caminar";
     public const string AtaquePuño = "Puño";
@@ -50,8 +40,9 @@ public class IAAnimacion : MonoBehaviour
     {
         CambiarAnimacion(AtaquePuño);
         iA.SetBloqueo(true);
-        float delay = animador.GetCurrentAnimatorStateInfo(0).length;
-        Invoke("AtaqueCompleado", delay);
+        //El "tiempo" depende de la cantidad de sprites en un clip
+        //Que no coinice con el StateInfo.length, entoces lo harcodeo
+        Invoke("AtaqueCompleado", 0.5f);
     }
 
     void AtaqueCompleado()
@@ -64,43 +55,10 @@ public class IAAnimacion : MonoBehaviour
         animador.Play(nombreAnimacion);
     }
 
-    public bool GetAnimacionActual(string nombreAnimacion)
+    public void SetDireccionJugador()
     {
-        if (animador.GetCurrentAnimatorStateInfo(0).IsName(nombreAnimacion))
-            return true;
-
-        return false;
-    }
-
-    public float GetDuracionAnimacionActual(string nombreAnimacion)
-    {
-        AnimatorClipInfo[] clips = animador.GetCurrentAnimatorClipInfo(0);
-        float duracion = clips[0].clip.length;
-        return duracion;
-    }
-
-    public void CambiarAnimacionSuave(string nombreAnimacion)
-    {
-        animador.CrossFade(nombreAnimacion, 0.1f); // Puedes ajustar el tiempo de transición según tu necesidad
-    }
-
-    public void SetDireccionRandom()
-    {
-        if (animador.GetFloat(rumboX) == 0.0f && animador.GetFloat(rumboY) == 0.0f && direccionInicializada == false)
-        {
-            Vector2 random = Random.insideUnitCircle - (Vector2)transform.position;
-
-            animador.SetFloat(rumboX, random.x);
-            animador.SetFloat(rumboY, random.y);
-
-            direccionInicializada = true;
-        }
-    }
-
-    public void SetDireccionObjetivo()
-    {
-        xAxis = iAWPManager.GetPosicionObjetivo().x - transform.position.x;
-        yAxis = iAWPManager.GetPosicionObjetivo().y - transform.position.y;
+        xAxis = iA.GetPosicionJugador().x - transform.position.x;
+        yAxis = iA.GetPosicionJugador().y - transform.position.y;
 
         direccion = new Vector2(xAxis, yAxis);
 
@@ -110,6 +68,14 @@ public class IAAnimacion : MonoBehaviour
         //(solo porque estamos usando el mismo Aniamdor para el jugaro y la IA)
         animador.SetFloat("Accion X", direccion.x);
         animador.SetFloat("Accion Y", direccion.y);
+    }
+
+    public void SetDireccionIdle()
+    {
+        Vector2 random = Random.insideUnitCircle;
+
+        animador.SetFloat(rumboX, random.x);
+        animador.SetFloat(rumboY, random.y);
     }
 
     private void SetComponentes()

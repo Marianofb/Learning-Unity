@@ -10,8 +10,8 @@ public class Grid : MonoBehaviour
     public int anchoGrid;
 
     [Header("Configuracion Nodo")]
-    public float ladoNodo;
     public LayerMask mascaraObstaculo;
+    float ladoNodo = 0.25f;
 
     public Nodo[,] red;
 
@@ -99,6 +99,11 @@ public class Grid : MonoBehaviour
     public int GetTamaño()
     {
         return altoGrid * anchoGrid;
+    }
+
+    public float GetLadoNodo()
+    {
+        return ladoNodo;
     }
 
     private void OnDrawGizmosSelected()

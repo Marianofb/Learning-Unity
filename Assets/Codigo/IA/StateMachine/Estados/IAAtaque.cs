@@ -11,7 +11,7 @@ public class IAAtaque : IAState
     public override void ActivarEstado()
     {
         iA.estadoActual = "ATAQUE";
-        iA.iAAnimacion.SetDireccionObjetivo();
+        iA.iAAnimacion.SetDireccionJugador();
         iA.iAAnimacion.PlayAtaquePuño();
 
         base.ActivarEstado();
@@ -24,12 +24,12 @@ public class IAAtaque : IAState
 
     public override void ActualizarEstado()
     {
-        if (!iA.PuedoAtacar() && !iA.bloqueo)
+        if (!iA.EstoyCercaJugador() && !iA.GetEstaRealizandoAtaque())
         {
             StateMachine.CambiarEstado(iA.PerseguirState);
         }
 
-        iA.iAAnimacion.SetDireccionObjetivo();
+        iA.iAAnimacion.SetDireccionJugador();
         iA.iAAnimacion.PlayAtaquePuño();
         base.ActualizarEstado();
     }

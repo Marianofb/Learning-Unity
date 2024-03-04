@@ -11,7 +11,7 @@ public class IAPerseguir : IAState
     {
         iA.estadoActual = "PERSEGUIR";
         iA.iAWPManager.GenerarCamino();
-        iA.iAAnimacion.SetDireccionObjetivo();
+        iA.iAAnimacion.SetDireccionJugador();
 
         base.ActivarEstado();
     }
@@ -40,9 +40,9 @@ public class IAPerseguir : IAState
         }
         else
         {
-            iA.iAAnimacion.SetDireccionObjetivo();
+            iA.iAAnimacion.SetDireccionJugador();
             iA.iAAnimacion.PlayCaminar();
-            iA.iAWPManager.SeguirGuia(iA.velocidad, iA.iAWPManager.jugador);
+            iA.iAMovimiento.SeguirGuia();
         }
     }
 
@@ -51,6 +51,7 @@ public class IAPerseguir : IAState
         //Dentro del campo de vision
         if (iA.iACampoVision.Detectamos())
         {
+            iA.iAWPManager.ReiniciarPoscionGuia();
             iA.iAWPManager.GenerarCamino();
         }
     }
@@ -67,7 +68,7 @@ public class IAPerseguir : IAState
     private void EstadoAtacar()
     {
         //Atacar
-        if (iA.iANivelDeteccion.Agro() && iA.PuedoAtacar())
+        if (iA.iANivelDeteccion.Agro() && iA.EstoyCercaJugador())
         {
             StateMachine.CambiarEstado(iA.AtaqueState);
         }
@@ -75,7 +76,7 @@ public class IAPerseguir : IAState
 
     private void EstadoIdle()
     {
-        if (iA.iANivelDeteccion.Nulo() && iA.iAWPManager.LlegueDestino())
+        if (iA.iANivelDeteccion.Nulo())
         {
             StateMachine.CambiarEstado(iA.IdleState);
         }

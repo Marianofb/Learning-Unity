@@ -11,6 +11,7 @@ public class IAIdle : IAState
     {
         iA.estadoActual = "IDLE";
         iA.iAAnimacion.PlayIdle();
+        iA.iAAnimacion.SetDireccionIdle();
 
         base.ActivarEstado();
     }
@@ -24,15 +25,13 @@ public class IAIdle : IAState
     {
         if (iA.iANivelDeteccion.Medio())
         {
-            iA.iAAnimacion.SetDireccionObjetivo();
+            iA.iAAnimacion.SetDireccionJugador();
         }
 
         if (iA.iANivelDeteccion.Agro())
         {
             StateMachine.CambiarEstado(iA.PerseguirState);
         }
-
-        iA.iAAnimacion.SetDireccionRandom();
 
         base.ActualizarEstado();
     }

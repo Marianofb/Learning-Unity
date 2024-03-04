@@ -14,36 +14,76 @@ public class Jugador : MonoBehaviour
     public float estaminaMax;
     public float velRecuperacionEstamina;
 
-    [Header("Variables Desplazar")]
+    [Header("Variables Movimiento")]
     public float velocidad;
-    public bool bloqueo = false;
+    public bool atacando = false;
     private float xAxis;
     private float yAxis;
     private Vector3 direccion;
     private float variacionPosicion;
 
+    [Header("Estado")]
+    public string estadoActual;
+
+    [Header("Componentes")]
+    public JugadorAnimacion animacion;
+
+    //StateMachine
+    public JugadorStateMachine StateMachine { get; set; }
+    public JugadorIdle IdleState { get; set; }
+    public JugadorCaminar CaminarState { get; set; }
+    public JugadorAtacar AtacarState { get; set; }
+
+    void Awake()
+    {
+        SetComponentes();
+        SetStateMachineStates();
+    }
+
     void Start()
     {
         SetVariablesVidaEstamina();
+        StateMachine.InicializarEstado(IdleState);
     }
 
     void Update()
     {
-        Desplazar();
+        AccionaBotonAtaque();
+        StateMachine.EstadoActual.ActualizarEstado();
     }
 
     //FUNCIONES 
-    private void Desplazar()
+
+    public bool EstaCaminando()
     {
-        //SetVariables
+        xAxis = Input.GetAxis("Horizontal");
+        yAxis = Input.GetAxis("Vertical");
+
+        if (xAxis != 0 || yAxis != 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void Caminar()
+    {
         xAxis = Input.GetAxis("Horizontal");
         yAxis = Input.GetAxis("Vertical");
         direccion.Set(xAxis, yAxis, 0f);
         variacionPosicion = direccion.magnitude;
 
-        //Desplazar
-        if (bloqueo == false)
-            transform.position += direccion.normalized * velocidad * Time.deltaTime;
+        transform.position += direccion.normalized * velocidad * Time.deltaTime;
+
+    }
+
+    private void AccionaBotonAtaque()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            SetAtacando(true);
+        }
     }
 
     public void ActualizarEstamina(float x)
@@ -52,9 +92,29 @@ public class Jugador : MonoBehaviour
     }
 
     //SETTERS y GETTERS
-    public void SetBloqueo(bool x)
+    public void SetAtacando(bool x)
     {
-        bloqueo = x;
+        atacando = x;
+    }
+
+    private void SetVariablesVidaEstamina()
+    {
+        estaminaActual = estaminaMax;
+        vidaActual = vidaMax;
+    }
+
+    private void SetComponentes()
+    {
+        animacion = GetComponent<JugadorAnimacion>();
+    }
+
+    private void SetStateMachineStates()
+    {
+        StateMachine = new JugadorStateMachine();
+
+        IdleState = new JugadorIdle(this, StateMachine);
+        CaminarState = new JugadorCaminar(this, StateMachine);
+        AtacarState = new JugadorAtacar(this, StateMachine);
     }
 
     public float GetVariacionPosicion()
@@ -67,9 +127,8 @@ public class Jugador : MonoBehaviour
         return estaminaActual;
     }
 
-    private void SetVariablesVidaEstamina()
+    public bool GetAtacando()
     {
-        estaminaActual = estaminaMax;
-        vidaActual = vidaMax;
+        return atacando;
     }
 }
