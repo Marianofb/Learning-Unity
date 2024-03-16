@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class JugadorAtacar : JugadorState
 {
     public JugadorAtacar(Jugador jugador, JugadorStateMachine StateMachine) : base(jugador, StateMachine)
@@ -12,6 +8,7 @@ public class JugadorAtacar : JugadorState
         jugador.estadoActual = "ATACAR";
         jugador.animacion.SetAxisAccion();
         AtaquePuño();
+        AtaqueCabeza();
 
         base.ActivarEstado();
     }
@@ -31,6 +28,11 @@ public class JugadorAtacar : JugadorState
     private void AtaquePuño()
     {
         jugador.animacion.PlayAtaquePuño();
+    }
+
+    private void AtaqueCabeza()
+    {
+        jugador.animacion.PlayAtaqueCabeza();
     }
 
     private void CambiarEstado()

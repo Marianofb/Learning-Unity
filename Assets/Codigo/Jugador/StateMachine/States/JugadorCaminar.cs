@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class JugadorCaminar : JugadorState
 {
     public JugadorCaminar(Jugador jugador, JugadorStateMachine StateMachine) : base(jugador, StateMachine)
@@ -31,7 +27,7 @@ public class JugadorCaminar : JugadorState
 
     private void CambiarEstado()
     {
-        if (!jugador.GetAtacando())
+        if (!jugador.EstaAtacando())
         {
             if (!jugador.EstaCaminando())
             {

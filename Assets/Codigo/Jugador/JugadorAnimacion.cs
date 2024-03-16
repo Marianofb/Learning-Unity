@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class JugadorAnimacion : MonoBehaviour
@@ -19,16 +16,20 @@ public class JugadorAnimacion : MonoBehaviour
     public bool debugLog;
 
     //Nombres de Animaciones 
-    private float delay;
     private const string Idle = "Idle";
     private const string Caminar = "Caminar";
     private const string AtaquePuño = "Puño";
+    private const string AtaqueCabeza = "Cabeza";
 
     //Nombres de Variables del Controlador Animador
     private const string rumboX = "Rumbo X";
     private const string rumboY = "Rumbo Y";
     private const string accionX = "Accion X";
     private const string accionY = "Accion Y";
+
+    //Duracion de  las Animaciones (segun el clip)
+    public float duracionAtaquePuño = 0.5f;
+    public float duracionAtaqueCabeza = 0.5f;
 
 
     void Start()
@@ -61,8 +62,19 @@ public class JugadorAnimacion : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            jugador.SetAtacando(true);
             CambiarAnimacion(AtaquePuño);
-            Invoke("AtaqueCompleado", 0.5f);
+            Invoke("AtaqueCompleado", duracionAtaquePuño);
+        }
+    }
+
+    public void PlayAtaqueCabeza()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            jugador.SetAtacando(true);
+            CambiarAnimacion(AtaqueCabeza);
+            Invoke("AtaqueCompleado", duracionAtaqueCabeza);
         }
     }
 

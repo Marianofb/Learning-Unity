@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class JugadorIdle : JugadorState
 {
     public JugadorIdle(Jugador jugador, JugadorStateMachine StateMachine) : base(jugador, StateMachine)
@@ -29,7 +25,7 @@ public class JugadorIdle : JugadorState
 
     private void CambiarEstado()
     {
-        if (!jugador.GetAtacando())
+        if (!jugador.EstaAtacando())
         {
             if (jugador.EstaCaminando())
             {

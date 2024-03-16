@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Jugador : MonoBehaviour
@@ -48,11 +46,20 @@ public class Jugador : MonoBehaviour
 
     void Update()
     {
-        AccionaBotonAtaque();
         StateMachine.EstadoActual.ActualizarEstado();
     }
 
-    //FUNCIONES 
+    public bool EstaAtacando()
+    {
+        if (Input.GetMouseButtonDown(0) ||
+           Input.GetMouseButtonDown(1))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 
     public bool EstaCaminando()
     {
@@ -76,14 +83,6 @@ public class Jugador : MonoBehaviour
 
         transform.position += direccion.normalized * velocidad * Time.deltaTime;
 
-    }
-
-    private void AccionaBotonAtaque()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            SetAtacando(true);
-        }
     }
 
     public void ActualizarEstamina(float x)
