@@ -6,7 +6,6 @@ public class JugadorAtacar : JugadorState
     public override void ActivarEstado()
     {
         jugador.estadoActual = "ATACAR";
-        jugador.animacion.SetAxisAccion();
         AtaquePuño();
         AtaqueCabeza();
 
@@ -20,7 +19,6 @@ public class JugadorAtacar : JugadorState
 
     public override void ActualizarEstado()
     {
-
         CambiarEstado();
         base.ActualizarEstado();
     }

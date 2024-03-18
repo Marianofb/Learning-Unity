@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: "Jugador-Pu\xF1oNormal-SO"
+  m_Name: "IA-Pu\xF1oNormal-INV-NORTE"
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,13 +21,13 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: b05315d0b4c713142af036e9e92786f0, type: 3}
+      value: {fileID: 21300000, guid: 63083e4875e952d4ca758e811401a22a, type: 3}
     - time: 0.1
-      value: {fileID: 21300000, guid: d66f144c8d7edb34981e866cd22688a9, type: 3}
+      value: {fileID: 21300000, guid: b84462f55b4129c498deb3610fcb403a, type: 3}
     - time: 0.2
-      value: {fileID: 21300000, guid: 954d7ea4e51de7342a4baa77ee743a0c, type: 3}
+      value: {fileID: 21300000, guid: c10aeb6f9cd936d4994825a2089fb11f, type: 3}
     - time: 0.3
-      value: {fileID: 21300000, guid: 47c72ab822a4a114bafccb7e6450bbf1, type: 3}
+      value: {fileID: 21300000, guid: 531a0221ddb181d40976e2c2d43005a4, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -50,10 +50,10 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: b05315d0b4c713142af036e9e92786f0, type: 3}
-    - {fileID: 21300000, guid: d66f144c8d7edb34981e866cd22688a9, type: 3}
-    - {fileID: 21300000, guid: 954d7ea4e51de7342a4baa77ee743a0c, type: 3}
-    - {fileID: 21300000, guid: 47c72ab822a4a114bafccb7e6450bbf1, type: 3}
+    - {fileID: 21300000, guid: 63083e4875e952d4ca758e811401a22a, type: 3}
+    - {fileID: 21300000, guid: b84462f55b4129c498deb3610fcb403a, type: 3}
+    - {fileID: 21300000, guid: c10aeb6f9cd936d4994825a2089fb11f, type: 3}
+    - {fileID: 21300000, guid: 531a0221ddb181d40976e2c2d43005a4, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

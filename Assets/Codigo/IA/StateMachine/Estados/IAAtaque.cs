@@ -24,13 +24,16 @@ public class IAAtaque : IAState
 
     public override void ActualizarEstado()
     {
-        if (!iA.EstoyCercaJugador() && !iA.GetEstaRealizandoAtaque())
+        if (!iA.EstoyCercaJugador() && !iA.GetRealizandoAtaque())
         {
             StateMachine.CambiarEstado(iA.PerseguirState);
         }
 
-        iA.iAAnimacion.SetDireccionJugador();
-        iA.iAAnimacion.PlayAtaquePuño();
+        if (iA.EstoyCercaJugador() && !iA.GetRealizandoAtaque())
+        {
+            iA.iAAnimacion.SetDireccionJugador();
+            iA.iAAnimacion.PlayAtaquePuño();
+        }
         base.ActualizarEstado();
     }
 }

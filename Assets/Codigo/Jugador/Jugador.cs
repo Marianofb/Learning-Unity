@@ -25,6 +25,8 @@ public class Jugador : MonoBehaviour
 
     [Header("Componentes")]
     public JugadorAnimacion animacion;
+    public JugadorCampoVision campoVision;
+    public JugadorMouseAtaque mouseAtaque;
 
     //StateMachine
     public JugadorStateMachine StateMachine { get; set; }
@@ -105,6 +107,7 @@ public class Jugador : MonoBehaviour
     private void SetComponentes()
     {
         animacion = GetComponent<JugadorAnimacion>();
+        mouseAtaque = GetComponent<JugadorMouseAtaque>();
     }
 
     private void SetStateMachineStates()

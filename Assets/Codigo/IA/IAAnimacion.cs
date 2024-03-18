@@ -19,7 +19,17 @@ public class IAAnimacion : MonoBehaviour
     //Nombres de Animaciones 
     public const string Idle = "Idle";
     public const string Caminar = "Caminar";
-    public const string AtaquePuño = "Puño";
+    private const string AtaquePuñoDer = "PuñoDer";
+    private const string AtaquePuñoIzq = "PuñoIzq";
+    private const string RecibiendoDaño = "RecibiendoDaño";
+
+    //Bools de  las Animaciones (der, izq)
+    public bool cambioPuño = false;
+
+    //Duracion de  las Animaciones (segun el clip)
+    public float duracion_RecibiendoDaño = 0.5f;
+    public float duracion_AtaquePuño = 0.5f;
+    public float duracion_AtaqueCabeza = 0.5f;
 
     void Awake()
     {
@@ -38,16 +48,35 @@ public class IAAnimacion : MonoBehaviour
 
     public void PlayAtaquePuño()
     {
-        CambiarAnimacion(AtaquePuño);
+        if (!cambioPuño)
+        {
+            CambiarAnimacion(AtaquePuñoDer);
+        }
+        else
+        {
+            CambiarAnimacion(AtaquePuñoIzq);
+        }
         iA.SetBloqueo(true);
         //El "tiempo" depende de la cantidad de sprites en un clip
         //Que no coinice con el StateInfo.length, entoces lo harcodeo
-        Invoke("AtaqueCompleado", 0.5f);
+        Invoke("AnimacionAtaqueCompletada", duracion_AtaquePuño);
     }
 
-    void AtaqueCompleado()
+    public void PlayRecibiendoDaño()
+    {
+        CambiarAnimacion(RecibiendoDaño);
+        iA.SetRecibiendoDaño(true);
+        Invoke("AnimacionRecibiendoDañoCompletada", duracion_RecibiendoDaño);
+    }
+
+    void AnimacionAtaqueCompletada()
     {
         iA.SetBloqueo(false);
+    }
+
+    void AnimacionRecibiendoDañoCompletada()
+    {
+        iA.SetRecibiendoDaño(false);
     }
 
     private void CambiarAnimacion(string nombreAnimacion)
@@ -70,10 +99,18 @@ public class IAAnimacion : MonoBehaviour
         animador.SetFloat("Accion Y", direccion.y);
     }
 
+    //Para Animation Event (con que este en una sola animacion configura a todo el Blend Tree)
+    public void CambioPuño()
+    {
+        cambioPuño = !cambioPuño;
+    }
+
     public void SetDireccionIdle()
     {
         Vector2 random = Random.insideUnitCircle;
 
+        //Debug.Log("RANDOM X: " + random.x);
+        //Debug.Log("RANDOM Y: " + random.y);
         animador.SetFloat(rumboX, random.x);
         animador.SetFloat(rumboY, random.y);
     }

@@ -15,7 +15,8 @@ public class IA : MonoBehaviour
     public float estaminaActual;
     public float estaminaMax;
     public float velRecuperacionEstamina;
-    private bool estaRealizandoAtaque = false;
+    public bool realizandoAtaque = false;
+    public bool recibiendoDaño = false;
 
     [Header("Estado")]
     public string estadoActual;
@@ -37,6 +38,7 @@ public class IA : MonoBehaviour
     public IAPatrullar PatrullarState { get; set; }
     public IAPerseguir PerseguirState { get; set; }
     public IAAtaque AtaqueState { get; set; }
+    public IARecibiendoDaño RecibiendoDañoState { get; set; }
 
 
     void Awake()
@@ -69,9 +71,9 @@ public class IA : MonoBehaviour
     }
 
     //GETTERS y SETTERS
-    public bool GetEstaRealizandoAtaque()
+    public bool GetRealizandoAtaque()
     {
-        return estaRealizandoAtaque;
+        return realizandoAtaque;
     }
 
     public float GetEstaminaActual()
@@ -89,9 +91,19 @@ public class IA : MonoBehaviour
         return jugador.transform.position;
     }
 
-    public void SetBloqueo(bool estaRealizandoAtaque)
+    public bool GetRecibiendoDaño()
     {
-        this.estaRealizandoAtaque = estaRealizandoAtaque;
+        return recibiendoDaño;
+    }
+
+    public void SetBloqueo(bool bloqueo)
+    {
+        this.realizandoAtaque = bloqueo;
+    }
+
+    public void SetRecibiendoDaño(bool recibiendo)
+    {
+        this.recibiendoDaño = recibiendo;
     }
 
     private void SetVariablesVidaEstamina()
@@ -118,6 +130,7 @@ public class IA : MonoBehaviour
         PatrullarState = new IAPatrullar(this, StateMachine);
         PerseguirState = new IAPerseguir(this, StateMachine);
         AtaqueState = new IAAtaque(this, StateMachine);
+        RecibiendoDañoState = new IARecibiendoDaño(this, StateMachine);
     }
 }
 
