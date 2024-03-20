@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1949020005}
   m_Layer: 7
-  m_Name: PuntoAtaque
+  m_Name: EjemploZonaAtaque
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1949020004}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.045, y: 0.356, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -47,7 +47,9 @@ GameObject:
   - component: {fileID: 5127113829074530193}
   - component: {fileID: 7448449863609137064}
   - component: {fileID: 1887067007154697028}
-  - component: {fileID: 7583405070067638211}
+  - component: {fileID: 6279646319618632734}
+  - component: {fileID: 6891405068900998597}
+  - component: {fileID: 9189875936253618941}
   m_Layer: 7
   m_Name: Jugador
   m_TagString: Player
@@ -117,7 +119,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.625, y: 1.1875}
+  m_Size: {x: 3.125, y: 3.125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -135,7 +137,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -187,7 +189,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 3.125, y: 3.125}
-    newSize: {x: 0.625, y: 1.1875}
+    newSize: {x: 3.125, y: 3.125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -234,8 +236,11 @@ MonoBehaviour:
   estaminaActual: 0
   estaminaMax: 100
   velRecuperacionEstamina: 0
-  velocidad: 2
-  bloqueo: 0
+  estadoActual: 
+  animacion: {fileID: 0}
+  campoVision: {fileID: 0}
+  controlMovimiento: {fileID: 0}
+  controlCombate: {fileID: 0}
 --- !u!114 &7448449863609137064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,7 +253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe1c966ee03d86e48bade2d5ddfa1ab8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugLog: 1
+  "duracion_AtaquePu\xF1o": 0.333
+  duracion_AtaqueCabeza: 0.5
 --- !u!114 &1887067007154697028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,7 +275,7 @@ MonoBehaviour:
     m_Bits: 512
   radio: 1
   angulo: 60
---- !u!114 &7583405070067638211
+--- !u!114 &6279646319618632734
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -278,14 +284,45 @@ MonoBehaviour:
   m_GameObject: {fileID: 8552964388868395379}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39128ca5c89883a49aa70258edcf62a7, type: 3}
+  m_Script: {fileID: 11500000, guid: df4b4994d6e5a1c4589dd97ce2850248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  etiquetaEnemigo:
+  velocidad: 2
+--- !u!114 &6891405068900998597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8552964388868395379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 036824d9f9476364596ba9759f1e22a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mascaraEnemigo:
     serializedVersion: 2
     m_Bits: 256
-  etiquetaObstaculo:
+  mascaraObstaculo:
     serializedVersion: 2
     m_Bits: 512
-  radio: 0.1
-  rango: {x: 0, y: 0}
+  estaAtacando: 0
+  "radio_Pu\xF1o": 0.2
+  "distancia_Pu\xF1o": 0.3
+  radio_Cabeza: 0.2
+  distancia_Cabeza: 0.3
+  radioEjemplo: 0
+  ejemploZonaAtaque: {fileID: 1949020005}
+--- !u!114 &9189875936253618941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8552964388868395379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df4b4994d6e5a1c4589dd97ce2850248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocidad: 2

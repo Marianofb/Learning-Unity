@@ -12,21 +12,14 @@ public class Jugador : MonoBehaviour
     public float estaminaMax;
     public float velRecuperacionEstamina;
 
-    [Header("Variables Movimiento")]
-    public float velocidad;
-    public bool atacando = false;
-    private float xAxis;
-    private float yAxis;
-    private Vector3 direccion;
-    private float variacionPosicion;
-
     [Header("Estado")]
     public string estadoActual;
 
-    [Header("Componentes")]
+    [Header("Scripts")]
     public JugadorAnimacion animacion;
     public JugadorCampoVision campoVision;
-    public JugadorMouseAtaque mouseAtaque;
+    public JugadorControlMovimiento controlMovimiento;
+    public JugadorControlCombate controlCombate;
 
     //StateMachine
     public JugadorStateMachine StateMachine { get; set; }
@@ -36,7 +29,7 @@ public class Jugador : MonoBehaviour
 
     void Awake()
     {
-        SetComponentes();
+        SetScripts();
         SetStateMachineStates();
     }
 
@@ -51,51 +44,9 @@ public class Jugador : MonoBehaviour
         StateMachine.EstadoActual.ActualizarEstado();
     }
 
-    public bool EstaAtacando()
-    {
-        if (Input.GetMouseButtonDown(0) ||
-           Input.GetMouseButtonDown(1))
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-
-    public bool EstaCaminando()
-    {
-        xAxis = Input.GetAxis("Horizontal");
-        yAxis = Input.GetAxis("Vertical");
-
-        if (xAxis != 0 || yAxis != 0)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    public void Caminar()
-    {
-        xAxis = Input.GetAxis("Horizontal");
-        yAxis = Input.GetAxis("Vertical");
-        direccion.Set(xAxis, yAxis, 0f);
-        variacionPosicion = direccion.magnitude;
-
-        transform.position += direccion.normalized * velocidad * Time.deltaTime;
-
-    }
-
     public void ActualizarEstamina(float x)
     {
         estaminaActual -= x;
-    }
-
-    //SETTERS y GETTERS
-    public void SetAtacando(bool x)
-    {
-        atacando = x;
     }
 
     private void SetVariablesVidaEstamina()
@@ -104,33 +55,18 @@ public class Jugador : MonoBehaviour
         vidaActual = vidaMax;
     }
 
-    private void SetComponentes()
+    private void SetScripts()
     {
         animacion = GetComponent<JugadorAnimacion>();
-        mouseAtaque = GetComponent<JugadorMouseAtaque>();
+        controlCombate = GetComponent<JugadorControlCombate>();
+        controlMovimiento = GetComponent<JugadorControlMovimiento>();
     }
 
     private void SetStateMachineStates()
     {
         StateMachine = new JugadorStateMachine();
-
         IdleState = new JugadorIdle(this, StateMachine);
         CaminarState = new JugadorCaminar(this, StateMachine);
         AtacarState = new JugadorAtacar(this, StateMachine);
-    }
-
-    public float GetVariacionPosicion()
-    {
-        return variacionPosicion;
-    }
-
-    public float GetEstaminaActual()
-    {
-        return estaminaActual;
-    }
-
-    public bool GetAtacando()
-    {
-        return atacando;
     }
 }

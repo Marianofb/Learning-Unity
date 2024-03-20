@@ -223,8 +223,8 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Rumbo X
     m_Mirror: 0
-  m_BlendParameter: Accion X
-  m_BlendParameterY: Accion Y
+  m_BlendParameter: Rumbo X
+  m_BlendParameterY: Rumbo Y
   m_MinThreshold: 0
   m_MaxThreshold: 1
   m_UseAutomaticThresholds: 1
@@ -376,8 +376,8 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Rumbo X
     m_Mirror: 0
-  m_BlendParameter: Accion X
-  m_BlendParameterY: Accion Y
+  m_BlendParameter: Rumbo X
+  m_BlendParameterY: Rumbo Y
   m_MinThreshold: 0
   m_MaxThreshold: 1
   m_UseAutomaticThresholds: 1
@@ -423,8 +423,8 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Rumbo X
     m_Mirror: 0
-  m_BlendParameter: Accion X
-  m_BlendParameterY: Accion Y
+  m_BlendParameter: Rumbo X
+  m_BlendParameterY: Rumbo Y
   m_MinThreshold: 0
   m_MaxThreshold: 1
   m_UseAutomaticThresholds: 1
@@ -447,25 +447,9 @@ BlendTree:
     m_DirectBlendParameter: Mirar X
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 2f9be51d56781584d8f8b3696dff118d, type: 2}
-    m_Threshold: 0.125
-    m_Position: {x: 1, y: 1}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: Mirar X
-    m_Mirror: 0
-  - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 18d1024079ee64d4e9ce579139f6c37e, type: 2}
     m_Threshold: 0.25
     m_Position: {x: 0, y: 1}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: Mirar X
-    m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 5d4cdb3626c81ef43bbff269a08002ef, type: 2}
-    m_Threshold: 0.375
-    m_Position: {x: -1, y: 1}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Mirar X
@@ -479,14 +463,6 @@ BlendTree:
     m_DirectBlendParameter: Mirar X
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: e7356ab8113310e4c8f235378c2f8309, type: 2}
-    m_Threshold: 0.625
-    m_Position: {x: -1, y: -1}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: Mirar X
-    m_Mirror: 0
-  - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 7f363a70e6e2d4149b7a2aa5df82d4ab, type: 2}
     m_Threshold: 0.75
     m_Position: {x: 0, y: -1}
@@ -494,18 +470,10 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Mirar X
     m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 4211a5f6010175744844b5fe56145538, type: 2}
-    m_Threshold: 0.875
-    m_Position: {x: 1, y: -1}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: Mirar X
-    m_Mirror: 0
   m_BlendParameter: Rumbo X
   m_BlendParameterY: Rumbo Y
   m_MinThreshold: 0
-  m_MaxThreshold: 0.875
+  m_MaxThreshold: 0.75
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
   m_BlendType: 1

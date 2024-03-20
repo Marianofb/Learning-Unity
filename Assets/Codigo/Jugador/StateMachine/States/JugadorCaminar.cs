@@ -18,7 +18,7 @@ public class JugadorCaminar : JugadorState
     public override void ActualizarEstado()
     {
         jugador.animacion.PlayCaminar();
-        jugador.Caminar();
+        jugador.controlMovimiento.Caminar();
 
         CambiarEstado();
 
@@ -27,9 +27,9 @@ public class JugadorCaminar : JugadorState
 
     private void CambiarEstado()
     {
-        if (!jugador.EstaAtacando())
+        if (!jugador.controlCombate.PresionoTeclaAtaque())
         {
-            if (!jugador.EstaCaminando())
+            if (!jugador.controlMovimiento.GetEstaCaminando())
             {
                 StateMachine.CambiarEstado(jugador.IdleState);
             }

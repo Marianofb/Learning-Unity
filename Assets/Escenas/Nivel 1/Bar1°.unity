@@ -131,50 +131,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -1365477638277695576, guid: 9f0fdaf182705284dad4b84044f1ba57,
+    - target: {fileID: 6891405068900998597, guid: 9f0fdaf182705284dad4b84044f1ba57,
         type: 3}
-      propertyPath: m_Mass
-      value: 0.0001
+      propertyPath: radio_Cabeza
+      value: 0.3
       objectReference: {fileID: 0}
-    - target: {fileID: 7583405070067638211, guid: 9f0fdaf182705284dad4b84044f1ba57,
+    - target: {fileID: 6891405068900998597, guid: 9f0fdaf182705284dad4b84044f1ba57,
         type: 3}
-      propertyPath: "radio_Pu\xF1o"
+      propertyPath: "distancia_Pu\xF1o"
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6891405068900998597, guid: 9f0fdaf182705284dad4b84044f1ba57,
+        type: 3}
+      propertyPath: distancia_Cabeza
       value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7583405070067638211, guid: 9f0fdaf182705284dad4b84044f1ba57,
-        type: 3}
-      propertyPath: mascaraEnemigo.m_Bits
-      value: 256
-      objectReference: {fileID: 0}
-    - target: {fileID: 7583405070067638211, guid: 9f0fdaf182705284dad4b84044f1ba57,
-        type: 3}
-      propertyPath: mascaraObstaculo.m_Bits
-      value: 512
-      objectReference: {fileID: 0}
-    - target: {fileID: 8552964388868395372, guid: 9f0fdaf182705284dad4b84044f1ba57,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 3.125
-      objectReference: {fileID: 0}
-    - target: {fileID: 8552964388868395372, guid: 9f0fdaf182705284dad4b84044f1ba57,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 3.125
-      objectReference: {fileID: 0}
-    - target: {fileID: 8552964388868395372, guid: 9f0fdaf182705284dad4b84044f1ba57,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8552964388868395372, guid: 9f0fdaf182705284dad4b84044f1ba57,
-        type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8552964388868395372, guid: 9f0fdaf182705284dad4b84044f1ba57,
-        type: 3}
-      propertyPath: m_Color.r
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8552964388868395373, guid: 9f0fdaf182705284dad4b84044f1ba57,
         type: 3}
@@ -230,21 +200,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Jugador
-      objectReference: {fileID: 0}
-    - target: {fileID: 8552964388868395379, guid: 9f0fdaf182705284dad4b84044f1ba57,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9056673032618022890, guid: 9f0fdaf182705284dad4b84044f1ba57,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.newSize.x
-      value: 3.125
-      objectReference: {fileID: 0}
-    - target: {fileID: 9056673032618022890, guid: 9f0fdaf182705284dad4b84044f1ba57,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.newSize.y
-      value: 3.125
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

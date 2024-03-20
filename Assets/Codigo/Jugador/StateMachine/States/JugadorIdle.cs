@@ -25,9 +25,9 @@ public class JugadorIdle : JugadorState
 
     private void CambiarEstado()
     {
-        if (!jugador.EstaAtacando())
+        if (!jugador.controlCombate.PresionoTeclaAtaque())
         {
-            if (jugador.EstaCaminando())
+            if (jugador.controlMovimiento.GetEstaCaminando())
             {
                 StateMachine.CambiarEstado(jugador.CaminarState);
             }

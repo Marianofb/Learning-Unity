@@ -35,9 +35,9 @@ public class JugadorAtacar : JugadorState
 
     private void CambiarEstado()
     {
-        if (!jugador.GetAtacando())
+        if (!jugador.controlCombate.GetEstaAtacando())
         {
-            if (!jugador.EstaCaminando())
+            if (!jugador.controlMovimiento.GetEstaCaminando())
             {
                 StateMachine.CambiarEstado(jugador.IdleState);
             }
