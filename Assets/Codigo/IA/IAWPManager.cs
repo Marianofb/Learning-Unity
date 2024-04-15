@@ -6,7 +6,6 @@ public class IAWPManager : MonoBehaviour
 {
     [Header("Componentes")]
     IA iA;
-    IAMovimiento iAMovimiento;
     GameObject aEstrella;
     PedidoCaminoManager pedidoCaminoManager;
     Grid grid;
@@ -49,7 +48,6 @@ public class IAWPManager : MonoBehaviour
             pedidoCaminoManager.SolicitarCamino(transform.position, iA.jugador.transform.position, ResultadoEncontrarCamino);
             StartCoroutine(EsperaGenenrarCamino());
         }
-
     }
 
     private void ResultadoEncontrarCamino(List<Nodo> nuevoCamino, bool encontramosCamino)
@@ -203,8 +201,6 @@ public class IAWPManager : MonoBehaviour
     private void SetComponentes()
     {
         iA = GetComponent<IA>();
-        iAMovimiento = GetComponent<IAMovimiento>();
-
         aEstrella = GameObject.Find("AEstrella");
         pedidoCaminoManager = aEstrella.GetComponent<PedidoCaminoManager>();
         grid = aEstrella.GetComponent<Grid>();

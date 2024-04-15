@@ -15,8 +15,8 @@ public class IA : MonoBehaviour
     public float estaminaActual;
     public float estaminaMax;
     public float velRecuperacionEstamina;
-    public bool realizandoAtaque = false;
-    public bool recibiendoDaño = false;
+    bool realizandoAtaque = false;
+    bool recibiendoDaño = false;
 
     [Header("Estado")]
     public string estadoActual;

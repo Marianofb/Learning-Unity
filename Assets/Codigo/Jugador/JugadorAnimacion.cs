@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class JugadorAnimacion : MonoBehaviour
 {
@@ -14,22 +15,9 @@ public class JugadorAnimacion : MonoBehaviour
     //Mouse
     Vector2 mouse;
 
-    //Nombres de Animaciones 
-    private const string Idle = "Idle";
-    private const string Caminar = "Caminar";
-    private const string AtaquePuñoDer = "PuñoDer";
-    private const string AtaquePuñoIzq = "PuñoIzq";
-    private const string AtaqueCabeza = "Cabeza";
-
     //Nombres de Variables del Controlador Animador
     private const string rumboX = "Rumbo X";
     private const string rumboY = "Rumbo Y";
-
-    [Header("Ataque Puño")]
-    public float duracion_AtaquePuño = 0.4f;
-    private bool cambioPuño = false;
-    [Header("AtaqueCabeza")]
-    public float duracion_AtaqueCabeza = 0.4f;
 
     void Start()
     {
@@ -45,55 +33,7 @@ public class JugadorAnimacion : MonoBehaviour
         SetDireccionCaminar();
     }
 
-    public void PlayIdle()
-    {
-        CambiarAnimacion(Idle);
-    }
-
-    public void PlayCaminar()
-    {
-        CambiarAnimacion(Caminar);
-    }
-
-    public void PlayAtaquePuño()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            jugador.controlCombate.SetEstaAtacando(true);
-            SetDireccionAtaque();
-            if (!cambioPuño)
-            {
-                CambiarAnimacion(AtaquePuñoDer);
-                cambioPuño = !cambioPuño;
-            }
-            else
-            {
-                CambiarAnimacion(AtaquePuñoIzq);
-                cambioPuño = !cambioPuño;
-            }
-            jugador.controlCombate.SetZonaAtaquePuño();
-            Invoke("AtaqueCompleado", duracion_AtaquePuño);
-        }
-    }
-
-    public void PlayAtaqueCabeza()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            jugador.controlCombate.SetEstaAtacando(true);
-            SetDireccionAtaque();
-            CambiarAnimacion(AtaqueCabeza);
-            jugador.controlCombate.SetZonaAtaqueCabeza();
-            Invoke("AtaqueCompleado", duracion_AtaqueCabeza);
-        }
-    }
-
-    private void AtaqueCompleado()
-    {
-        jugador.controlCombate.SetEstaAtacando(false);
-    }
-
-    private void CambiarAnimacion(string nombreAnimacion)
+    public void PlayAnimacion(string nombreAnimacion)
     {
         animador.Play(nombreAnimacion);
     }
@@ -107,14 +47,14 @@ public class JugadorAnimacion : MonoBehaviour
             rumbo.Normalize();
         }
 
-        if (!jugador.controlCombate.GetEstaAtacando())
+        if (!jugador.GetEstaAtacando())
         {
             animador.SetFloat(rumboX, rumbo.x);
             animador.SetFloat(rumboY, rumbo.y);
         }
     }
 
-    public void SetDireccionAtaque()
+    public void SetDireccionAtaque_Mouse()
     {
         SetVectorMouse();
         animador.SetFloat(rumboX, mouse.x);
@@ -138,7 +78,7 @@ public class JugadorAnimacion : MonoBehaviour
         yAxis = Input.GetAxis("Vertical");
     }
 
-    public Vector2 GetMouseVector2()
+    public Vector2 GetMouseVector()
     {
         return mouse;
     }

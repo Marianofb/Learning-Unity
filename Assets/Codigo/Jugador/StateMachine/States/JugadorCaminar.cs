@@ -17,7 +17,7 @@ public class JugadorCaminar : JugadorState
 
     public override void ActualizarEstado()
     {
-        jugador.animacion.PlayCaminar();
+        jugador.controlMovimiento.PlayCaminar();
         jugador.controlMovimiento.Caminar();
 
         CambiarEstado();

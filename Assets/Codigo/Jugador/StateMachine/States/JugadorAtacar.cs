@@ -25,17 +25,17 @@ public class JugadorAtacar : JugadorState
 
     private void AtaquePuño()
     {
-        jugador.animacion.PlayAtaquePuño();
+        jugador.controlCombate.AccionarAtaquePuño();
     }
 
     private void AtaqueCabeza()
     {
-        jugador.animacion.PlayAtaqueCabeza();
+        jugador.controlCombate.AccionarAtaqueCabeza();
     }
 
     private void CambiarEstado()
     {
-        if (!jugador.controlCombate.GetEstaAtacando())
+        if (!jugador.GetEstaAtacando())
         {
             if (!jugador.controlMovimiento.GetEstaCaminando())
             {

@@ -6,7 +6,7 @@ public class JugadorIdle : JugadorState
     public override void ActivarEstado()
     {
         jugador.estadoActual = "IDLE";
-        jugador.animacion.PlayIdle();
+        jugador.controlMovimiento.PlayIdle();
 
         base.ActivarEstado();
     }

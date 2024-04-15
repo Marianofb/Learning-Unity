@@ -8,17 +8,22 @@ public class JugadorControlCombate : MonoBehaviour
     public LayerMask mascaraEnemigo;
     public LayerMask mascaraObstaculo;
 
-    [Header("Variables")]
-    public bool estaAtacando = false;
+    [Header("Enemigos en Zona Ataque")]
     private Collider2D[] listaEnemigos;
     private Vector2 zonaAtaque;
 
-    [Header("Puño")]
+    [Header("Ataque Puño")]
+    public string nombre_AtaquePuño = "Puño";
     public float radio_Puño = 0.1f;
     public float distancia_Puño = 0.3f;
-    [Header("Cabeza")]
+    public float duracion_AtaquePuño = 0.25f;
+    public int largoCombo_AtaquePuño = 2;
+    [Header("AtaqueCabeza")]
+    public string nombre_AtaqueCabeza = "Cabeza";
     public float radio_Cabeza = 0.1f;
     public float distancia_Cabeza = 0.3f;
+    public float duracion_AtaqueCabeza = 0.4f;
+    public int largoCombo_AtaqueCabeza = -1;
 
     [Header("OnDrawGizmos")]
     public float radioEjemplo;
@@ -53,40 +58,13 @@ public class JugadorControlCombate : MonoBehaviour
             foreach (Collider2D c in listaEnemigos)
             {
                 IA iA = c.GetComponent<IA>();
-                iA.recibiendoDaño = true;
+                iA.SetRecibiendoDaño(true);
                 iA.iAAnimacion.PlayRecibiendoDaño();
                 iA.StateMachine.CambiarEstado(iA.RecibiendoDañoState);
             }
 
             listaEnemigos = null;
         }
-    }
-
-    private void SetListaEnemigosAtacados(float radio)
-    {
-        listaEnemigos = Physics2D.OverlapCircleAll(zonaAtaque, radio, mascaraEnemigo);
-    }
-
-    public void SetZonaAtaquePuño()
-    {
-        radioZonaAtaque = radio_Puño;
-        float angle = Mathf.Atan2(jugador.animacion.GetMouseVector2().y, jugador.animacion.GetMouseVector2().x) * Mathf.Rad2Deg;
-        float x = transform.position.x + distancia_Puño * Mathf.Cos(angle * Mathf.Deg2Rad);
-        float y = transform.position.y + distancia_Puño * Mathf.Sin(angle * Mathf.Deg2Rad);
-
-        zonaAtaque.Set(x, y);
-        SetListaEnemigosAtacados(radio_Puño);
-    }
-
-    public void SetZonaAtaqueCabeza()
-    {
-        radioZonaAtaque = radio_Cabeza;
-        float angle = Mathf.Atan2(jugador.animacion.GetMouseVector2().y, jugador.animacion.GetMouseVector2().x) * Mathf.Rad2Deg;
-        float x = transform.position.x + distancia_Cabeza * Mathf.Cos(angle * Mathf.Deg2Rad);
-        float y = transform.position.y + distancia_Cabeza * Mathf.Sin(angle * Mathf.Deg2Rad);
-
-        zonaAtaque.Set(x, y);
-        SetListaEnemigosAtacados(radio_Cabeza);
     }
 
     public bool PresionoTeclaAtaque()
@@ -100,15 +78,41 @@ public class JugadorControlCombate : MonoBehaviour
         return false;
     }
 
-    public void SetEstaAtacando(bool estaAtacando)
+    public void AccionarAtaquePuño()
     {
-        this.estaAtacando = estaAtacando;
+        if (Input.GetMouseButtonDown(0))
+        {
+            jugador.SetEstaAtacando(true);
+            jugador.animacion.SetDireccionAtaque_Mouse();
+            jugador.combos.EjecutarCombo(nombre_AtaquePuño, duracion_AtaquePuño, largoCombo_AtaquePuño);
+            SetRadioAtaque(radio_Puño);
+        }
     }
 
-    public bool GetEstaAtacando()
+    public void AccionarAtaqueCabeza()
     {
-        return estaAtacando;
+        if (Input.GetMouseButtonDown(1))
+        {
+            jugador.SetEstaAtacando(true);
+            jugador.animacion.SetDireccionAtaque_Mouse();
+            jugador.combos.EjecutarCombo(nombre_AtaqueCabeza, duracion_AtaqueCabeza, largoCombo_AtaqueCabeza);
+            SetRadioAtaque(radio_Cabeza);
+        }
     }
 
+    private void SetListaEnemigosAtacados(float radio)
+    {
+        listaEnemigos = Physics2D.OverlapCircleAll(zonaAtaque, radio, mascaraEnemigo);
+    }
 
+    private void SetRadioAtaque(float radio)
+    {
+        radioZonaAtaque = radio;
+        float angle = Mathf.Atan2(jugador.animacion.GetMouseVector().y, jugador.animacion.GetMouseVector().x) * Mathf.Rad2Deg;
+        float x = transform.position.x + distancia_Puño * Mathf.Cos(angle * Mathf.Deg2Rad);
+        float y = transform.position.y + distancia_Puño * Mathf.Sin(angle * Mathf.Deg2Rad);
+
+        zonaAtaque.Set(x, y);
+        SetListaEnemigosAtacados(radio_Puño);
+    }
 }

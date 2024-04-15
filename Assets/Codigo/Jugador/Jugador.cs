@@ -2,17 +2,21 @@ using UnityEngine;
 
 public class Jugador : MonoBehaviour
 {
-    [Header("Vida")]
+    [Header("Variables Salud")]
     public float vidaActual;
     public float vidaMax;
     public float velRecuperacionVida;
 
-    [Header("Estamina")]
+    [Header("Variables Movimiento")]
+    public float velocidad = 2f;
     public float estaminaActual;
     public float estaminaMax;
     public float velRecuperacionEstamina;
 
-    [Header("Estado")]
+    [Header("Variables Combate")]
+    public bool estaAtacando;
+
+    [Header("State Machine")]
     public string estadoActual;
 
     [Header("Scripts")]
@@ -20,6 +24,7 @@ public class Jugador : MonoBehaviour
     public JugadorCampoVision campoVision;
     public JugadorControlMovimiento controlMovimiento;
     public JugadorControlCombate controlCombate;
+    public JugadorCombos combos;
 
     //StateMachine
     public JugadorStateMachine StateMachine { get; set; }
@@ -35,7 +40,7 @@ public class Jugador : MonoBehaviour
 
     void Start()
     {
-        SetVariablesVidaEstamina();
+        SetVariables_Vida_Estamina();
         StateMachine.InicializarEstado(IdleState);
     }
 
@@ -49,17 +54,34 @@ public class Jugador : MonoBehaviour
         estaminaActual -= x;
     }
 
-    private void SetVariablesVidaEstamina()
+    private void SetVariables_Vida_Estamina()
     {
         estaminaActual = estaminaMax;
         vidaActual = vidaMax;
     }
 
+    public void SetEstaAtacando(bool estaAtacando)
+    {
+        this.estaAtacando = estaAtacando;
+    }
+
+    public bool GetEstaAtacando()
+    {
+        return estaAtacando;
+    }
+
+    public float GetVelocidad()
+    {
+        return velocidad;
+    }
+
     private void SetScripts()
     {
         animacion = GetComponent<JugadorAnimacion>();
+        campoVision = GetComponent<JugadorCampoVision>();
         controlCombate = GetComponent<JugadorControlCombate>();
         controlMovimiento = GetComponent<JugadorControlMovimiento>();
+        combos = GetComponent<JugadorCombos>();
     }
 
     private void SetStateMachineStates()

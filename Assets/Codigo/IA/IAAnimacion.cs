@@ -65,7 +65,6 @@ public class IAAnimacion : MonoBehaviour
     public void PlayRecibiendoDaño()
     {
         CambiarAnimacion(RecibiendoDaño);
-        iA.SetRecibiendoDaño(true);
         Invoke("AnimacionRecibiendoDañoCompletada", duracion_RecibiendoDaño);
     }
 
